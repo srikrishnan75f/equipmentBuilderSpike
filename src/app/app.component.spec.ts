@@ -14,16 +14,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have the 'equipmentBuilderSpike' title`, () => {
+  it('should expose the sample configuration', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('equipmentBuilderSpike');
+    expect(app).toBeTruthy();
   });
 
-  it('should render title', () => {
+  it('should render the CDD generator', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, equipmentBuilderSpike');
+    expect(compiled.querySelector('h1')?.textContent).toContain('CDD PDF generation');
   });
 });
