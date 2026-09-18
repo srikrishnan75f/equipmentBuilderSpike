@@ -89,6 +89,40 @@ button:disabled {
   padding: 0 12px;
 }
 
+.json-editor {
+  overflow: hidden;
+  border: 1px solid #d7dfe4;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.editor-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 16px;
+  border-bottom: 1px solid #d7dfe4;
+}
+
+textarea {
+  display: block;
+  width: 100%;
+  min-height: 360px;
+  box-sizing: border-box;
+  border: 0;
+  resize: vertical;
+  background: #fbfcfd;
+  color: #172026;
+  font: 13px/1.45 ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  padding: 16px;
+  outline: none;
+}
+
+textarea:focus {
+  box-shadow: inset 0 0 0 2px #176b87;
+}
+
 .details {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -108,6 +142,103 @@ button:disabled {
   background: #fff0f0;
   color: #8b1f1f;
   padding: 10px 12px;
+}
+
+.points-table {
+  margin-top: 24px;
+  overflow: hidden;
+  border: 1px solid #9ea5a9;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.table-bar {
+  background: #245b85;
+  color: #ffffff;
+  padding: 8px 14px;
+  text-align: center;
+}
+
+.table-bar h2 {
+  font-size: 17px;
+  text-transform: uppercase;
+}
+
+.table-summary {
+  border-bottom: 1px solid #9ea5a9;
+  background: #f7f9fa;
+  color: #51616d;
+  font-size: 12px;
+  padding: 6px 8px;
+}
+
+.table-scroll {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  min-width: 1260px;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 13px;
+}
+
+.description-column {
+  width: 18%;
+}
+
+.point-column {
+  width: 17.5%;
+}
+
+.tag-column {
+  width: 18%;
+}
+
+.range-column {
+  width: 25.5%;
+}
+
+.mfg-column {
+  width: 21%;
+}
+
+th,
+td {
+  border: 1px solid #9ea5a9;
+  padding: 2px 6px;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: normal;
+  vertical-align: middle;
+  line-height: 1.2;
+}
+
+th {
+  background: #dedede;
+  font-weight: 800;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+td:first-child {
+  text-align: left;
+}
+
+td:not(:first-child) {
+  text-align: center;
+}
+
+.system-row {
+  background: #f0f0f0;
+  font-weight: 700;
+}
+
+.spare-row {
+  background: #5b5b5a;
+  color: #ffffff;
+  font-weight: 800;
 }
 
 .details div {

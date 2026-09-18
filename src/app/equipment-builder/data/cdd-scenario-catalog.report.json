@@ -1,0 +1,31 @@
+{
+  "sourceWorkbook": "/Users/sri/Downloads/Lighting Control DO_CN_Config_CDD 2(1).xlsx",
+  "sourceSheet": "Sheet1",
+  "totalRows": 56,
+  "totalScenarios": 56,
+  "combinations": {
+    "lightingCircuitCounts": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "controlModes": [
+      "1 - Schedule Mode",
+      "2 - Occupancy Mode",
+      "3 - Vacancy Mode",
+      "4 - Schedule with Auto Occ",
+      "5 - Schedule with Auto Vac",
+      "6 - Sched with Auto Occ/Vac",
+      "7 - Manual Override"
+    ],
+    "expectedCount": 56,
+    "actualCount": 56
+  },
+  "errors": [],
+  "warnings": []
+}

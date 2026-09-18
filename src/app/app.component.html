@@ -1,13 +1,17 @@
 <main class="shell">
   <section class="workspace">
-    <div class="summary">
-      <p class="eyebrow">Equipment Builder</p>
-      <h1>CDD PDF generation</h1>
-      <p>
-        This phase uses a hardcoded CDD model. The next phase can replace the sample model with
-        resolved workbook data without changing the PDF surface.
-      </p>
-    </div>
+    <section class="json-editor" aria-label="Selected value JSON">
+      <div class="editor-bar">
+        <h2>Selected Value JSON</h2>
+        <button type="button" class="ghost" (click)="resetSelectedValueJson()">Reset</button>
+      </div>
+      <textarea
+        spellcheck="false"
+        [value]="selectedValueJson()"
+        (input)="updateSelectedValueJson($event)"
+        aria-label="Selected value JSON input"
+      ></textarea>
+    </section>
 
     <div class="actions">
       <button type="button" class="primary" [disabled]="isGenerating()" (click)="previewCdd()">
@@ -20,22 +24,41 @@
       <p class="error">{{ generationError() }}</p>
     }
 
-    <section class="details" aria-label="Sample CDD data">
-      <div>
-        <span>Sequence</span>
-        <strong>{{ sampleConfiguration().sequenceName }}</strong>
+    <section class="points-table" aria-label="Dynamic CDD points table">
+      <div class="table-bar">
+        <h2>Dynamic CDD Generation (Wiring Diagram Points List)</h2>
       </div>
-      <div>
-        <span>Equipment</span>
-        <strong>{{ sampleConfiguration().equipmentName }}</strong>
-      </div>
-      <div>
-        <span>BO mappings</span>
-        <strong>{{ sampleConfiguration().boMappings.length }}</strong>
-      </div>
-      <div>
-        <span>UI mappings</span>
-        <strong>{{ sampleConfiguration().uiMappings.length }}</strong>
+      <p class="table-summary">{{ resolvedSummary() }}</p>
+      <div class="table-scroll">
+        <table>
+          <colgroup>
+            <col class="description-column">
+            <col class="point-column">
+            <col class="tag-column">
+            <col class="range-column">
+            <col class="mfg-column">
+          </colgroup>
+          <thead>
+            <tr>
+              <th>Description</th>
+              <th>Point</th>
+              <th>Tag</th>
+              <th>Device Range</th>
+              <th>MFG Part #</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (row of tableRows(); track $index) {
+              <tr [class.spare-row]="row.spare" [class.system-row]="row.shaded">
+                <td>{{ row.description }}</td>
+                <td>{{ row.point }}</td>
+                <td>{{ row.tag }}</td>
+                <td>{{ row.deviceRange }}</td>
+                <td>{{ row.manufacturerPartNumber ?? '' }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
       </div>
     </section>
 

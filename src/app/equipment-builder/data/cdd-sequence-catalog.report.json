@@ -1,0 +1,241 @@
+{
+  "generatedAt": "2026-09-16T10:04:51.577Z",
+  "sourceWorkbooks": [
+    "/Users/sri/Downloads/Exhaust_Fan_Control_CN__Config_CDD 1.xlsx",
+    "/Users/sri/Downloads/Lighting Control DO_CN_Config_CDD 2.xlsx",
+    "/Users/sri/Downloads/Daylight_Harvesting_Config_CDD 1.xlsx"
+  ],
+  "sequenceCount": 3,
+  "scenarioCount": 116,
+  "sequences": [
+    {
+      "sequenceId": "EXHAUST_FAN_CONTROL_CN",
+      "sequenceName": "EXHAUST FAN CONTROL_CN",
+      "sourceWorkbook": "Exhaust_Fan_Control_CN__Config_CDD 1.xlsx",
+      "sourceSheet": "All Combinations (Matrix)",
+      "dimensions": [
+        "Exhaust Fan Count",
+        "Fan Status Required?",
+        "Interlock Required?"
+      ],
+      "pointGroups": [
+        {
+          "key": "BO",
+          "ioType": "Digital Output",
+          "pointColumn": null,
+          "detailColumn": "BO Details (Point ➔ Name & Tag)",
+          "mapColumn": "BO Map (CMD)",
+          "descriptionColumn": null,
+          "tagColumn": null,
+          "rangeColumn": null
+        },
+        {
+          "key": "Status",
+          "ioType": "Digital Input",
+          "pointColumn": null,
+          "detailColumn": "Status Details (Point ➔ Name & Tag)",
+          "mapColumn": "UI Map (Status)",
+          "descriptionColumn": null,
+          "tagColumn": null,
+          "rangeColumn": null
+        },
+        {
+          "key": "Interlock",
+          "ioType": "Digital Input",
+          "pointColumn": null,
+          "detailColumn": "Interlock Details (Point ➔ Name & Tag)",
+          "mapColumn": "UI Map (Interlock)",
+          "descriptionColumn": null,
+          "tagColumn": null,
+          "rangeColumn": null
+        }
+      ],
+      "scenarioCount": 32,
+      "coverage": {
+        "valuesByDimension": {
+          "exhaustFanCount": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "fanStatusRequired": [
+            false,
+            true
+          ],
+          "interlockRequired": [
+            false,
+            true
+          ]
+        },
+        "actualCount": 32
+      }
+    },
+    {
+      "sequenceId": "LIGHTING_CONTROL_DO_CN",
+      "sequenceName": "LIGHTING CONTROL DO_CN",
+      "sourceWorkbook": "Lighting Control DO_CN_Config_CDD 2.xlsx",
+      "sourceSheet": "Sheet1",
+      "dimensions": [
+        "Lighting Circuits Count",
+        "Control Mode",
+        "Occ Sensor Required?",
+        "Manual Override Required?"
+      ],
+      "pointGroups": [
+        {
+          "key": "BO",
+          "ioType": "Digital Output",
+          "pointColumn": "BO Point",
+          "detailColumn": null,
+          "mapColumn": null,
+          "descriptionColumn": "BO Description",
+          "tagColumn": "BO Tag",
+          "rangeColumn": "BO Device Range"
+        },
+        {
+          "key": "UI Occ",
+          "ioType": "Digital Input",
+          "pointColumn": "UI Occ Point",
+          "detailColumn": null,
+          "mapColumn": null,
+          "descriptionColumn": "UI Occ Description",
+          "tagColumn": "UI Occ Tag",
+          "rangeColumn": "UI Occ Device Range"
+        },
+        {
+          "key": "UI Ovr",
+          "ioType": "Digital Input",
+          "pointColumn": "UI Ovr Point",
+          "detailColumn": null,
+          "mapColumn": null,
+          "descriptionColumn": "UI Ovr Description",
+          "tagColumn": "UI Ovr Tag",
+          "rangeColumn": "UI Ovr Device Range"
+        }
+      ],
+      "scenarioCount": 56,
+      "coverage": {
+        "valuesByDimension": {
+          "lightingCircuitsCount": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "controlMode": [
+            "1 - Schedule Mode",
+            "2 - Occupancy Mode",
+            "3 - Vacancy Mode",
+            "4 - Schedule with Auto Occ",
+            "5 - Schedule with Auto Vac",
+            "6 - Sched with Auto Occ/Vac",
+            "7 - Manual Override"
+          ],
+          "occSensorRequired": [
+            false,
+            true
+          ],
+          "manualOverrideRequired": [
+            false,
+            true
+          ]
+        },
+        "actualCount": 56
+      }
+    },
+    {
+      "sequenceId": "DAYLIGHT_HARVESTING_CONTROL_CN",
+      "sequenceName": "DAYLIGHT HARVESTING CONTROL_CN",
+      "sourceWorkbook": "Daylight_Harvesting_Config_CDD 1.xlsx",
+      "sourceSheet": "All Combinations (Matrix)",
+      "dimensions": [
+        "Zones",
+        "Control Mode"
+      ],
+      "pointGroups": [
+        {
+          "key": "AO",
+          "ioType": "Analog Output",
+          "pointColumn": "AO Point",
+          "detailColumn": null,
+          "mapColumn": null,
+          "descriptionColumn": "AO Description",
+          "tagColumn": "AO Tag",
+          "rangeColumn": "AO Range"
+        },
+        {
+          "key": "UI Lux",
+          "ioType": "Digital Input",
+          "pointColumn": "UI Lux Point",
+          "detailColumn": null,
+          "mapColumn": null,
+          "descriptionColumn": "UI Lux Description",
+          "tagColumn": "UI Lux Tag",
+          "rangeColumn": "UI Lux Range"
+        },
+        {
+          "key": "UI Occ",
+          "ioType": "Digital Input",
+          "pointColumn": "UI Occ Point",
+          "detailColumn": null,
+          "mapColumn": null,
+          "descriptionColumn": "UI Occ Description",
+          "tagColumn": "UI Occ Tag",
+          "rangeColumn": "UI Occ Range"
+        },
+        {
+          "key": "UI UP",
+          "ioType": "Digital Input",
+          "pointColumn": "UI UP Point",
+          "detailColumn": null,
+          "mapColumn": null,
+          "descriptionColumn": "UI UP Description",
+          "tagColumn": "UI UP Tag",
+          "rangeColumn": "UI UP Range"
+        },
+        {
+          "key": "UI DN",
+          "ioType": "Digital Input",
+          "pointColumn": "UI DN Point",
+          "detailColumn": null,
+          "mapColumn": null,
+          "descriptionColumn": "UI DN Description",
+          "tagColumn": "UI DN Tag",
+          "rangeColumn": "UI DN Range"
+        }
+      ],
+      "scenarioCount": 28,
+      "coverage": {
+        "valuesByDimension": {
+          "zones": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "controlMode": [
+            "1 - Schedule Mode",
+            "2 - Occupancy Mode",
+            "3 - Vacancy Mode",
+            "4 - Schedule with Auto Occ",
+            "5 - Schedule with Auto Vac",
+            "6 - Sched with Auto Occ/Vac",
+            "7 - Manual Override"
+          ]
+        },
+        "actualCount": 28
+      }
+    }
+  ],
+  "errors": [],
+  "warnings": []
+}
