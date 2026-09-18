@@ -25,7 +25,7 @@ function main() {
 
   const errors = [];
   const warnings = [];
-  const sequences = inputFiles.map((filePath) => extractWorkbook(filePath, errors, warnings));
+  const sequences = inputFiles.flatMap((filePath) => extractWorkbook(filePath, errors, warnings));
 
   const catalog = {
     generatedAt: new Date().toISOString(),
@@ -69,25 +69,90 @@ function main() {
 
 function extractWorkbook(filePath, errors, warnings) {
   const workbook = xlsx.readFile(filePath, { cellDates: false });
-  const sequenceName = discoverSequenceName(workbook);
-  const scenarioSheet = discoverScenarioSheet(workbook);
+  const sequenceTabGroups = discoverSequenceTabGroups(workbook);
 
-  if (!scenarioSheet) {
-    errors.push(`${path.basename(filePath)}: no scenario table with "Scenario #" header was found.`);
-    return emptySequence(filePath, sequenceName);
+  if (sequenceTabGroups.length > 0) {
+    return extractWorkbookBySequenceTabs(workbook, filePath, sequenceTabGroups, errors, warnings);
   }
+
+  const scenarioSheets = discoverScenarioSheets(workbook);
+
+  if (scenarioSheets.length === 0) {
+    const sequenceName = discoverSequenceName(workbook, null);
+    errors.push(`${path.basename(filePath)}: no scenario table with "Scenario #" header was found.`);
+    return [emptySequence(filePath, sequenceName)];
+  }
+
+  const uniqueScenarioSheets = uniqueScenarioSheetsBySequence(scenarioSheets);
+  return uniqueScenarioSheets.map((scenarioSheet) => extractSequenceFromSheet(workbook, filePath, scenarioSheet, errors, warnings));
+}
+
+function extractWorkbookBySequenceTabs(workbook, filePath, sequenceTabGroups, errors, warnings) {
+  const outputs = [];
+
+  for (const group of sequenceTabGroups) {
+    const candidateScenarioSheets = [];
+    if (group.matrixSheetName) {
+      const fromMatrix = discoverScenarioSheetInSheet(workbook, group.matrixSheetName);
+      if (fromMatrix) candidateScenarioSheets.push(fromMatrix);
+    }
+    if (group.cddSheetName) {
+      const fromCdd = discoverScenarioSheetInSheet(workbook, group.cddSheetName);
+      if (fromCdd) candidateScenarioSheets.push(fromCdd);
+    }
+
+    const scenarioSheet = candidateScenarioSheets.sort((a, b) => b.score - a.score)[0] ?? null;
+    if (!scenarioSheet) {
+      warnings.push(`${path.basename(filePath)}: no scenario table found for sequence '${group.baseName}'.`);
+      outputs.push(emptySequence(filePath, group.baseName));
+      continue;
+    }
+
+    const templateSheetPreference = [
+      group.cddSheetName,
+      group.matrixSheetName,
+    ].filter(Boolean);
+
+    outputs.push(
+      extractSequenceFromSheet(
+        workbook,
+        filePath,
+        scenarioSheet,
+        errors,
+        warnings,
+        group.baseName,
+        templateSheetPreference,
+      ),
+    );
+  }
+
+  return outputs;
+}
+
+function extractSequenceFromSheet(
+  workbook,
+  filePath,
+  scenarioSheet,
+  errors,
+  warnings,
+  forcedSequenceName = null,
+  templateSheetPreference = [],
+) {
+  const sequenceName = forcedSequenceName || discoverSequenceName(workbook, scenarioSheet.name);
+  const scenarioHeaderName = scenarioSheet.scenarioHeaderName ?? 'Scenario #';
 
   const rows = rowsFromSheet(workbook.Sheets[scenarioSheet.name]);
   const headers = scenarioSheet.headers;
   const pointGroups = discoverPointGroups(headers);
   const dimensions = discoverDimensions(headers, pointGroups);
-  const pointTableTemplate = discoverPointTableTemplate(workbook);
+  const pointTableTemplate = discoverPointTableTemplate(workbook, sequenceName, templateSheetPreference);
   const scenarios = rows
     .slice(scenarioSheet.headerIndex + 1)
-    .filter((row) => cell(row, headers, 'Scenario #') !== '')
+    .filter((row) => cell(row, headers, scenarioHeaderName) !== '')
     .map((row, rowOffset) => normalizeScenario({
       row,
       headers,
+      scenarioHeaderName,
       pointGroups,
       dimensions,
       excelRowNumber: scenarioSheet.headerIndex + rowOffset + 2,
@@ -125,8 +190,10 @@ function extractWorkbook(filePath, errors, warnings) {
   };
 }
 
-function discoverPointTableTemplate(workbook) {
-  for (const sheetName of workbook.SheetNames) {
+function discoverPointTableTemplate(workbook, sequenceName = null, preferredSheets = []) {
+  const preferredOrder = orderSheetNamesBySequence(workbook.SheetNames, sequenceName, preferredSheets);
+
+  for (const sheetName of preferredOrder) {
     const rows = rowsFromSheet(workbook.Sheets[sheetName]);
     const titleIndex = rows.findIndex((row) => row.some((item) => /DYNAMIC CDD GENERATION/i.test(value(item))));
     if (titleIndex < 0) continue;
@@ -187,39 +254,166 @@ function terminalFromPoint(point) {
   return match ? match[0].toUpperCase() : null;
 }
 
-function discoverScenarioSheet(workbook) {
+function discoverScenarioSheets(workbook) {
   const candidates = [];
 
   for (const sheetName of workbook.SheetNames) {
-    const rows = rowsFromSheet(workbook.Sheets[sheetName]);
-    for (let rowIndex = 0; rowIndex < rows.length; rowIndex += 1) {
-      const normalized = rows[rowIndex].map(value);
-      if (!normalized.includes('Scenario #')) continue;
+    const scenarioCandidate = discoverScenarioSheetInSheet(workbook, sheetName);
+    if (scenarioCandidate) candidates.push(scenarioCandidate);
+  }
 
-      const score = normalized.filter((header) => (
-        POINT_COLUMN_PATTERN.test(header) ||
-        DETAIL_COLUMN_PATTERN.test(header) ||
-        SPARE_COLUMN_PATTERN.test(header) ||
-        MAP_COLUMN_PATTERN.test(header)
-      )).length;
-
-      candidates.push({
-        name: sheetName,
-        headerIndex: rowIndex,
-        headers: normalized,
-        score,
-      });
+  const bestCandidateBySheet = new Map();
+  for (const candidate of candidates) {
+    const existing = bestCandidateBySheet.get(candidate.name);
+    if (!existing || candidate.score > existing.score) {
+      bestCandidateBySheet.set(candidate.name, candidate);
     }
   }
 
-  candidates.sort((a, b) => b.score - a.score);
-  return candidates[0] ?? null;
+  return [...bestCandidateBySheet.values()].sort((a, b) => b.score - a.score);
 }
 
-function discoverSequenceName(workbook) {
+function discoverScenarioSheetInSheet(workbook, sheetName) {
+  const rows = rowsFromSheet(workbook.Sheets[sheetName]);
+  let best = null;
+
+  for (let rowIndex = 0; rowIndex < rows.length; rowIndex += 1) {
+    const headers = rows[rowIndex].map(value);
+    const scenarioHeaderName = headers.find((header) => isScenarioHeader(header));
+    if (!scenarioHeaderName) continue;
+
+    const score = headers.filter((header) => (
+      POINT_COLUMN_PATTERN.test(header) ||
+      DETAIL_COLUMN_PATTERN.test(header) ||
+      SPARE_COLUMN_PATTERN.test(header) ||
+      MAP_COLUMN_PATTERN.test(header)
+    )).length + sheetPriorityBonus(sheetName);
+
+    const candidate = {
+      name: sheetName,
+      headerIndex: rowIndex,
+      headers,
+      scenarioHeaderName,
+      score,
+    };
+
+    if (!best || candidate.score > best.score) best = candidate;
+  }
+
+  return best;
+}
+
+function discoverSequenceTabGroups(workbook) {
+  const groups = new Map();
+
+  for (const sheetName of workbook.SheetNames) {
+    const tabInfo = parseSequenceTabName(sheetName);
+    if (!tabInfo) continue;
+
+    const key = normalizeSheetBaseName(tabInfo.baseName);
+    if (!groups.has(key)) {
+      groups.set(key, {
+        baseName: tabInfo.baseName,
+        cddSheetName: null,
+        matrixSheetName: null,
+      });
+    }
+
+    const group = groups.get(key);
+    if (tabInfo.type === 'cdd') group.cddSheetName = sheetName;
+    if (tabInfo.type === 'matrix') group.matrixSheetName = sheetName;
+  }
+
+  return [...groups.values()]
+    .filter((group) => group.cddSheetName || group.matrixSheetName)
+    .sort((a, b) => a.baseName.localeCompare(b.baseName));
+}
+
+function parseSequenceTabName(sheetName) {
+  const text = value(sheetName);
+  const match = text.match(/^(.+?)\s*[-_]\s*(CDD|MATRIX)$/i);
+  if (!match) return null;
+
+  return {
+    baseName: value(match[1]),
+    type: match[2].toLowerCase(),
+  };
+}
+
+function uniqueScenarioSheetsBySequence(candidates) {
+  const bestBySequence = new Map();
+
+  for (const candidate of candidates) {
+    const key = normalizeSheetBaseName(candidate.name);
+    const existing = bestBySequence.get(key);
+    if (!existing || candidate.score > existing.score) {
+      bestBySequence.set(key, candidate);
+    }
+  }
+
+  return [...bestBySequence.values()].sort((a, b) => b.score - a.score);
+}
+
+function discoverSequenceName(workbook, scenarioSheetName = null) {
+  const fromScenarioSheet = baseSequenceNameFromSheet(scenarioSheetName);
+  if (fromScenarioSheet) return fromScenarioSheet;
+
   const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
   const firstRow = rowsFromSheet(firstSheet)[0] ?? [];
   return value(firstRow.find((item) => value(item) !== ''));
+}
+
+function baseSequenceNameFromSheet(sheetName) {
+  const name = value(sheetName);
+  if (!name) return '';
+
+  const match = name.match(/^(.+?)\s*[-_]\s*(CDD|MATRIX)$/i);
+  if (match) return value(match[1]);
+  return name;
+}
+
+function normalizeSheetBaseName(sheetName) {
+  return baseSequenceNameFromSheet(sheetName)
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '');
+}
+
+function sheetTypeRank(sheetName) {
+  const name = value(sheetName).toLowerCase();
+  if (/-\s*matrix$/.test(name) || /_\s*matrix$/.test(name)) return 2;
+  if (/-\s*cdd$/.test(name) || /_\s*cdd$/.test(name)) return 1;
+  return 0;
+}
+
+function sheetPriorityBonus(sheetName) {
+  const rank = sheetTypeRank(sheetName);
+  if (rank === 2) return 100;
+  if (rank === 1) return 50;
+  return 0;
+}
+
+function orderSheetNamesBySequence(sheetNames, sequenceName, pinnedSheets = []) {
+  const targetBase = normalizeSheetBaseName(sequenceName ?? '');
+  const pinRank = new Map();
+  pinnedSheets.filter(Boolean).forEach((name, index) => pinRank.set(name, index));
+
+  return [...sheetNames].sort((a, b) => {
+    const aPin = pinRank.has(a) ? pinRank.get(a) : Number.POSITIVE_INFINITY;
+    const bPin = pinRank.has(b) ? pinRank.get(b) : Number.POSITIVE_INFINITY;
+    if (aPin !== bPin) return aPin - bPin;
+
+    const aBase = normalizeSheetBaseName(a);
+    const bBase = normalizeSheetBaseName(b);
+    const aMatchesSequence = targetBase && aBase === targetBase ? 1 : 0;
+    const bMatchesSequence = targetBase && bBase === targetBase ? 1 : 0;
+
+    if (aMatchesSequence !== bMatchesSequence) return bMatchesSequence - aMatchesSequence;
+
+    const typeDelta = sheetTypeRank(b) - sheetTypeRank(a);
+    if (typeDelta !== 0) return typeDelta;
+
+    return 0;
+  });
 }
 
 function discoverPointGroups(headers) {
@@ -285,7 +479,7 @@ function discoverDimensions(headers, pointGroups) {
 }
 
 function normalizeScenario(options) {
-  const scenario = toNumber(cell(options.row, options.headers, 'Scenario #'));
+  const scenario = toNumber(cell(options.row, options.headers, options.scenarioHeaderName));
   const match = Object.fromEntries(options.dimensions.map((dimension) => [
     camelCase(dimension),
     typedValue(cell(options.row, options.headers, dimension)),
@@ -312,6 +506,14 @@ function normalizeScenario(options) {
     points,
     raw: Object.fromEntries(options.headers.map((header, index) => [header || `Column ${index + 1}`, value(options.row[index])])),
   };
+}
+
+function isScenarioHeader(valueInput) {
+  const normalized = value(valueInput)
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '');
+
+  return normalized === 'scenario' || normalized === 'scenariono' || normalized === 'scenarionumber';
 }
 
 function extractPointGroup(row, headers, group, excelRowNumber, errors) {
