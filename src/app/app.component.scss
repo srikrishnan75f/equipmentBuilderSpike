@@ -57,6 +57,38 @@ h2 {
   margin-top: 24px;
 }
 
+.file-upload {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  border: 1px solid #bdc8cf;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #172026;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+  padding: 0 16px;
+}
+
+.file-upload:hover {
+  border-color: #83939e;
+}
+
+.file-upload input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.upload-summary {
+  margin-top: 12px;
+  color: #51616d;
+  font-size: 13px;
+}
+
 button {
   min-height: 40px;
   border: 1px solid #bdc8cf;

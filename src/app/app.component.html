@@ -18,10 +18,33 @@
         {{ isGenerating() ? 'Generating...' : 'Preview CDD' }}
       </button>
       <button type="button" [disabled]="isGenerating()" (click)="downloadCdd()">Download PDF</button>
+      <label class="file-upload">
+        <input type="file" accept=".xlsx,.xls" (change)="onExcelSelected($event)">
+        <span>Upload Excel</span>
+      </label>
+      <button
+        type="button"
+        [disabled]="isGenerating() || !uploadedExcelBuffer()"
+        (click)="extractAllData()"
+      >
+        Extract Builder + CDD Data
+      </button>
     </div>
+
+    @if (uploadedExcelFileName()) {
+      <p class="upload-summary">Selected file: {{ uploadedExcelFileName() }}</p>
+    }
 
     @if (generationError()) {
       <p class="error">{{ generationError() }}</p>
+    }
+
+    @if (extractionError()) {
+      <p class="error">{{ extractionError() }}</p>
+    }
+
+    @if (extractionStatus()) {
+      <p class="upload-summary">{{ extractionStatus() }}</p>
     }
 
     <section class="points-table" aria-label="Dynamic CDD points table">

@@ -72,6 +72,10 @@ export class AppComponent implements OnDestroy {
   protected readonly isGenerating = signal(false);
   protected readonly generationError = signal<string | null>(null);
   protected readonly hasPreview = computed(() => this.previewUrl() !== null);
+  protected readonly uploadedExcelFileName = signal<string | null>(null);
+  protected readonly uploadedExcelBuffer = signal<ArrayBuffer | null>(null);
+  protected readonly extractionError = signal<string | null>(null);
+  protected readonly extractionStatus = signal<string | null>(null);
   protected readonly resolvedConfiguration = computed<CddConfiguration | null>(() => {
     try {
       return this.cddSelectionResolver.resolve(this.parseSelectedValueJson());
@@ -92,6 +96,179 @@ export class AppComponent implements OnDestroy {
 
   ngOnDestroy(): void {
     this.revokePreviewUrl();
+  }
+
+  protected async onExcelSelected(event: Event): Promise<void> {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+
+    this.extractionError.set(null);
+    this.extractionStatus.set(null);
+    if (!file) {
+      this.uploadedExcelFileName.set(null);
+      this.uploadedExcelBuffer.set(null);
+      return;
+    }
+
+    try {
+      const buffer = await file.arrayBuffer();
+      this.uploadedExcelBuffer.set(buffer);
+      this.uploadedExcelFileName.set(file.name);
+    } catch (error) {
+      this.uploadedExcelBuffer.set(null);
+      this.uploadedExcelFileName.set(null);
+      this.extractionError.set(error instanceof Error ? error.message : 'Unable to read the selected Excel file.');
+    }
+  }
+
+  protected async extractEquipmentBuilderData(): Promise<void> {
+    if (this.isGenerating()) {
+      return;
+    }
+
+    const buffer = this.uploadedExcelBuffer();
+    if (!buffer) {
+      this.extractionError.set('Upload an Excel file before running extraction.');
+      return;
+    }
+
+    this.isGenerating.set(true);
+    this.extractionError.set(null);
+    this.extractionStatus.set(null);
+
+    try {
+      const response = await fetch('/api/extract-equipment-builder', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/octet-stream',
+          'x-file-name': this.uploadedExcelFileName() ?? 'equipment-builder.xlsx',
+        },
+        body: buffer,
+      });
+
+      if (!response.ok) {
+        const errorBody = await response.text();
+        throw new Error(errorBody || 'Unable to save equipment-builder-data JSON.');
+      }
+
+      const payload = await response.json() as { outputPath?: string; items?: number };
+      const count = typeof payload.items === 'number' ? payload.items : 0;
+      const outputPath = payload.outputPath ?? 'src/app/equipment-builder/data/equipment-builder-data.json';
+      this.extractionStatus.set(`Saved ${count} rows to ${outputPath}`);
+    } catch (error) {
+      this.extractionError.set(error instanceof Error ? error.message : 'Unable to extract equipment-builder-data.');
+    } finally {
+      this.isGenerating.set(false);
+    }
+  }
+
+  protected async extractCddData(): Promise<void> {
+    if (this.isGenerating()) {
+      return;
+    }
+
+    const buffer = this.uploadedExcelBuffer();
+    if (!buffer) {
+      this.extractionError.set('Upload an Excel file before running extraction.');
+      return;
+    }
+
+    this.isGenerating.set(true);
+    this.extractionError.set(null);
+    this.extractionStatus.set(null);
+
+    try {
+      const response = await fetch('/api/extract-cdd', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/octet-stream',
+          'x-file-name': this.uploadedExcelFileName() ?? 'cdd-source.xlsx',
+        },
+        body: buffer,
+      });
+
+      if (!response.ok) {
+        const errorBody = await response.text();
+        throw new Error(errorBody || 'Unable to save CDD JSON files.');
+      }
+
+      const payload = await response.json() as {
+        outputPath?: string;
+        reportPath?: string;
+        sequenceCount?: number;
+        scenarioCount?: number;
+      };
+      const sequenceCount = typeof payload.sequenceCount === 'number' ? payload.sequenceCount : 0;
+      const scenarioCount = typeof payload.scenarioCount === 'number' ? payload.scenarioCount : 0;
+      const outputPath = payload.outputPath ?? 'src/app/equipment-builder/data/cdd-sequence-catalog.json';
+      const reportPath = payload.reportPath ?? 'src/app/equipment-builder/data/cdd-sequence-catalog.report.json';
+
+      this.extractionStatus.set(
+        `CDD saved (${sequenceCount} sequence(s), ${scenarioCount} scenario(s)) to ${outputPath} and ${reportPath}`,
+      );
+    } catch (error) {
+      this.extractionError.set(error instanceof Error ? error.message : 'Unable to extract CDD data.');
+    } finally {
+      this.isGenerating.set(false);
+    }
+  }
+
+  protected async extractAllData(): Promise<void> {
+    if (this.isGenerating()) {
+      return;
+    }
+
+    const buffer = this.uploadedExcelBuffer();
+    if (!buffer) {
+      this.extractionError.set('Upload an Excel file before running extraction.');
+      return;
+    }
+
+    this.isGenerating.set(true);
+    this.extractionError.set(null);
+    this.extractionStatus.set(null);
+
+    try {
+      const response = await fetch('/api/extract-all-data', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/octet-stream',
+          'x-file-name': this.uploadedExcelFileName() ?? 'equipment-source.xlsx',
+        },
+        body: buffer,
+      });
+
+      if (!response.ok) {
+        const errorBody = await response.text();
+        throw new Error(errorBody || 'Unable to save extracted JSON files.');
+      }
+
+      const payload = await response.json() as {
+        cddOutputPath?: string;
+        cddReportPath?: string;
+        combinedOutputPath?: string;
+        equipmentItems?: number;
+        cddSequenceCount?: number;
+        cddScenarioCount?: number;
+      };
+
+      const equipmentItems = typeof payload.equipmentItems === 'number' ? payload.equipmentItems : 0;
+      const cddSequenceCount = typeof payload.cddSequenceCount === 'number' ? payload.cddSequenceCount : 0;
+      const cddScenarioCount = typeof payload.cddScenarioCount === 'number' ? payload.cddScenarioCount : 0;
+      const cddOutputPath = payload.cddOutputPath ?? 'src/app/equipment-builder/data/cdd-sequence-catalog.json';
+      const cddReportPath = payload.cddReportPath ?? 'src/app/equipment-builder/data/cdd-sequence-catalog.report.json';
+      const combinedOutputPath = payload.combinedOutputPath ?? 'src/app/equipment-builder/data/seq-parameter-cdd.json';
+
+      this.extractionStatus.set(
+        `Merged builder data (${equipmentItems} rows) into combined JSON; ` +
+        `CDD (${cddSequenceCount} sequence(s), ${cddScenarioCount} scenario(s)) to ${cddOutputPath} and ${cddReportPath}; ` +
+        `combined JSON to ${combinedOutputPath}`,
+      );
+    } catch (error) {
+      this.extractionError.set(error instanceof Error ? error.message : 'Unable to extract builder and CDD data.');
+    } finally {
+      this.isGenerating.set(false);
+    }
   }
 
   protected async previewCdd(): Promise<void> {
@@ -183,4 +360,5 @@ export class AppComponent implements OnDestroy {
       throw error;
     }
   }
+
 }
