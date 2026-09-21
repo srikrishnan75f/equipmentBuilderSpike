@@ -18,8 +18,6 @@ const projectRoot = process.cwd();
 const extractorScriptPath = resolve(projectRoot, 'tools/extract-equipment-builder.mjs');
 const outputJsonPath = resolve(projectRoot, 'src/app/equipment-builder/data/equipment-builder-data.json');
 const cddExtractorScriptPath = resolve(projectRoot, 'tools/extract-cdd-excel.mjs');
-const cddOutputJsonPath = resolve(projectRoot, 'src/app/equipment-builder/data/cdd-sequence-catalog.json');
-const cddReportJsonPath = resolve(projectRoot, 'src/app/equipment-builder/data/cdd-sequence-catalog.report.json');
 const combinedOutputJsonPath = resolve(projectRoot, 'src/app/equipment-builder/data/seq-parameter-cdd.json');
 const execFileAsync = promisify(execFile);
 
@@ -86,6 +84,8 @@ app.post('/api/extract-cdd', express.raw({ type: 'application/octet-stream', lim
     const fileNameHeader = req.header('x-file-name') ?? 'cdd-source.xlsx';
     const safeFileName = fileNameHeader.replace(/[^A-Za-z0-9._-]/g, '_');
     const tempFilePath = resolve(tmpdir(), `${Date.now()}-${safeFileName}`);
+    const tempCddOutputPath = resolve(tmpdir(), `${Date.now()}-${safeFileName}.cdd-sequences.json`);
+    const tempCddReportPath = resolve(tmpdir(), `${Date.now()}-${safeFileName}.cdd-report.json`);
 
     await fs.writeFile(tempFilePath, body);
     await fs.mkdir(resolve(projectRoot, 'src/app/equipment-builder/data'), { recursive: true });
@@ -96,9 +96,9 @@ app.post('/api/extract-cdd', express.raw({ type: 'application/octet-stream', lim
         '--input',
         tempFilePath,
         '--output',
-        cddOutputJsonPath,
+        tempCddOutputPath,
         '--report',
-        cddReportJsonPath,
+        tempCddReportPath,
       ], {
         cwd: projectRoot,
       });
@@ -108,8 +108,21 @@ app.post('/api/extract-cdd', express.raw({ type: 'application/octet-stream', lim
 
     let sequenceCount = 0;
     let scenarioCount = 0;
+    let cddCatalog: {
+      generatedAt?: string;
+      sourceWorkbooks?: string[];
+      sequences?: Array<Record<string, unknown>>;
+      sequenceParameterData?: unknown[];
+    } = {};
     try {
-      const reportText = await fs.readFile(cddReportJsonPath, 'utf-8');
+      const catalogText = await fs.readFile(tempCddOutputPath, 'utf-8');
+      cddCatalog = JSON.parse(catalogText) as {
+        generatedAt?: string;
+        sourceWorkbooks?: string[];
+        sequences?: Array<Record<string, unknown>>;
+      };
+
+      const reportText = await fs.readFile(tempCddReportPath, 'utf-8');
       const report = JSON.parse(reportText) as { sequenceCount?: number; scenarioCount?: number };
       if (typeof report.sequenceCount === 'number') sequenceCount = report.sequenceCount;
       if (typeof report.scenarioCount === 'number') scenarioCount = report.scenarioCount;
@@ -118,10 +131,21 @@ app.post('/api/extract-cdd', express.raw({ type: 'application/octet-stream', lim
       scenarioCount = 0;
     }
 
+    try {
+      const existingText = await fs.readFile(combinedOutputJsonPath, 'utf-8');
+      const existing = JSON.parse(existingText) as { sequenceParameterData?: unknown[] };
+      cddCatalog.sequenceParameterData = Array.isArray(existing.sequenceParameterData) ? existing.sequenceParameterData : [];
+    } catch {
+      cddCatalog.sequenceParameterData = [];
+    }
+
+    await fs.writeFile(combinedOutputJsonPath, `${JSON.stringify(cddCatalog, null, 2)}\n`, 'utf-8');
+    await fs.rm(tempCddOutputPath, { force: true });
+    await fs.rm(tempCddReportPath, { force: true });
+
     res.json({
       ok: true,
-      outputPath: 'src/app/equipment-builder/data/cdd-sequence-catalog.json',
-      reportPath: 'src/app/equipment-builder/data/cdd-sequence-catalog.report.json',
+      outputPath: 'src/app/equipment-builder/data/seq-parameter-cdd.json',
       sequenceCount,
       scenarioCount,
     });
@@ -143,6 +167,8 @@ app.post('/api/extract-all-data', express.raw({ type: 'application/octet-stream'
     const safeFileName = fileNameHeader.replace(/[^A-Za-z0-9._-]/g, '_');
     const tempFilePath = resolve(tmpdir(), `${Date.now()}-${safeFileName}`);
     const tempEquipmentOutputPath = resolve(tmpdir(), `${Date.now()}-${safeFileName}.equipment-builder-data.json`);
+    const tempCddOutputPath = resolve(tmpdir(), `${Date.now()}-${safeFileName}.cdd-sequences.json`);
+    const tempCddReportPath = resolve(tmpdir(), `${Date.now()}-${safeFileName}.cdd-report.json`);
 
     await fs.writeFile(tempFilePath, body);
     await fs.mkdir(resolve(projectRoot, 'src/app/equipment-builder/data'), { recursive: true });
@@ -163,9 +189,9 @@ app.post('/api/extract-all-data', express.raw({ type: 'application/octet-stream'
         '--input',
         tempFilePath,
         '--output',
-        cddOutputJsonPath,
+        tempCddOutputPath,
         '--report',
-        cddReportJsonPath,
+        tempCddReportPath,
       ], {
         cwd: projectRoot,
       });
@@ -197,14 +223,14 @@ app.post('/api/extract-all-data', express.raw({ type: 'application/octet-stream'
       sequences?: Array<Record<string, unknown>>;
     } = {};
     try {
-      const catalogText = await fs.readFile(cddOutputJsonPath, 'utf-8');
+      const catalogText = await fs.readFile(tempCddOutputPath, 'utf-8');
       cddCatalog = JSON.parse(catalogText) as {
         generatedAt?: string;
         sourceWorkbooks?: string[];
         sequences?: Array<Record<string, unknown>>;
       };
 
-      const reportText = await fs.readFile(cddReportJsonPath, 'utf-8');
+      const reportText = await fs.readFile(tempCddReportPath, 'utf-8');
       const report = JSON.parse(reportText) as { sequenceCount?: number; scenarioCount?: number };
       if (typeof report.sequenceCount === 'number') cddSequenceCount = report.sequenceCount;
       if (typeof report.scenarioCount === 'number') cddScenarioCount = report.scenarioCount;
@@ -219,11 +245,11 @@ app.post('/api/extract-all-data', express.raw({ type: 'application/octet-stream'
       sequenceParameterData,
     };
     await fs.writeFile(combinedOutputJsonPath, `${JSON.stringify(combinedCatalog, null, 2)}\n`, 'utf-8');
+    await fs.rm(tempCddOutputPath, { force: true });
+    await fs.rm(tempCddReportPath, { force: true });
 
     res.json({
       ok: true,
-      cddOutputPath: 'src/app/equipment-builder/data/cdd-sequence-catalog.json',
-      cddReportPath: 'src/app/equipment-builder/data/cdd-sequence-catalog.report.json',
       combinedOutputPath: 'src/app/equipment-builder/data/seq-parameter-cdd.json',
       equipmentItems,
       cddSequenceCount,

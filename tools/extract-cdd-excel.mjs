@@ -5,8 +5,7 @@ import path from 'node:path';
 import process from 'node:process';
 import xlsx from 'xlsx';
 
-const DEFAULT_OUTPUT = 'src/app/equipment-builder/data/cdd-sequence-catalog.json';
-const DEFAULT_REPORT = 'src/app/equipment-builder/data/cdd-sequence-catalog.report.json';
+const DEFAULT_OUTPUT = 'src/app/equipment-builder/data/seq-parameter-cdd.json';
 const POINT_COLUMN_PATTERN = /^(BO|BI|AO|AI|UI|DO|DI|RO|RI)(?:\s+\w+)?\s+Point$/i;
 const DETAIL_COLUMN_PATTERN = /Details?\s*\(Point\s*(?:➔|->|=>|>)\s*Name\s*&\s*Tag\)/i;
 const MAP_COLUMN_PATTERN = /\bMap\b/i;
@@ -52,16 +51,16 @@ function main() {
   };
 
   writeJson(args.output ?? DEFAULT_OUTPUT, catalog);
-  writeJson(args.report ?? DEFAULT_REPORT, report);
+  if (args.report) writeJson(args.report, report);
 
   if (errors.length > 0) {
     console.error(`CDD extraction failed with ${errors.length} error(s).`);
-    console.error(`Report: ${path.resolve(args.report ?? DEFAULT_REPORT)}`);
+    if (args.report) console.error(`Report: ${path.resolve(args.report)}`);
     process.exit(1);
   }
 
   console.log(`CDD sequence catalog written: ${path.resolve(args.output ?? DEFAULT_OUTPUT)}`);
-  console.log(`Validation report written: ${path.resolve(args.report ?? DEFAULT_REPORT)}`);
+  if (args.report) console.log(`Validation report written: ${path.resolve(args.report)}`);
   console.log(`Sequences extracted: ${sequences.length}`);
   console.log(`Scenarios extracted: ${report.scenarioCount}`);
   if (warnings.length > 0) console.warn(`Warnings: ${warnings.length}`);

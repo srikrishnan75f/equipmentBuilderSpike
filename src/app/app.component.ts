@@ -194,17 +194,15 @@ export class AppComponent implements OnDestroy {
 
       const payload = await response.json() as {
         outputPath?: string;
-        reportPath?: string;
         sequenceCount?: number;
         scenarioCount?: number;
       };
       const sequenceCount = typeof payload.sequenceCount === 'number' ? payload.sequenceCount : 0;
       const scenarioCount = typeof payload.scenarioCount === 'number' ? payload.scenarioCount : 0;
-      const outputPath = payload.outputPath ?? 'src/app/equipment-builder/data/cdd-sequence-catalog.json';
-      const reportPath = payload.reportPath ?? 'src/app/equipment-builder/data/cdd-sequence-catalog.report.json';
+      const outputPath = payload.outputPath ?? 'src/app/equipment-builder/data/seq-parameter-cdd.json';
 
       this.extractionStatus.set(
-        `CDD saved (${sequenceCount} sequence(s), ${scenarioCount} scenario(s)) to ${outputPath} and ${reportPath}`,
+        `CDD saved (${sequenceCount} sequence(s), ${scenarioCount} scenario(s)) to ${outputPath}`,
       );
     } catch (error) {
       this.extractionError.set(error instanceof Error ? error.message : 'Unable to extract CDD data.');
@@ -244,8 +242,6 @@ export class AppComponent implements OnDestroy {
       }
 
       const payload = await response.json() as {
-        cddOutputPath?: string;
-        cddReportPath?: string;
         combinedOutputPath?: string;
         equipmentItems?: number;
         cddSequenceCount?: number;
@@ -255,13 +251,11 @@ export class AppComponent implements OnDestroy {
       const equipmentItems = typeof payload.equipmentItems === 'number' ? payload.equipmentItems : 0;
       const cddSequenceCount = typeof payload.cddSequenceCount === 'number' ? payload.cddSequenceCount : 0;
       const cddScenarioCount = typeof payload.cddScenarioCount === 'number' ? payload.cddScenarioCount : 0;
-      const cddOutputPath = payload.cddOutputPath ?? 'src/app/equipment-builder/data/cdd-sequence-catalog.json';
-      const cddReportPath = payload.cddReportPath ?? 'src/app/equipment-builder/data/cdd-sequence-catalog.report.json';
       const combinedOutputPath = payload.combinedOutputPath ?? 'src/app/equipment-builder/data/seq-parameter-cdd.json';
 
       this.extractionStatus.set(
         `Merged builder data (${equipmentItems} rows) into combined JSON; ` +
-        `CDD (${cddSequenceCount} sequence(s), ${cddScenarioCount} scenario(s)) to ${cddOutputPath} and ${cddReportPath}; ` +
+        `CDD (${cddSequenceCount} sequence(s), ${cddScenarioCount} scenario(s)); ` +
         `combined JSON to ${combinedOutputPath}`,
       );
     } catch (error) {

@@ -74,6 +74,7 @@ export interface CddScenario {
   pointGroups: Record<string, CddPoint[]>;
   spares: Record<string, string[]>;
   points: CddPoint[];
+  raw?: Record<string, string | number | boolean | null>;
 }
 
 export interface CddSequence {

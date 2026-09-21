@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import sequenceCatalogJson from '../data/cdd-sequence-catalog.json';
+import sequenceCatalogJson from '../data/seq-parameter-cdd.json';
 import { CddConfiguration, PointTableTemplate } from '../models/cdd.model';
 import { CddPdfService } from './cdd-pdf.service';
 

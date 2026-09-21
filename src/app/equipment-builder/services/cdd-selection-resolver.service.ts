@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import sequenceCatalogJson from '../data/cdd-sequence-catalog.json';
+import sequenceCatalogJson from '../data/seq-parameter-cdd.json';
 import {
   CddConfiguration,
   CddPoint,
@@ -20,7 +20,7 @@ export class CddSelectionResolverService {
     const match = this.buildScenarioMatch(sequence, selection);
     const scenario = this.findScenario(sequence, match);
     const parametersByName = this.parametersByName(selection);
-    const pointList = scenario.points.map((point) => this.toCddPoint(point));
+    const pointList = this.resolvePointList(sequence, scenario);
 
     return {
       equipmentName: selection.sequenceName,
@@ -193,6 +193,166 @@ export class CddSelectionResolverService {
     return selectedValue !== null && selectedValue !== undefined && selectedValue !== '' && selectedValue !== false;
   }
 
+  private resolvePointList(sequence: CddSequence, scenario: CddScenario): CddPoint[] {
+    const existingPoints = scenario.points.map((point) => this.toCddPoint(point));
+    if (existingPoints.length > 0) return existingPoints;
+
+    return this.pointsFromRawMaps(sequence, scenario);
+  }
+
+  private pointsFromRawMaps(sequence: CddSequence, scenario: CddScenario): CddPoint[] {
+    const raw = scenario.raw ?? {};
+    const points: CddPoint[] = [];
+
+    for (const [key, value] of Object.entries(raw)) {
+      if (!/map/i.test(key) || this.isNone(value)) continue;
+
+      const detailsKey = this.detailsKeyForMapKey(raw, key);
+      const details = detailsKey ? this.parsePointDetails(String(raw[detailsKey] ?? '')) : new Map<string, Partial<CddPoint>>();
+
+      for (const terminal of this.parseTerminalList(String(value))) {
+        const point = this.pointFromTerminalMap(sequence, terminal, key, details.get(terminal));
+        if (point && !points.some((existing) => existing.terminal === point.terminal)) {
+          points.push(point);
+        }
+      }
+    }
+
+    return points;
+  }
+
+  private pointFromTerminalMap(
+    sequence: CddSequence,
+    terminal: string,
+    mapKey: string,
+    detail: Partial<CddPoint> | undefined,
+  ): CddPoint | null {
+    const templateRow = sequence.pointTableTemplate?.rows.find((row) => row.type === 'terminal' && row.terminal === terminal);
+    if (!templateRow) return null;
+
+    const inferred = this.inferPointMetadata(terminal, mapKey);
+
+    return this.toCddPoint({
+      terminal,
+      point: templateRow.point || terminal,
+      description: detail?.description || inferred.description,
+      tag: detail?.tag || inferred.tag,
+      deviceRange: detail?.deviceRange || inferred.deviceRange,
+      ioType: inferred.ioType,
+      sourceGroup: mapKey,
+      manufacturerPartNumber: templateRow.manufacturerPartNumber,
+    });
+  }
+
+  private inferPointMetadata(terminal: string, mapKey: string): Pick<CddPoint, 'description' | 'tag' | 'deviceRange' | 'ioType'> {
+    const terminalNumber = this.terminalNumber(terminal);
+
+    if (/^BO/i.test(terminal)) {
+      if (/exhaust|cmd/i.test(mapKey) && !/lights/i.test(mapKey)) {
+        return {
+          description: `EXHAUST FAN ${terminalNumber} CMD`,
+          tag: `EF${terminalNumber}_CMD`,
+          deviceRange: 'CC = ON (24VAC)',
+          ioType: 'Digital Output',
+        };
+      }
+
+      return {
+        description: `LIGHTING CIRCUIT ${terminalNumber} CMD`,
+        tag: `LGHT${terminalNumber}_CMD`,
+        deviceRange: 'CC = ON (24VAC)',
+        ioType: 'Digital Output',
+      };
+    }
+
+    if (/interlock/i.test(mapKey)) {
+      return {
+        description: `INTERLOCK STATUS EF${terminalNumber}`,
+        tag: `ITRLK_STS_EF${terminalNumber}`,
+        deviceRange: 'DIGITAL INPUT',
+        ioType: 'Digital Input',
+      };
+    }
+
+    if (/status/i.test(mapKey)) {
+      return {
+        description: `EXHAUST FAN ${terminalNumber} STATUS`,
+        tag: `EF${terminalNumber}_STS`,
+        deviceRange: 'DIGITAL INPUT',
+        ioType: 'Digital Input',
+      };
+    }
+
+    if (/override/i.test(mapKey)) {
+      return {
+        description: `MANUAL OVERRIDE ${terminalNumber}`,
+        tag: `OVR${terminalNumber}_STS`,
+        deviceRange: 'DIGITAL INPUT',
+        ioType: 'Digital Input',
+      };
+    }
+
+    return {
+      description: `OCCUPANCY SENSOR ${terminalNumber} STATUS`,
+      tag: `OCC${terminalNumber}_STS`,
+      deviceRange: 'DIGITAL INPUT',
+      ioType: 'Digital Input',
+    };
+  }
+
+  private parseTerminalList(value: string): string[] {
+    const normalized = value.trim();
+    if (this.isNone(normalized)) return [];
+
+    const rangeMatch = normalized.match(/\b([A-Z]+)(\d+)\s+to\s+(?:[A-Z]+)?(\d+)\b/i);
+    if (rangeMatch) {
+      const [, prefix, start, end] = rangeMatch;
+      const from = Number(start);
+      const to = Number(end);
+      return Array.from({ length: Math.max(0, to - from + 1) }, (_, index) => `${prefix.toUpperCase()}${from + index}`);
+    }
+
+    return [...normalized.matchAll(/\b(?:UI|BO|AO)\d+\b/gi)].map((match) => match[0].toUpperCase());
+  }
+
+  private parsePointDetails(value: string): Map<string, Partial<CddPoint>> {
+    const details = new Map<string, Partial<CddPoint>>();
+
+    for (const line of value.split(/\r?\n/)) {
+      const match = line.match(/\b((?:UI|BO|AO)\d+)\s*(?:➔|->|=>)\s*(.+?)(?:\s*\(([^)]+)\))?\s*$/i);
+      if (!match) continue;
+
+      const [, terminal, description, tag] = match;
+      details.set(terminal.toUpperCase(), {
+        description: description.trim(),
+        tag: tag?.trim() ?? '',
+      });
+    }
+
+    return details;
+  }
+
+  private detailsKeyForMapKey(raw: Record<string, string | number | boolean | null>, mapKey: string): string | undefined {
+    const candidates = Object.keys(raw).filter((key) => /details/i.test(key));
+    const compactMapKey = this.compactKey(mapKey.replace(/map/i, ''));
+
+    return candidates.find((key) => this.compactKey(key).includes(compactMapKey)) ??
+      candidates.find((key) => {
+        const compactCandidate = this.compactKey(key);
+        return compactCandidate.includes('bo') && /bo/i.test(mapKey) ||
+          compactCandidate.includes('status') && /status/i.test(mapKey) ||
+          compactCandidate.includes('interlock') && /interlock/i.test(mapKey);
+      });
+  }
+
+  private terminalNumber(terminal: string): number {
+    return Number(terminal.match(/\d+/)?.[0] ?? 1);
+  }
+
+  private isNone(value: unknown): boolean {
+    return value === null || value === undefined || String(value).trim() === '' || /^none$/i.test(String(value).trim());
+  }
+
   private toCddPoint(point: CddPoint): CddPoint {
     return {
       terminal: point.terminal,
@@ -202,6 +362,7 @@ export class CddSelectionResolverService {
       deviceRange: point.deviceRange,
       ioType: point.ioType,
       sourceGroup: point.sourceGroup,
+      manufacturerPartNumber: point.manufacturerPartNumber,
     };
   }
 
