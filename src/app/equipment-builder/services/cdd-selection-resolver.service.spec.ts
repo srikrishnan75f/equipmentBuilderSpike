@@ -56,12 +56,45 @@ describe('CddSelectionResolverService', () => {
       }),
     ]));
   });
+
+  it('matches the new selectedSequence payload identifiers and keeps the site name', () => {
+    const configuration = service.resolve({
+      ...buildSelection({
+        lightingCircuitCount: 1,
+        occupancySensor: [1],
+        manualOverride: ['None'],
+        controlType: 4,
+      }),
+      sequenceId: 'LIGHTINGCONTROLDO_CN',
+      sequenceName: 'lightingControlDO_CN',
+      siteName: 'Sk_mystat',
+      projectAddress: 'salem, salem, Tamil nadu, India - 637101',
+    });
+
+    expect(configuration.siteName).toBe('Sk_mystat');
+    expect(configuration.projectAddress).toBe('salem, salem, Tamil nadu, India - 637101');
+    expect(configuration.validationMessages).toContain('Manual override required: No.');
+  });
+
+  it('uses catalog required flags when selected sensor values conflict with schedule mode', () => {
+    const configuration = service.resolve(buildSelection({
+      lightingCircuitCount: 1,
+      occupancySensor: [1],
+      manualOverride: ['None'],
+      controlType: 1,
+    }));
+
+    expect(configuration.resolvedValues['scenario']).toBe(1);
+    expect(configuration.resolvedValues['occSensorRequired']).toBeFalse();
+    expect(configuration.validationMessages).toContain('Occupancy sensor required: No.');
+    expect(configuration.pointList.some((point) => point.terminal === 'UI1')).toBeFalse();
+  });
 });
 
 function buildSelection(overrides: {
   lightingCircuitCount?: number;
   occupancySensor?: number[];
-  manualOverride?: number[];
+  manualOverride?: Array<number | string>;
   controlType?: number;
 } = {}): EquipmentBuilderSelection {
   return {

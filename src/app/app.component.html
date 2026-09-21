@@ -18,6 +18,7 @@
         {{ isGenerating() ? 'Generating...' : 'Preview CDD' }}
       </button>
       <button type="button" [disabled]="isGenerating()" (click)="downloadCdd()">Download PDF</button>
+      <button type="button" [disabled]="isGenerating() || !wiringDiagramUrl()" (click)="downloadWiringSvg()">Download SVG</button>
       <label class="file-upload">
         <input type="file" accept=".xlsx,.xls" (change)="onExcelSelected($event)">
         <span>Upload Excel</span>
@@ -45,6 +46,17 @@
 
     @if (extractionStatus()) {
       <p class="upload-summary">{{ extractionStatus() }}</p>
+    }
+
+    @if (wiringDiagramUrl()) {
+      <section class="wiring-preview" aria-label="Dynamic wiring diagram preview">
+        <div class="wiring-bar">
+          <h2>Wiring Diagram</h2>
+        </div>
+        <div class="wiring-canvas">
+          <img [src]="wiringDiagramUrl()" alt="Dynamic wiring diagram">
+        </div>
+      </section>
     }
 
     <section class="points-table" aria-label="Dynamic CDD points table">

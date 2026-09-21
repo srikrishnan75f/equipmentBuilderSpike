@@ -12,6 +12,7 @@ export interface CddPoint {
 export interface CddConfiguration {
   equipmentName: string;
   siteName: string;
+  projectAddress?: string;
   sequenceId: string;
   sequenceName: string;
   generatedAt: Date;
@@ -64,6 +65,8 @@ export interface EquipmentBuilderParameter {
 export interface EquipmentBuilderSelection {
   sequenceId: string;
   sequenceName: string;
+  siteName?: string;
+  projectAddress?: string;
   parameters: EquipmentBuilderParameter[];
 }
 

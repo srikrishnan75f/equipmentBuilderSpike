@@ -176,6 +176,40 @@ textarea:focus {
   padding: 10px 12px;
 }
 
+.wiring-preview {
+  margin-top: 24px;
+  overflow: hidden;
+  border: 1px solid #9ea5a9;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.wiring-bar {
+  background: #245b85;
+  color: #ffffff;
+  padding: 8px 14px;
+  text-align: center;
+}
+
+.wiring-bar h2 {
+  font-size: 17px;
+  text-transform: uppercase;
+}
+
+.wiring-canvas {
+  display: flex;
+  justify-content: center;
+  overflow: auto;
+  background: #ffffff;
+  padding: 20px;
+}
+
+.wiring-canvas img {
+  display: block;
+  width: min(100%, 760px);
+  height: auto;
+}
+
 .points-table {
   margin-top: 24px;
   overflow: hidden;

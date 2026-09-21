@@ -1,16 +1,18 @@
-import { Component, OnDestroy, computed, inject, signal } from '@angular/core';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { Component, OnDestroy, OnInit, computed, inject, signal } from '@angular/core';
+import { DomSanitizer, SafeResourceUrl, SafeUrl } from '@angular/platform-browser';
 
 import { CddConfiguration, EquipmentBuilderSelection } from './equipment-builder/models/cdd.model';
 import { CddPdfService, PointTableRow } from './equipment-builder/services/cdd-pdf.service';
 import { CddSelectionResolverService } from './equipment-builder/services/cdd-selection-resolver.service';
+
+type JsonRecord = Record<string, unknown>;
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent implements OnDestroy {
+export class AppComponent implements OnInit, OnDestroy {
   private readonly cddPdfService = inject(CddPdfService);
   private readonly cddSelectionResolver = inject(CddSelectionResolverService);
   private readonly sanitizer = inject(DomSanitizer);
@@ -69,6 +71,7 @@ export class AppComponent implements OnDestroy {
   protected readonly selectedValueJson = signal(JSON.stringify(this.selectedValue(), null, 2));
 
   protected readonly previewUrl = signal<SafeResourceUrl | null>(null);
+  protected readonly wiringDiagramUrl = signal<SafeUrl | null>(null);
   protected readonly isGenerating = signal(false);
   protected readonly generationError = signal<string | null>(null);
   protected readonly hasPreview = computed(() => this.previewUrl() !== null);
@@ -93,6 +96,10 @@ export class AppComponent implements OnDestroy {
     const configuration = this.resolvedConfiguration();
     return configuration ? configuration.validationMessages.join(' ') : 'Paste valid selectedValue JSON to preview table rows.';
   });
+
+  ngOnInit(): void {
+    void this.refreshWiringDiagramPreview();
+  }
 
   ngOnDestroy(): void {
     this.revokePreviewUrl();
@@ -308,6 +315,31 @@ export class AppComponent implements OnDestroy {
     }
   }
 
+  protected async downloadWiringSvg(): Promise<void> {
+    if (this.isGenerating()) {
+      return;
+    }
+
+    this.isGenerating.set(true);
+    this.generationError.set(null);
+
+    try {
+      const configuration = this.cddSelectionResolver.resolve(this.parseSelectedValueJson());
+      const svg = await this.cddPdfService.generateWiringDiagramSvg(configuration);
+      const blob = new Blob([svg], { type: 'image/svg+xml' });
+      const url = URL.createObjectURL(blob);
+      const anchor = document.createElement('a');
+      anchor.href = url;
+      anchor.download = `${this.fileNamePart(configuration.sequenceName)}-wiring-diagram.svg`;
+      anchor.click();
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      this.generationError.set(error instanceof Error ? error.message : 'Unable to download wiring SVG.');
+    } finally {
+      this.isGenerating.set(false);
+    }
+  }
+
   protected closePreview(): void {
     this.revokePreviewUrl();
   }
@@ -316,11 +348,13 @@ export class AppComponent implements OnDestroy {
     const textarea = event.target as HTMLTextAreaElement;
     this.selectedValueJson.set(textarea.value);
     this.generationError.set(null);
+    void this.refreshWiringDiagramPreview();
   }
 
   protected resetSelectedValueJson(): void {
     this.selectedValueJson.set(JSON.stringify(this.selectedValue(), null, 2));
     this.generationError.set(null);
+    void this.refreshWiringDiagramPreview();
   }
 
   private setPreviewBlob(blob: Blob): void {
@@ -337,15 +371,29 @@ export class AppComponent implements OnDestroy {
     this.previewUrl.set(null);
   }
 
+  private fileNamePart(value: string): string {
+    return value
+      .trim()
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '') || 'cdd';
+  }
+
+  private async refreshWiringDiagramPreview(): Promise<void> {
+    try {
+      const configuration = this.cddSelectionResolver.resolve(this.parseSelectedValueJson());
+      const svg = await this.cddPdfService.generateWiringDiagramSvg(configuration);
+      const url = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+      this.wiringDiagramUrl.set(this.sanitizer.bypassSecurityTrustUrl(url));
+    } catch {
+      this.wiringDiagramUrl.set(null);
+    }
+  }
+
   private parseSelectedValueJson(): EquipmentBuilderSelection {
     try {
-      const parsed = JSON.parse(this.selectedValueJson()) as EquipmentBuilderSelection;
-
-      if (!parsed.sequenceId || !parsed.sequenceName || !Array.isArray(parsed.parameters)) {
-        throw new Error('JSON must include sequenceId, sequenceName, and parameters array.');
-      }
-
-      return parsed;
+      const parsed = JSON.parse(this.selectedValueJson()) as unknown;
+      return this.normalizeSelectedValuePayload(parsed);
     } catch (error) {
       if (error instanceof SyntaxError) {
         throw new Error(`Selected value JSON is invalid: ${error.message}`);
@@ -353,6 +401,153 @@ export class AppComponent implements OnDestroy {
 
       throw error;
     }
+  }
+
+  private normalizeSelectedValuePayload(payload: unknown): EquipmentBuilderSelection {
+    if (!this.isRecord(payload)) {
+      throw new Error('JSON must be an object.');
+    }
+
+    const legacySelection = this.selectionFromRecord(payload);
+    if (legacySelection) {
+      return legacySelection;
+    }
+
+    const selectedSequence = payload['selectedSequence'];
+    if (!this.isRecord(selectedSequence)) {
+      throw new Error('JSON must include either sequenceId/sequenceName/parameters or selectedSequence.');
+    }
+
+    const parameterSource = Array.isArray(payload['parameterDetails'])
+      ? payload['parameterDetails']
+      : selectedSequence['parameters'];
+
+    if (!Array.isArray(parameterSource)) {
+      throw new Error('New payload JSON must include parameterDetails or selectedSequence.parameters array.');
+    }
+
+    const sequenceId = this.stringField(selectedSequence, 'sequenceId', 'id', 'name');
+    const sequenceName = this.stringField(selectedSequence, 'sequenceName', 'name', 'cdd') ?? sequenceId;
+
+    if (!sequenceId || !sequenceName) {
+      throw new Error('New payload JSON must include selectedSequence.sequenceId and selectedSequence.sequenceName.');
+    }
+
+    const siteData = payload['siteData'];
+
+    return {
+      sequenceId,
+      sequenceName,
+      siteName: this.isRecord(siteData) ? this.stringField(siteData, 'siteName', 'dis', 'address') : undefined,
+      projectAddress: this.isRecord(siteData) ? this.projectAddressFromSiteData(siteData) : undefined,
+      parameters: parameterSource.map((parameter, index) => this.normalizeParameter(parameter, index)),
+    };
+  }
+
+  private selectionFromRecord(record: JsonRecord): EquipmentBuilderSelection | null {
+    if (!Array.isArray(record['parameters'])) {
+      return null;
+    }
+
+    const sequenceId = this.stringField(record, 'sequenceId', 'id');
+    const sequenceName = this.stringField(record, 'sequenceName', 'name') ?? sequenceId;
+
+    if (!sequenceId || !sequenceName) {
+      return null;
+    }
+
+    return {
+      sequenceId,
+      sequenceName,
+      siteName: this.stringField(record, 'siteName'),
+      projectAddress: this.stringField(record, 'projectAddress', 'address'),
+      parameters: record['parameters'].map((parameter, index) => this.normalizeParameter(parameter, index)),
+    };
+  }
+
+  private projectAddressFromSiteData(siteData: JsonRecord): string | undefined {
+    const directAddress = this.stringField(siteData, 'projectAddress', 'address');
+    if (directAddress) return directAddress;
+
+    const locationDetails = siteData['locationDetails'];
+    if (!this.isRecord(locationDetails)) return undefined;
+
+    const addressParts = [
+      this.stringField(locationDetails, 'geoAddr'),
+      this.stringField(locationDetails, 'geoCity'),
+      this.stringField(locationDetails, 'geoState'),
+      this.stringField(locationDetails, 'geoCountry'),
+    ].filter((part): part is string => Boolean(part));
+    const postalCode = this.stringField(locationDetails, 'geoPostalCode');
+
+    if (postalCode && addressParts.length > 0) {
+      return `${addressParts.join(', ')} - ${postalCode}`;
+    }
+
+    return addressParts.join(', ') || postalCode;
+  }
+
+  private normalizeParameter(parameter: unknown, index: number): EquipmentBuilderSelection['parameters'][number] {
+    if (!this.isRecord(parameter)) {
+      throw new Error(`Parameter at index ${index} must be an object.`);
+    }
+
+    const id = this.stringField(parameter, 'id', 'key', 'field');
+    const name = this.stringField(parameter, 'name', 'parameterName', 'label');
+    const type = this.stringField(parameter, 'type', 'inputType') ?? 'text';
+
+    if (!id || !name) {
+      throw new Error(`Parameter at index ${index} must include id and name.`);
+    }
+
+    return {
+      id,
+      category: this.stringField(parameter, 'category') ?? '',
+      name,
+      type,
+      default: this.selectedValueLike(parameter['default']),
+      selectedValue: Object.prototype.hasOwnProperty.call(parameter, 'selectedValue')
+        ? this.selectedValueLike(parameter['selectedValue'])
+        : this.selectedValueLike(parameter['default']),
+      unit: this.stringField(parameter, 'unit'),
+      options: Array.isArray(parameter['options'])
+        ? parameter['options']
+          .filter((option): option is JsonRecord => this.isRecord(option))
+          .map((option) => ({
+            label: this.stringField(option, 'label', 'name') ?? String(option['value'] ?? ''),
+            value: this.scalarValue(option['value']),
+          }))
+        : undefined,
+    };
+  }
+
+  private selectedValueLike(value: unknown): string | number | boolean | null | Array<string | number | boolean | null> {
+    if (Array.isArray(value)) {
+      return value.map((item) => this.scalarValue(item));
+    }
+
+    return this.scalarValue(value);
+  }
+
+  private scalarValue(value: unknown): string | number | boolean | null {
+    return typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean' || value === null
+      ? value
+      : null;
+  }
+
+  private stringField(record: JsonRecord, ...keys: string[]): string | undefined {
+    for (const key of keys) {
+      const value = record[key];
+      if (typeof value === 'string' && value.trim()) {
+        return value;
+      }
+    }
+
+    return undefined;
+  }
+
+  private isRecord(value: unknown): value is JsonRecord {
+    return typeof value === 'object' && value !== null && !Array.isArray(value);
   }
 
 }

@@ -24,7 +24,8 @@ export class CddSelectionResolverService {
 
     return {
       equipmentName: selection.sequenceName,
-      siteName: 'Demo Site',
+      siteName: selection.siteName || 'Demo Site',
+      projectAddress: selection.projectAddress,
       sequenceId: selection.sequenceId,
       sequenceName: selection.sequenceName,
       generatedAt: new Date(),
@@ -33,7 +34,7 @@ export class CddSelectionResolverService {
         scenario: scenario.scenario,
         sourceWorkbook: sequence.sourceWorkbook,
         sourceSheet: sequence.sourceSheet,
-        ...match,
+        ...scenario.match,
       },
       boMappings: pointList.filter((point) => /^BO/i.test(point.terminal)),
       uiMappings: pointList.filter((point) => /^UI/i.test(point.terminal)),
@@ -42,7 +43,7 @@ export class CddSelectionResolverService {
       hardwareValid: true,
       validationMessages: [
         `Matched scenario ${scenario.scenario} from ${sequence.sourceWorkbook}.`,
-        ...this.selectionSummary(parametersByName),
+        ...this.selectionSummary(scenario.match, parametersByName),
       ],
     };
   }
@@ -146,11 +147,12 @@ export class CddSelectionResolverService {
       Object.entries(match).every(([key, value]) => candidate.match[key] === value)
     ));
 
-    if (!scenario) {
-      throw new Error(`No scenario matched selected values: ${JSON.stringify(match)}.`);
-    }
+    if (scenario) return scenario;
 
-    return scenario;
+    const relaxedScenario = this.findScenarioWithCatalogRequiredFlags(sequence, match);
+    if (relaxedScenario) return relaxedScenario;
+
+    throw new Error(`No scenario matched selected values: ${JSON.stringify(match)}.`);
   }
 
   private selectedInputs(selection: EquipmentBuilderSelection): Record<string, string | number | boolean> {
@@ -163,14 +165,39 @@ export class CddSelectionResolverService {
     }));
   }
 
-  private selectionSummary(parametersByName: Map<string, EquipmentBuilderParameter>): string[] {
+  private findScenarioWithCatalogRequiredFlags(
+    sequence: CddSequence,
+    match: Record<string, string | number | boolean>,
+  ): CddScenario | null {
+    const requiredFlagKeys = Object.keys(match).filter((key) => this.isDerivedRequiredFlag(key));
+    if (requiredFlagKeys.length === 0) return null;
+
+    const fixedMatchEntries = Object.entries(match).filter(([key]) => !requiredFlagKeys.includes(key));
+    const candidates = sequence.scenarios.filter((candidate) => (
+      fixedMatchEntries.every(([key, value]) => candidate.match[key] === value)
+    ));
+
+    return candidates.length === 1 ? candidates[0] : null;
+  }
+
+  private selectionSummary(
+    scenarioMatch: Record<string, string | number | boolean>,
+    parametersByName: Map<string, EquipmentBuilderParameter>,
+  ): string[] {
     const occupancy = parametersByName.get(this.compactKey('Occupancy Sensor'));
     const manual = parametersByName.get(this.compactKey('Manual Override'));
+    const occupancyRequired = this.booleanMatchValue(scenarioMatch, 'occSensorRequired') ?? this.hasSelection(occupancy);
+    const manualRequired = this.booleanMatchValue(scenarioMatch, 'manualOverrideRequired') ?? this.hasSelection(manual);
 
     return [
-      `Occupancy sensor required: ${this.hasSelection(occupancy) ? 'Yes' : 'No'}.`,
-      `Manual override required: ${this.hasSelection(manual) ? 'Yes' : 'No'}.`,
+      `Occupancy sensor required: ${occupancyRequired ? 'Yes' : 'No'}.`,
+      `Manual override required: ${manualRequired ? 'Yes' : 'No'}.`,
     ];
+  }
+
+  private booleanMatchValue(match: Record<string, string | number | boolean>, key: string): boolean | null {
+    const value = match[key];
+    return typeof value === 'boolean' ? value : null;
   }
 
   private parametersByName(selection: EquipmentBuilderSelection): Map<string, EquipmentBuilderParameter> {
@@ -187,10 +214,10 @@ export class CddSelectionResolverService {
     const selectedValue = parameter.selectedValue;
 
     if (Array.isArray(selectedValue)) {
-      return selectedValue.some((value) => value !== null && value !== undefined && value !== '');
+      return selectedValue.some((value) => !this.isNone(value));
     }
 
-    return selectedValue !== null && selectedValue !== undefined && selectedValue !== '' && selectedValue !== false;
+    return !this.isNone(selectedValue) && selectedValue !== false;
   }
 
   private resolvePointList(sequence: CddSequence, scenario: CddScenario): CddPoint[] {
@@ -351,6 +378,10 @@ export class CddSelectionResolverService {
 
   private isNone(value: unknown): boolean {
     return value === null || value === undefined || String(value).trim() === '' || /^none$/i.test(String(value).trim());
+  }
+
+  private isDerivedRequiredFlag(key: string): boolean {
+    return /^occ.*sensor.*required$/i.test(key) || /^manual.*override.*required$/i.test(key);
   }
 
   private toCddPoint(point: CddPoint): CddPoint {
