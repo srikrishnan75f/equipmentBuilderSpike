@@ -28,7 +28,7 @@ export class CddPdfService {
     UI2: { x: 242, y: 105, orientation: 'vertical', width: 17, height: 50 },
     UI3: { x: 258, y: 154, orientation: 'vertical', width: 17, height: 50 },
     UI4: { x: 274, y: 105, orientation: 'vertical', width: 17, height: 50 },
-    UI5: { x: 317, y: 154, orientation: 'vertical', width: 17, height: 50 },
+    UI5: { x: 325, y: 154, orientation: 'vertical', width: 17, height: 50 },
     UI6: { x: 341, y: 105, orientation: 'vertical', width: 17, height: 50 },
     UI7: { x: 357, y: 154, orientation: 'vertical', width: 17, height: 50 },
     UI8: { x: 373, y: 105, orientation: 'vertical', width: 17, height: 50 },
@@ -123,6 +123,7 @@ export class CddPdfService {
       }
 
       if (anchor) {
+        rendered = this.hideLabelArtwork(rendered, terminal);
         activeLabels.push(this.dynamicLabel(anchor, this.labelForPoint(point)));
       }
     }
@@ -137,6 +138,17 @@ export class CddPdfService {
 
     activeLabels.push('</g>');
     return rendered.replace('</svg>', `${activeLabels.join('')}</svg>`);
+  }
+
+  private hideLabelArtwork(svg: string, terminal: string): string {
+    let rendered = this.hideElementById(svg, `${terminal}_LABEL`);
+    rendered = this.hideElementsByIdPrefix(rendered, `${terminal}_LABEL_BORDER_PART_`);
+
+    if (terminal === 'AO1' || terminal === 'AO2') {
+      rendered = this.hideElementsByIdPrefix(rendered, 'AO1_AO2_SHARED_LABEL_BORDER_PART_');
+    }
+
+    return rendered;
   }
 
   private hideElementsByIdPrefix(svg: string, prefix: string): string {
