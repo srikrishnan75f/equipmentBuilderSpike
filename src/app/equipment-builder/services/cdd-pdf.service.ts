@@ -132,10 +132,6 @@ export class CddPdfService {
       rendered = this.hideElementsByIdPrefix(rendered, 'AO1_AO2_SHARED_');
     }
 
-    if (!this.hasAnyActiveTerminal(activePoints, this.terminals.filter((terminal) => terminal.startsWith('BO')))) {
-      rendered = this.hideElementById(rendered, 'BO_SHARED_JUNCTION_VERTICAL_LINE');
-    }
-
     activeLabels.push('</g>');
     return rendered.replace('</svg>', `${activeLabels.join('')}</svg>`);
   }
