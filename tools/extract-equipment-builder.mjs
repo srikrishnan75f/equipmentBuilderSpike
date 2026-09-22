@@ -167,6 +167,25 @@ function findHeaderRow(rows, requiredHeaders, maxRows = 50) {
     return null;
 }
 
+function findHeaderRowWithAliases(rows, requiredHeaderGroups, maxRows = 50) {
+    const required = requiredHeaderGroups.map((headerGroup) => (
+        Array.isArray(headerGroup) ? headerGroup : [headerGroup]
+    ).map((header) => normalizeHeader(header)));
+    const limit = Math.min(rows.length, maxRows);
+
+    for (let rowIndex = 0; rowIndex < limit; rowIndex += 1) {
+        const current = new Set();
+        for (const value of rows[rowIndex] ?? []) {
+            if (!isEmpty(value)) current.add(normalizeHeader(value));
+        }
+
+        const allFound = required.every((aliases) => aliases.some((alias) => current.has(alias)));
+        if (allFound) return rowIndex;
+    }
+
+    return null;
+}
+
 function buildHeaderMap(rows, headerRow) {
     const mapping = {};
     const headers = rows[headerRow] ?? [];
@@ -227,11 +246,11 @@ function parseEquipmentBuilder(workbook, mainSheetName) {
     }
 
     const rows = rowsFromSheet(sheet);
-    const headerRow = findHeaderRow(rows, [
+    const headerRow = findHeaderRowWithAliases(rows, [
         'Algorithm',
-        'Application : System or Zone',
+        ['Application : System or Zone', 'Application: System or Zone', 'Application : System  or Zone'],
         'Hayloft Model',
-        'Device Specific Seeunce Names',
+        ['Device Specific Seeunce Names', 'Device Specific Sequence Names', 'Device Specific Sequnce Names'],
     ]);
 
     if (headerRow === null) {
@@ -240,9 +259,9 @@ function parseEquipmentBuilder(workbook, mainSheetName) {
 
     const headers = buildHeaderMap(rows, headerRow);
     const algorithmCol = getColumn(headers, 'Algorithm');
-    const applicationCol = getColumn(headers, 'Application : System or Zone', 'Application : System or Zone ');
+    const applicationCol = getColumn(headers, 'Application : System or Zone', 'Application : System or Zone ', 'Application: System or Zone', 'Application : System  or Zone');
     const hayloftModelCol = getColumn(headers, 'Hayloft Model');
-    const sequenceNameCol = getColumn(headers, 'Device Specific Seeunce Names', 'Device Specific Sequence Names');
+    const sequenceNameCol = getColumn(headers, 'Device Specific Seeunce Names', 'Device Specific Sequence Names', 'Device Specific Sequnce Names');
     const deviceSequenceCol = getColumn(headers, 'Device Sequences', 'Device Sequences ');
     const descriptionCol = getColumn(headers, 'Description');
     const graphicsCol = getColumn(headers, 'Equip Graphics', 'Equip Graphics ');
@@ -496,16 +515,21 @@ function parseRuleParams(paramValues) {
 }
 
 function parseSequenceParameterRules(workbook) {
-    const sheetName = 'Sequence Parameter Rules';
-    if (!workbook.Sheets[sheetName]) return [];
+    // Prefer the modified rules sheet shape while keeping the old sheet name usable for older workbooks.
+    const sheetName = ['Sequence Parameter Rules Modif.', 'Sequence Parameter Rules']
+        .find((candidate) => workbook.Sheets[candidate]);
+    if (!sheetName) return [];
 
     const rows = rowsFromSheet(workbook.Sheets[sheetName]);
     const headerRow = findHeaderRow(rows, [
         'Sequence Tab',
-        'Sequence Name',
         'Parameter Name',
         'Rule Order',
         'Rule Type',
+        'Source Field',
+        'Param 1',
+        'Lock Target',
+        'Enabled',
     ], 20);
 
     if (headerRow === null) {
@@ -520,8 +544,11 @@ function parseSequenceParameterRules(workbook) {
     const ruleOrderCol = getColumn(headers, 'Rule Order');
     const ruleTypeCol = getColumn(headers, 'Rule Type');
     const sourceFieldCol = getColumn(headers, 'Source Field');
-    const param1Col = getColumn(headers, 'Param 1');
-    const param2Col = getColumn(headers, 'Param 2');
+    // Read Param 1, Param 2, etc. so the rule sheet can add more params without parser changes.
+    const paramCols = Object.entries(headers)
+        .filter(([header]) => /^param\d+$/.test(header))
+        .sort(([first], [second]) => Number(first.replace('param', '')) - Number(second.replace('param', '')))
+        .map(([, column]) => column);
     const lockTargetCol = getColumn(headers, 'Lock Target');
     const enabledCol = getColumn(headers, 'Enabled');
     const notesCol = getColumn(headers, 'Notes');
@@ -539,15 +566,16 @@ function parseSequenceParameterRules(workbook) {
 
         let ruleOrder = 0;
         if (!isEmpty(rawOrder)) {
-            const parsedOrder = Number.parseInt(String(Number(rawOrder)), 10);
+            const parsedOrder = Number.parseInt(clean(rawOrder), 10);
             ruleOrder = Number.isFinite(parsedOrder) ? parsedOrder : 0;
         }
 
         const sourceField = clean(getCell(rows, row, sourceFieldCol));
 
         const paramValues = [];
-        if (param1Col !== null && param1Col !== undefined) paramValues.push(getCell(rows, row, param1Col));
-        if (param2Col !== null && param2Col !== undefined) paramValues.push(getCell(rows, row, param2Col));
+        for (const paramCol of paramCols) {
+            paramValues.push(getCell(rows, row, paramCol));
+        }
 
         const rule = {
             sequenceTab,
@@ -557,7 +585,7 @@ function parseSequenceParameterRules(workbook) {
             type: ruleType,
             sourceField,
             params: parseRuleParams(paramValues),
-            viewMode: parseBoolean(getCell(rows, row, lockTargetCol), false),
+            lockTarget: parseBoolean(getCell(rows, row, lockTargetCol), false),
             enabled: parseBoolean(getCell(rows, row, enabledCol), false),
         };
 
@@ -610,7 +638,7 @@ function attachRulesToParameter(parameter, rules, sequenceName, sequenceTab) {
         const output = {
             order: rule.order,
             type: rule.type,
-            viewMode: rule.viewMode ?? false,
+            lockTarget: rule.lockTarget ?? false,
             enabled: rule.enabled ?? false,
         };
 
