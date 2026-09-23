@@ -521,15 +521,14 @@ function parseSequenceParameterRules(workbook) {
     if (!sheetName) return [];
 
     const rows = rowsFromSheet(workbook.Sheets[sheetName]);
-    const headerRow = findHeaderRow(rows, [
+    const headerRow = findHeaderRowWithAliases(rows, [
         'Sequence Tab',
         'Parameter Name',
         'Rule Order',
         'Rule Type',
         'Source Field',
         'Param 1',
-        'Lock Target',
-        'Enabled',
+        ['Read Only', 'Lock Target'],
     ], 20);
 
     if (headerRow === null) {
@@ -549,8 +548,7 @@ function parseSequenceParameterRules(workbook) {
         .filter(([header]) => /^param\d+$/.test(header))
         .sort(([first], [second]) => Number(first.replace('param', '')) - Number(second.replace('param', '')))
         .map(([, column]) => column);
-    const lockTargetCol = getColumn(headers, 'Lock Target');
-    const enabledCol = getColumn(headers, 'Enabled');
+    const readOnlyColumn = getColumn(headers, 'Read Only');
     const notesCol = getColumn(headers, 'Notes');
 
     const rules = [];
@@ -570,7 +568,7 @@ function parseSequenceParameterRules(workbook) {
             ruleOrder = Number.isFinite(parsedOrder) ? parsedOrder : 0;
         }
 
-        const sourceField = clean(getCell(rows, row, sourceFieldCol));
+        const sourceField = parseArray(getCell(rows, row, sourceFieldCol));
 
         const paramValues = [];
         for (const paramCol of paramCols) {
@@ -585,8 +583,7 @@ function parseSequenceParameterRules(workbook) {
             type: ruleType,
             sourceField,
             params: parseRuleParams(paramValues),
-            lockTarget: parseBoolean(getCell(rows, row, lockTargetCol), false),
-            enabled: parseBoolean(getCell(rows, row, enabledCol), false),
+            readOnly: parseBoolean(getCell(rows, row, readOnlyColumn), false)
         };
 
         const notes = clean(getCell(rows, row, notesCol));
@@ -621,7 +618,6 @@ function getParameterRules(rules, sequenceName, sequenceTab, parameterName) {
 
         if (!sequenceMatches) continue;
         if (ruleParameterName !== normalizedParameterName) continue;
-        if (!rule.enabled) continue;
 
         matched.push(rule);
     }
@@ -638,11 +634,12 @@ function attachRulesToParameter(parameter, rules, sequenceName, sequenceTab) {
         const output = {
             order: rule.order,
             type: rule.type,
-            lockTarget: rule.lockTarget ?? false,
-            enabled: rule.enabled ?? false,
+            readOnly: rule.readOnly ?? false,
         };
 
-        if (rule.sourceField) output.sourceField = rule.sourceField;
+        if (Array.isArray(rule.sourceField) && rule.sourceField.length > 0) {
+            output.sourceField = rule.sourceField;
+        }
         if (rule.params && Object.keys(rule.params).length > 0) output.params = rule.params;
         return output;
     });
