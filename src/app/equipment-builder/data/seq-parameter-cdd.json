@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-09-24T12:45:56.131Z",
+  "generatedAt": "2026-09-24T13:31:34.128Z",
   "sourceWorkbooks": [
-    "1790253955664-sri_modified.xlsx"
+    "1790256693603-Equipment_Builder__4_.xlsx"
   ],
   "sequences": [
     {
       "sequenceId": "DAYLIGHT_HARVESTING_AO_CN",
       "sequenceName": "Daylight Harvesting AO_CN",
-      "sourceWorkbook": "1790253955664-sri_modified.xlsx",
+      "sourceWorkbook": "1790256693603-Equipment_Builder__4_.xlsx",
       "sourceSheet": null,
       "dimensions": [],
       "pointGroups": [],
@@ -20,7 +20,7 @@
     {
       "sequenceId": "EXHAUST_FAN_CONTROL_CN",
       "sequenceName": "EXHAUST FAN CONTROL_CN",
-      "sourceWorkbook": "1790253955664-sri_modified.xlsx",
+      "sourceWorkbook": "1790256693603-Equipment_Builder__4_.xlsx",
       "sourceSheet": "EXHAUST FAN CONTROL_CN-MATRIX",
       "dimensions": [
         "Exhaust Fan Count",
@@ -247,7 +247,7 @@
             "point": "BO2 (Y2)",
             "spareDescription": "SPARE",
             "spareTag": "-",
-            "spareDeviceRange": "WET CONTACT"
+            "spareDeviceRange": "-"
           },
           {
             "type": "terminal",
@@ -4216,7 +4216,7 @@
     {
       "sequenceId": "LIGHTING_CONTROL_DO_CN",
       "sequenceName": "Lighting Control DO_CN",
-      "sourceWorkbook": "1790253955664-sri_modified.xlsx",
+      "sourceWorkbook": "1790256693603-Equipment_Builder__4_.xlsx",
       "sourceSheet": "Lighting Control DO_CN-MATRIX",
       "dimensions": [
         "Lighting Circuits Count",
@@ -17853,10 +17853,22 @@
           },
           "tags": [
             "circuit",
-            "count",
-            "lighting",
             "config",
-            "writable"
+            "generic",
+            "lighting",
+            "sp",
+            "his",
+            "writable",
+            "dis",
+            "id",
+            "kind",
+            "point",
+            "siteRef",
+            "tz",
+            "cmd",
+            "enable",
+            "order",
+            "run"
           ],
           "comments": "ENUM Point (Lighting Circuit 1 to Circuit 8)"
         },
@@ -17908,6 +17920,7 @@
             "sp",
             "type",
             "control",
+            "his",
             "schedulable",
             "writable",
             "dis",
@@ -17975,9 +17988,9 @@
             "8": "occupancySensor8Sts"
           },
           "tags": [
+            "lighting",
             "occupancy",
             "order",
-            "lighting",
             "run",
             "sensor",
             "status",
@@ -18015,7 +18028,7 @@
               }
             },
             {
-              "order": 40,
+              "order": 30,
               "type": "NONE_EXCLUSIVE",
               "readOnly": true,
               "params": {
@@ -18077,11 +18090,10 @@
           },
           "tags": [
             "enable",
+            "lighting",
             "order",
             "override",
-            "lighting",
             "sensor",
-            "manual",
             "switch",
             "his",
             "writable",
@@ -18190,7 +18202,6 @@
             "duration",
             "generic",
             "lighting",
-            "vacancy",
             "sp",
             "his",
             "writable",
@@ -18300,6 +18311,7 @@
             "siteRef",
             "tz"
           ],
+          "pointBasedSchedule": "8 AM TO 5PM (Adjustable)",
           "comments": "Schedule - Yes/No",
           "rules": [
             {
@@ -18389,10 +18401,22 @@
           },
           "tags": [
             "circuit",
-            "count",
-            "lighting",
             "config",
-            "writable"
+            "generic",
+            "light",
+            "sp",
+            "his",
+            "writable",
+            "dis",
+            "id",
+            "kind",
+            "point",
+            "siteRef",
+            "tz",
+            "cmd",
+            "order",
+            "output",
+            "run"
           ],
           "comments": "ENUM Point (Lighting Circuit 1 to Circuit 4)"
         },
@@ -18439,7 +18463,7 @@
           "tags": [
             "config",
             "generic",
-            "lighting",
+            "light",
             "mode",
             "sp",
             "type",
@@ -18479,7 +18503,7 @@
           "tags": [
             "config",
             "generic",
-            "lighting",
+            "light",
             "mode",
             "sp",
             "his",
@@ -18511,22 +18535,15 @@
           "id": "minLightLevel",
           "category": "Control",
           "name": "Min Light Level",
-          "type": "dropdown",
-          "default": "20%",
+          "type": "number",
+          "default": 20,
           "unit": "%",
-          "options": [
-            {
-              "label": "0 to 50",
-              "value": 0
-            }
-          ],
           "pointMapping": {
             "domainName": "minLightLevel"
           },
           "tags": [
             "level",
             "light",
-            "lighting",
             "min",
             "sp",
             "his",
@@ -18537,28 +18554,26 @@
             "point",
             "siteRef",
             "tz"
-          ]
+          ],
+          "validation": {
+            "min": 0,
+            "max": 50,
+            "integer": true
+          }
         },
         {
           "id": "maxLightLevel",
           "category": "Control",
           "name": "Max Light Level",
-          "type": "dropdown",
-          "default": "100%",
+          "type": "number",
+          "default": 100,
           "unit": "%",
-          "options": [
-            {
-              "label": "50 to 100",
-              "value": 50
-            }
-          ],
           "pointMapping": {
             "domainName": "maxLightLevel"
           },
           "tags": [
             "level",
             "light",
-            "lighting",
             "max",
             "sp",
             "his",
@@ -18569,21 +18584,20 @@
             "point",
             "siteRef",
             "tz"
-          ]
+          ],
+          "validation": {
+            "min": 50,
+            "max": 100,
+            "integer": true
+          }
         },
         {
           "id": "luxMinSetpoint",
           "category": "Sensors",
           "name": "Lux Min Setpoint",
-          "type": "dropdown",
+          "type": "number",
           "default": 80,
           "unit": "Lux",
-          "options": [
-            {
-              "label": "0 to 2000",
-              "value": 0
-            }
-          ],
           "pointMapping": {
             "domainName": "luxMinSp"
           },
@@ -18592,7 +18606,6 @@
             "illuminance",
             "level",
             "light",
-            "lighting",
             "min",
             "sp",
             "his",
@@ -18603,21 +18616,20 @@
             "point",
             "siteRef",
             "tz"
-          ]
+          ],
+          "validation": {
+            "min": 0,
+            "max": 2000,
+            "integer": true
+          }
         },
         {
           "id": "luxMaxSetpoint",
           "category": "Sensors",
           "name": "Lux Max Setpoint",
-          "type": "dropdown",
+          "type": "number",
           "default": 250,
           "unit": "Lux",
-          "options": [
-            {
-              "label": "0 to 2000",
-              "value": 0
-            }
-          ],
           "pointMapping": {
             "domainName": "luxMaxSp"
           },
@@ -18626,7 +18638,6 @@
             "illuminance",
             "level",
             "light",
-            "lighting",
             "max",
             "sp",
             "his",
@@ -18637,7 +18648,12 @@
             "point",
             "siteRef",
             "tz"
-          ]
+          ],
+          "validation": {
+            "min": 0,
+            "max": 2000,
+            "integer": true
+          }
         },
         {
           "id": "luxSensor",
@@ -18645,7 +18661,7 @@
           "name": "Lux Sensor",
           "type": "multiselect",
           "default": [],
-          "unit": "lx",
+          "unit": null,
           "options": [
             {
               "label": "Universal Input 1",
@@ -18662,6 +18678,22 @@
             {
               "label": "Universal Input 4",
               "value": 4
+            },
+            {
+              "label": "Universal Input 5",
+              "value": 5
+            },
+            {
+              "label": "Universal Input 6",
+              "value": 6
+            },
+            {
+              "label": "Universal Input 7",
+              "value": 7
+            },
+            {
+              "label": "Universal Input 8",
+              "value": 8
             }
           ],
           "pointMapping": {
@@ -18673,7 +18705,6 @@
           "tags": [
             "illuminance",
             "light",
-            "lighting",
             "order",
             "sensor",
             "his",
@@ -18704,15 +18735,8 @@
                 "Lighting Circuits Count"
               ],
               "params": {
-                "optionPrefix": "Universal Input"
-              }
-            },
-            {
-              "order": 30,
-              "type": "NONE_EXCLUSIVE",
-              "readOnly": true,
-              "params": {
-                "noneLabel": "None"
+                "optionPrefix": "Universal Input",
+                "errorMessage": "Hardware Limit Reached"
               }
             }
           ]
@@ -18726,10 +18750,6 @@
           "unit": null,
           "options": [
             {
-              "label": "None",
-              "value": "None"
-            },
-            {
               "label": "Universal Input 1",
               "value": 1
             },
@@ -18744,142 +18764,7 @@
             {
               "label": "Universal Input 4",
               "value": 4
-            }
-          ],
-          "pointMapping": {
-            "1": "occupancySensor1",
-            "2": "occupancySensor2",
-            "3": "occupancySensor3",
-            "4": "occupancySensor4"
-          },
-          "tags": [
-            "lighting",
-            "occupancy",
-            "occupied",
-            "order",
-            "sensor",
-            "his",
-            "cur",
-            "dis",
-            "id",
-            "kind",
-            "point",
-            "siteRef"
-          ],
-          "rules": [
-            {
-              "order": 10,
-              "type": "HIDE_IF",
-              "readOnly": true,
-              "sourceField": [
-                "Control Type"
-              ],
-              "params": {
-                "value": "1, 7"
-              }
             },
-            {
-              "order": 20,
-              "type": "EXCLUDE_SELECTED",
-              "readOnly": false,
-              "sourceField": [
-                "Lux Sensor"
-              ],
-              "params": {
-                "param1": "none"
-              }
-            },
-            {
-              "order": 30,
-              "type": "NONE_EXCLUSIVE",
-              "readOnly": false,
-              "params": {
-                "noneLabel": "None"
-              }
-            }
-          ]
-        },
-        {
-          "id": "manualStepControlUp",
-          "category": "Input",
-          "name": "Manual Step Control Up",
-          "type": "dropdown",
-          "default": 1,
-          "unit": null,
-          "options": [
-            {
-              "label": "Universal Input 1",
-              "value": 1
-            },
-            {
-              "label": "Universal Input 2",
-              "value": 2
-            },
-            {
-              "label": "Universal Input 3",
-              "value": 3
-            },
-            {
-              "label": "Universal Input 4",
-              "value": 4
-            }
-          ],
-          "pointMapping": {
-            "1": "manualStepControlUp1",
-            "2": "manualStepControlUp2",
-            "3": "manualStepControlUp3",
-            "4": "manualStepControlUp4"
-          },
-          "tags": [
-            "enable",
-            "light",
-            "lighting",
-            "manual",
-            "order",
-            "sensor",
-            "his",
-            "dis",
-            "id",
-            "kind",
-            "point",
-            "siteRef",
-            "tz"
-          ],
-          "comments": "Momentary Press [from Universal Input]",
-          "rules": [
-            {
-              "order": 10,
-              "type": "HIDE_IF",
-              "readOnly": true,
-              "sourceField": [
-                "Control Type"
-              ],
-              "params": {
-                "value": "1, 2, 4"
-              }
-            },
-            {
-              "order": 20,
-              "type": "EXCLUDE_SELECTED",
-              "readOnly": false,
-              "sourceField": [
-                "Lux Sensor",
-                "Occupancy Sensor"
-              ],
-              "params": {
-                "param1": "none"
-              }
-            }
-          ]
-        },
-        {
-          "id": "manualStepControlDown",
-          "category": "Input",
-          "name": "Manual Step Control Down",
-          "type": "dropdown",
-          "default": 5,
-          "unit": null,
-          "options": [
             {
               "label": "Universal Input 5",
               "value": 5
@@ -18898,19 +18783,117 @@
             }
           ],
           "pointMapping": {
-            "5": "manualStepControlDown1",
-            "6": "manualStepControlDown2",
-            "7": "manualStepControlDown3",
-            "8": "manualStepControlDown4"
+            "1": "occupancySensor1",
+            "2": "occupancySensor2",
+            "3": "occupancySensor3",
+            "4": "occupancySensor4"
+          },
+          "tags": [
+            "light",
+            "occupancy",
+            "occupied",
+            "order",
+            "sensor",
+            "his",
+            "cur",
+            "dis",
+            "id",
+            "kind",
+            "point",
+            "siteRef",
+            "tz"
+          ],
+          "rules": [
+            {
+              "order": 10,
+              "type": "HIDE_IF",
+              "readOnly": true,
+              "sourceField": [
+                "Control Type"
+              ],
+              "params": {
+                "value": "1, 7"
+              }
+            },
+            {
+              "order": 20,
+              "type": "EXCLUDE_SELECTED",
+              "readOnly": true,
+              "sourceField": [
+                "Lux Sensor"
+              ],
+              "params": {
+                "param1": "none"
+              }
+            },
+            {
+              "order": 30,
+              "type": "AUTO_SELECT_BY_COUNT",
+              "readOnly": true,
+              "sourceField": [
+                "Lighting Circuits Count"
+              ],
+              "params": {
+                "optionPrefix": "Universal Input",
+                "errorMessage": "Hardware Limit Reached"
+              }
+            }
+          ]
+        },
+        {
+          "id": "manualStepControlUp",
+          "category": "Input",
+          "name": "Manual Step Control Up",
+          "type": "multiselect",
+          "default": [],
+          "unit": null,
+          "options": [
+            {
+              "label": "Universal Input 1",
+              "value": 1
+            },
+            {
+              "label": "Universal Input 2",
+              "value": 2
+            },
+            {
+              "label": "Universal Input 3",
+              "value": 3
+            },
+            {
+              "label": "Universal Input 4",
+              "value": 4
+            },
+            {
+              "label": "Universal Input 5",
+              "value": 5
+            },
+            {
+              "label": "Universal Input 6",
+              "value": 6
+            },
+            {
+              "label": "Universal Input 7",
+              "value": 7
+            },
+            {
+              "label": "Universal Input 8",
+              "value": 8
+            }
+          ],
+          "pointMapping": {
+            "1": "manualStepControlUp1",
+            "2": "manualStepControlUp2",
+            "3": "manualStepControlUp3",
+            "4": "manualStepControlUp4"
           },
           "tags": [
             "enable",
             "light",
-            "lighting",
-            "manual",
             "order",
             "sensor",
             "his",
+            "writable",
             "dis",
             "id",
             "kind",
@@ -18921,7 +18904,7 @@
           "comments": "Momentary Press [from Universal Input]",
           "rules": [
             {
-              "order": 30,
+              "order": 10,
               "type": "HIDE_IF",
               "readOnly": true,
               "sourceField": [
@@ -18932,9 +18915,109 @@
               }
             },
             {
-              "order": 40,
+              "order": 20,
               "type": "EXCLUDE_SELECTED",
-              "readOnly": false,
+              "readOnly": true,
+              "sourceField": [
+                "Lux Sensor",
+                "Occupancy Sensor"
+              ],
+              "params": {
+                "param1": "none"
+              }
+            },
+            {
+              "order": 30,
+              "type": "AUTO_SELECT_BY_COUNT",
+              "readOnly": true,
+              "sourceField": [
+                "Lighting Circuits Count"
+              ],
+              "params": {
+                "optionPrefix": "Universal Input",
+                "errorMessage": "Hardware Limit Reached"
+              }
+            }
+          ]
+        },
+        {
+          "id": "manualStepControlDown",
+          "category": "Input",
+          "name": "Manual Step Control Down",
+          "type": "multiselect",
+          "default": [],
+          "unit": null,
+          "options": [
+            {
+              "label": "Universal Input 1",
+              "value": 1
+            },
+            {
+              "label": "Universal Input 2",
+              "value": 2
+            },
+            {
+              "label": "Universal Input 3",
+              "value": 3
+            },
+            {
+              "label": "Universal Input 4",
+              "value": 4
+            },
+            {
+              "label": "Universal Input 5",
+              "value": 5
+            },
+            {
+              "label": "Universal Input 6",
+              "value": 6
+            },
+            {
+              "label": "Universal Input 7",
+              "value": 7
+            },
+            {
+              "label": "Universal Input 8",
+              "value": 8
+            }
+          ],
+          "pointMapping": {
+            "1": "manualStepControlDown1",
+            "2": "manualStepControlDown2",
+            "3": "manualStepControlDown3",
+            "4": "manualStepControlDown4"
+          },
+          "tags": [
+            "enable",
+            "light",
+            "order",
+            "sensor",
+            "his",
+            "writable",
+            "dis",
+            "id",
+            "kind",
+            "point",
+            "siteRef",
+            "tz"
+          ],
+          "comments": "Momentary Press [from Universal Input]",
+          "rules": [
+            {
+              "order": 10,
+              "type": "HIDE_IF",
+              "readOnly": true,
+              "sourceField": [
+                "Control Type"
+              ],
+              "params": {
+                "value": "1, 2, 4"
+              }
+            },
+            {
+              "order": 20,
+              "type": "EXCLUDE_SELECTED",
+              "readOnly": true,
               "sourceField": [
                 "Lux Sensor",
                 "Occupancy Sensor",
@@ -18942,6 +19025,18 @@
               ],
               "params": {
                 "param1": "none"
+              }
+            },
+            {
+              "order": 30,
+              "type": "AUTO_SELECT_BY_COUNT",
+              "readOnly": true,
+              "sourceField": [
+                "Lighting Circuits Count"
+              ],
+              "params": {
+                "optionPrefix": "Universal Input",
+                "errorMessage": "Hardware Limit Reached"
               }
             }
           ]
@@ -18952,7 +19047,7 @@
           "name": "Occupancy Duration",
           "type": "number",
           "default": 20,
-          "unit": "Minutes",
+          "unit": "Min",
           "pointMapping": {
             "domainName": "occupancyDuration"
           },
@@ -18960,7 +19055,7 @@
             "config",
             "duration",
             "generic",
-            "lighting",
+            "light",
             "occupancy",
             "sp",
             "his",
@@ -18997,7 +19092,7 @@
           "name": "Vacancy Duration",
           "type": "number",
           "default": 20,
-          "unit": "Minutes",
+          "unit": "Min",
           "pointMapping": {
             "domainName": "vacancyDuration"
           },
@@ -19005,8 +19100,7 @@
             "config",
             "duration",
             "generic",
-            "lighting",
-            "vacancy",
+            "light",
             "sp",
             "his",
             "writable",
@@ -19042,9 +19136,29 @@
           "name": "Flash Warning Time",
           "type": "number",
           "default": 5,
-          "unit": "Minutes",
+          "unit": "Min",
           "pointMapping": {
             "domainName": "flashWarningTimer"
+          },
+          "tags": [
+            "alarm",
+            "generic",
+            "light",
+            "sensor",
+            "timer",
+            "his",
+            "writable",
+            "dis",
+            "id",
+            "kind",
+            "point",
+            "siteRef",
+            "tz"
+          ],
+          "validation": {
+            "min": 0,
+            "max": 60,
+            "integer": true
           },
           "rules": [
             {
@@ -19137,8 +19251,8 @@
           "id": "exhaustFanCircuitCount",
           "category": "Basic",
           "name": "Exhaust Fan Circuit Count",
-          "type": "multiselect",
-          "default": [],
+          "type": "dropdown",
+          "default": 1,
           "unit": null,
           "options": [
             {
@@ -19212,7 +19326,7 @@
             ]
           },
           "tags": [
-            "For exhaustFanCount (circuit",
+            "circuit",
             "config",
             "exhaust",
             "fan",
@@ -19225,8 +19339,8 @@
             "kind",
             "point",
             "siteRef",
-            "tz)",
-            "For exhaustFanCmd (cmd",
+            "tz",
+            "cmd",
             "enable",
             "order",
             "run"
@@ -19257,6 +19371,7 @@
             "config",
             "exhaust",
             "fan",
+            "generic",
             "mode",
             "operating",
             "sp",
@@ -19315,111 +19430,16 @@
             "siteRef",
             "tz"
           ],
-          "comments": "Exhaust Fan Interlock with Dedicated AHU/RTU or any other field device like damper actuator.",
-          "rules": [
-            {
-              "order": 10,
-              "type": "HIDE_IF",
-              "readOnly": true,
-              "sourceField": [
-                "Interlock Enable"
-              ],
-              "params": {
-                "value": "No"
-              }
-            }
-          ]
-        },
-        {
-          "id": "fanStatusRequired",
-          "category": "Fan Status Required",
-          "name": "Fan Status Required",
-          "type": "dropdown",
-          "default": "Yes",
-          "unit": null,
-          "options": [
-            {
-              "label": "Yes",
-              "value": "Yes"
-            },
-            {
-              "label": "No",
-              "value": "No"
-            },
-            {
-              "label": "None",
-              "value": "If No"
-            },
-            {
-              "label": "If Yes",
-              "value": "If Yes"
-            },
-            {
-              "label": "then",
-              "value": "then"
-            },
-            {
-              "label": "Universal Input 1",
-              "value": 1
-            },
-            {
-              "label": "Universal Input 2",
-              "value": 2
-            },
-            {
-              "label": "Universal Input 3",
-              "value": 3
-            },
-            {
-              "label": "Universal Input 4",
-              "value": 4
-            },
-            {
-              "label": "Universal Input 5",
-              "value": 5
-            },
-            {
-              "label": "Universal Input 6",
-              "value": 6
-            },
-            {
-              "label": "Universal Input 7",
-              "value": 7
-            },
-            {
-              "label": "Universal Input 8",
-              "value": 8
-            }
-          ]
+          "comments": "Exhaust Fan Interlock with Dedicated AHU/RTU or any other field device like damper actuator."
         },
         {
           "id": "fanStatus",
           "category": "Monitoring",
           "name": "Fan Status",
-          "type": "dropdown",
-          "default": "No",
+          "type": "multiselect",
+          "default": [],
           "unit": null,
           "options": [
-            {
-              "label": "Yes",
-              "value": "Yes"
-            },
-            {
-              "label": "No",
-              "value": "No"
-            },
-            {
-              "label": "None",
-              "value": "If No"
-            },
-            {
-              "label": "If Yes",
-              "value": "If Yes"
-            },
-            {
-              "label": "then",
-              "value": "then"
-            },
             {
               "label": "Universal Input 1",
               "value": 1
@@ -19482,32 +19502,14 @@
           "rules": [
             {
               "order": 10,
-              "type": "HIDE_IF",
-              "readOnly": true,
-              "sourceField": [
-                "Fan Status"
-              ],
-              "params": {
-                "value": "No"
-              }
-            },
-            {
-              "order": 30,
               "type": "AUTO_SELECT_BY_COUNT",
               "readOnly": true,
               "sourceField": [
                 "Exhaust Fan Circuit Count"
               ],
               "params": {
-                "optionPrefix": "Universal Input"
-              }
-            },
-            {
-              "order": 40,
-              "type": "NONE_EXCLUSIVE",
-              "readOnly": true,
-              "params": {
-                "noneLabel": "None"
+                "optionPrefix": "Universal Input",
+                "errorMessage": "Hardware Limit Reached"
               }
             }
           ]
@@ -19614,22 +19616,10 @@
           "id": "interlockStatus",
           "category": "Interlock",
           "name": "Interlock Status",
-          "type": "dropdown",
-          "default": null,
+          "type": "multiselect",
+          "default": [],
           "unit": null,
           "options": [
-            {
-              "label": "None",
-              "value": "If interlock Enable toggle is \"Disabled\" then No"
-            },
-            {
-              "label": "If Enabled",
-              "value": "If Enabled"
-            },
-            {
-              "label": "then",
-              "value": "then"
-            },
             {
               "label": "Universal Input 1",
               "value": 1
@@ -19692,14 +19682,37 @@
           "comments": "External interlock status input for Exhaust Fans",
           "rules": [
             {
-              "order": 30,
-              "type": "EXCLUDE_SELECTED",
-              "readOnly": false,
+              "order": 10,
+              "type": "HIDE_IF",
+              "readOnly": true,
               "sourceField": [
-                "Interlock Status"
+                "Interlock Enable"
+              ],
+              "params": {
+                "value": "Disable"
+              }
+            },
+            {
+              "order": 20,
+              "type": "EXCLUDE_SELECTED",
+              "readOnly": true,
+              "sourceField": [
+                "Fan Status"
               ],
               "params": {
                 "param1": "none"
+              }
+            },
+            {
+              "order": 30,
+              "type": "AUTO_SELECT_BY_COUNT",
+              "readOnly": true,
+              "sourceField": [
+                "Exhaust Fan Circuit Count"
+              ],
+              "params": {
+                "optionPrefix": "Universal Input",
+                "errorMessage": "Hardware Limit Reached"
               }
             }
           ]
