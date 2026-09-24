@@ -487,9 +487,10 @@ function parseBoolean(value, defaultValue = false) {
 
 function parseRuleParams(paramValues) {
     const params = {};
+    let positionalIndex = 1;
 
-    paramValues.forEach((rawValue, index) => {
-        const value = clean(rawValue);
+    function assignParam(rawInput) {
+        const value = clean(rawInput);
         if (!value) return;
 
         const equalsMatch = value.match(/^([^=]+?)\s*=\s*(.*)$/);
@@ -508,7 +509,28 @@ function parseRuleParams(paramValues) {
             return;
         }
 
-        params[`param${index + 1}`] = convertScalar(value);
+        params[`param${positionalIndex}`] = convertScalar(value);
+        positionalIndex += 1;
+    }
+
+    paramValues.forEach((rawValue, index) => {
+        void index;
+        const value = clean(rawValue);
+        if (!value) return;
+
+        const normalizedBreaks = value.replace(/<br\s*\/?>/gi, '\n');
+        const tokens = normalizedBreaks
+            .split(/\r?\n|,(?=\s*[^,=:]+\s*[:=])/)
+            .map((part) => clean(part))
+            .filter(Boolean);
+
+        if (tokens.length === 0) return;
+        if (tokens.length === 1) {
+            assignParam(tokens[0]);
+            return;
+        }
+
+        tokens.forEach((token) => assignParam(token));
     });
 
     return params;

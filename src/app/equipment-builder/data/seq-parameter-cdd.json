@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-09-23T14:10:57.628Z",
+  "generatedAt": "2026-09-23T14:23:11.689Z",
   "sourceWorkbooks": [
-    "1790172656385-Equipment_Builder-Latest.xlsx"
+    "1790173390416-Equipment_Builder-Latest.xlsx"
   ],
   "sequences": [
     {
       "sequenceId": "DAYLIGHT_HARVESTING_AO_CN",
       "sequenceName": "Daylight Harvesting AO_CN",
-      "sourceWorkbook": "1790172656385-Equipment_Builder-Latest.xlsx",
+      "sourceWorkbook": "1790173390416-Equipment_Builder-Latest.xlsx",
       "sourceSheet": null,
       "dimensions": [],
       "pointGroups": [],
@@ -20,7 +20,7 @@
     {
       "sequenceId": "EXHAUST_FAN_CONTROL_CN",
       "sequenceName": "EXHAUST FAN CONTROL_CN",
-      "sourceWorkbook": "1790172656385-Equipment_Builder-Latest.xlsx",
+      "sourceWorkbook": "1790173390416-Equipment_Builder-Latest.xlsx",
       "sourceSheet": "EXHAUST FAN CONTROL_CN-MATRIX",
       "dimensions": [
         "Exhaust Fan Count",
@@ -6856,7 +6856,7 @@
     {
       "sequenceId": "LIGHTING_CONTROL_DO_CN",
       "sequenceName": "Lighting Control DO_CN",
-      "sourceWorkbook": "1790172656385-Equipment_Builder-Latest.xlsx",
+      "sourceWorkbook": "1790173390416-Equipment_Builder-Latest.xlsx",
       "sourceSheet": "Lighting Control DO_CN-MATRIX",
       "dimensions": [
         "Lighting Circuits Count",
@@ -20471,21 +20471,7 @@
             "config",
             "writable"
           ],
-          "comments": "ENUM Point (Lighting Circuit 1 to Circuit 8)",
-          "rules": [
-            {
-              "order": 10,
-              "type": "VALIDATE_TOTAL_COUNT",
-              "readOnly": false,
-              "sourceField": [
-                "Occupancy Sensor",
-                "Manual Override"
-              ],
-              "params": {
-                "errorMessage": "Hardware Limit Reached"
-              }
-            }
-          ]
+          "comments": "ENUM Point (Lighting Circuit 1 to Circuit 8)"
         },
         {
           "id": "controlType",
@@ -20637,7 +20623,8 @@
                 "Lighting Circuits Count"
               ],
               "params": {
-                "optionPrefix": "Universal Input"
+                "optionPrefix": "Universal Input",
+                "errorMessage": "Hardware Limit Reached"
               }
             },
             {
@@ -20750,7 +20737,8 @@
                 "Lighting Circuits Count"
               ],
               "params": {
-                "optionPrefix": "Universal Input"
+                "optionPrefix": "Universal Input",
+                "errorMessage": "Hardware Limit Reached"
               }
             }
           ]
