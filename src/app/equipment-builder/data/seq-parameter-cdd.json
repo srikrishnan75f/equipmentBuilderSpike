@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-09-22T13:43:05.169Z",
+  "generatedAt": "2026-09-23T14:23:11.689Z",
   "sourceWorkbooks": [
-    "1790084584724-Equipment_Builder__2_.xlsx"
+    "1790173390416-Equipment_Builder-Latest.xlsx"
   ],
   "sequences": [
     {
       "sequenceId": "DAYLIGHT_HARVESTING_AO_CN",
       "sequenceName": "Daylight Harvesting AO_CN",
-      "sourceWorkbook": "1790084584724-Equipment_Builder__2_.xlsx",
+      "sourceWorkbook": "1790173390416-Equipment_Builder-Latest.xlsx",
       "sourceSheet": null,
       "dimensions": [],
       "pointGroups": [],
@@ -20,7 +20,7 @@
     {
       "sequenceId": "EXHAUST_FAN_CONTROL_CN",
       "sequenceName": "EXHAUST FAN CONTROL_CN",
-      "sourceWorkbook": "1790084584724-Equipment_Builder__2_.xlsx",
+      "sourceWorkbook": "1790173390416-Equipment_Builder-Latest.xlsx",
       "sourceSheet": "EXHAUST FAN CONTROL_CN-MATRIX",
       "dimensions": [
         "Exhaust Fan Count",
@@ -6856,7 +6856,7 @@
     {
       "sequenceId": "LIGHTING_CONTROL_DO_CN",
       "sequenceName": "Lighting Control DO_CN",
-      "sourceWorkbook": "1790084584724-Equipment_Builder__2_.xlsx",
+      "sourceWorkbook": "1790173390416-Equipment_Builder-Latest.xlsx",
       "sourceSheet": "Lighting Control DO_CN-MATRIX",
       "dimensions": [
         "Lighting Circuits Count",
@@ -20395,7 +20395,7 @@
       "id": "lightingControlDO-Lighting-Control-DO_CN-zone",
       "hayloftModel": "lightingControlDO",
       "name": "Lighting Control DO_CN",
-      "description": "Scheduled or conditional lighting control for SmartNode",
+      "description": "Scheduled or conditional lighting control for Connect Module",
       "type": "zone",
       "equipGraphics": [
         "Lighting Control DO"
@@ -20471,19 +20471,7 @@
             "config",
             "writable"
           ],
-          "comments": "ENUM Point (Lighting Circuit 1 to Circuit 8)",
-          "rules": [
-            {
-              "order": 10,
-              "type": "AUTO_SELECT_BY_COUNT",
-              "lockTarget": true,
-              "enabled": true,
-              "sourceField": "Lighting Circuits Count",
-              "params": {
-                "optionPrefix": "BO"
-              }
-            }
-          ]
+          "comments": "ENUM Point (Lighting Circuit 1 to Circuit 8)"
         },
         {
           "id": "controlType",
@@ -20617,43 +20605,34 @@
           ],
           "rules": [
             {
-              "order": 20,
-              "type": "LOCK_IF",
-              "lockTarget": true,
-              "enabled": true,
-              "sourceField": "Control Type",
+              "order": 10,
+              "type": "HIDE_IF",
+              "readOnly": true,
+              "sourceField": [
+                "Control Type"
+              ],
               "params": {
                 "value": "1, 7"
               }
             },
             {
-              "order": 30,
-              "type": "REQUIRE_IF",
-              "lockTarget": false,
-              "enabled": true,
-              "sourceField": "Control Type",
+              "order": 20,
+              "type": "AUTO_SELECT_BY_COUNT",
+              "readOnly": true,
+              "sourceField": [
+                "Lighting Circuits Count"
+              ],
               "params": {
-                "value": "2, 3, 4, 5, 6"
+                "optionPrefix": "Universal Input",
+                "errorMessage": "Hardware Limit Reached"
               }
             },
             {
               "order": 40,
-              "type": "AUTO_SELECT_BY_COUNT",
-              "lockTarget": false,
-              "enabled": true,
-              "sourceField": "Lighting Circuits Count",
+              "type": "NONE_EXCLUSIVE",
+              "readOnly": true,
               "params": {
-                "optionPrefix": "UI"
-              }
-            },
-            {
-              "order": 50,
-              "type": "LOCK_IF",
-              "lockTarget": true,
-              "enabled": true,
-              "sourceField": "Control Type",
-              "params": {
-                "value": "1, 2, 4"
+                "noneLabel": "None"
               }
             }
           ]
@@ -20729,23 +20708,37 @@
           "comments": "Momentary Press [from Universal Input]",
           "rules": [
             {
-              "order": 60,
-              "type": "REQUIRE_IF",
-              "lockTarget": false,
-              "enabled": true,
-              "sourceField": "Control Type",
+              "order": 10,
+              "type": "HIDE_IF",
+              "readOnly": true,
+              "sourceField": [
+                "Control Type"
+              ],
               "params": {
-                "value": "3, 5, 6, 7"
+                "value": "1, 2, 4"
               }
             },
             {
-              "order": 70,
+              "order": 20,
               "type": "EXCLUDE_SELECTED",
-              "lockTarget": false,
-              "enabled": true,
-              "sourceField": "Occupancy Sensor",
+              "readOnly": true,
+              "sourceField": [
+                "Occupancy Sensor"
+              ],
               "params": {
                 "param1": "none"
+              }
+            },
+            {
+              "order": 30,
+              "type": "AUTO_SELECT_BY_COUNT",
+              "readOnly": true,
+              "sourceField": [
+                "Lighting Circuits Count"
+              ],
+              "params": {
+                "optionPrefix": "Universal Input",
+                "errorMessage": "Hardware Limit Reached"
               }
             }
           ]
@@ -20781,11 +20774,12 @@
           },
           "rules": [
             {
-              "order": 75,
-              "type": "LOCK_IF",
-              "lockTarget": true,
-              "enabled": true,
-              "sourceField": "Control Type",
+              "order": 10,
+              "type": "HIDE_IF",
+              "readOnly": true,
+              "sourceField": [
+                "Control Type"
+              ],
               "params": {
                 "value": "1, 7"
               }
@@ -20823,11 +20817,12 @@
           },
           "rules": [
             {
-              "order": 76,
-              "type": "LOCK_IF",
-              "lockTarget": true,
-              "enabled": true,
-              "sourceField": "Control Type",
+              "order": 10,
+              "type": "HIDE_IF",
+              "readOnly": true,
+              "sourceField": [
+                "Control Type"
+              ],
               "params": {
                 "value": "1, 2, 4, 7"
               }
@@ -20864,11 +20859,12 @@
           },
           "rules": [
             {
-              "order": 77,
-              "type": "LOCK_IF",
-              "lockTarget": true,
-              "enabled": true,
-              "sourceField": "Control Type",
+              "order": 10,
+              "type": "HIDE_IF",
+              "readOnly": true,
+              "sourceField": [
+                "Control Type"
+              ],
               "params": {
                 "value": 7
               }
@@ -20912,24 +20908,15 @@
           "comments": "Schedule - Yes/No",
           "rules": [
             {
-              "order": 80,
-              "type": "LOCK_IF",
-              "lockTarget": true,
-              "enabled": true,
-              "sourceField": "Control Type",
+              "order": 10,
+              "type": "HIDE_IF",
+              "readOnly": true,
+              "sourceField": [
+                "Control Type"
+              ],
               "params": {
                 "value": "2,3,7"
               }
-            },
-            {
-              "order": 90,
-              "type": "REQUIRE_IF",
-              "lockTarget": false,
-              "enabled": true,
-              "sourceField": "Control Type",
-              "params": {
-                "value": "1, 4, 5, 6"
-              }
             }
           ]
         }
@@ -20937,385 +20924,10 @@
     },
     {
       "algorithm": "Standard/Scheduled Algorithms",
-      "id": "lightingControlDO-Lighting-Control-DO_SN-zone",
-      "hayloftModel": "lightingControlDO",
-      "name": "Lighting Control DO_SN",
-      "description": "Scheduled or conditional lighting control for SmartNode",
-      "type": "zone",
-      "equipGraphics": [
-        "Lighting Control DO"
-      ],
-      "analyticsName": [
-        "Equipment Connected",
-        "Cloud Connected",
-        "Seqeunce Run Time",
-        "Lighting System Status",
-        "Occupancy and Schedule",
-        "Lighting Control DO - Control Mode (Schedule, Schedule with Auto Occupancy, Occupancy Mode, Vacancy Mode, Manual Mode)",
-        "Runtime Hours"
-      ],
-      "cdd": "Lighting Control DO_SN",
-      "sequenceId": "LIGHTING_CONTROL_DO_SN",
-      "sequenceName": "Lighting Control DO_SN",
-      "parameters": [
-        {
-          "id": "lightingCircuitsCount",
-          "category": "Basic",
-          "name": "Lighting Circuits Count",
-          "type": "dropdown",
-          "default": 1,
-          "unit": null,
-          "options": [
-            {
-              "label": "1",
-              "value": 1
-            },
-            {
-              "label": "2",
-              "value": 2
-            },
-            {
-              "label": "3",
-              "value": 3
-            },
-            {
-              "label": "4",
-              "value": 4
-            }
-          ],
-          "pointMapping": {
-            "1": "lightingCircuitCount",
-            "2": "for 1 = lightingcirc1Cmd",
-            "3": "for 2 = lightingcirc2Cmd",
-            "4": "for 3 = lightingcirc3Cmd"
-          },
-          "tags": [
-            "circuit",
-            "count",
-            "lighting",
-            "config",
-            "writable"
-          ],
-          "comments": "ENUM Point (Lighting Circuit 1 to Circuit 4)"
-        },
-        {
-          "id": "controlType",
-          "category": "Control",
-          "name": "Control Type",
-          "type": "dropdown",
-          "default": 1,
-          "unit": null,
-          "options": [
-            {
-              "label": "1- Schedule Mode",
-              "value": 1
-            },
-            {
-              "label": "2 - Occupancy Mode",
-              "value": 2
-            },
-            {
-              "label": "3-  Vacancy Mode",
-              "value": 3
-            },
-            {
-              "label": "4 - Schedule with Auto Occupancy Mode",
-              "value": 4
-            },
-            {
-              "label": "5 - Schedule with Auto Vacancy Mode",
-              "value": 5
-            },
-            {
-              "label": "6 - Schedule with Auto Occupancy Vacancy Mode",
-              "value": 6
-            },
-            {
-              "label": "7 - Manual Override Mode",
-              "value": 7
-            }
-          ],
-          "pointMapping": {
-            "1": "controlType"
-          },
-          "tags": [
-            "config",
-            "generic",
-            "lighting",
-            "mode",
-            "sp",
-            "type",
-            "control",
-            "schedulable",
-            "writable",
-            "dis",
-            "id",
-            "kind",
-            "point",
-            "siteRef",
-            "tz"
-          ],
-          "comments": "1. Schedule Mode = The lighting circuit shall turn on during the building or zone's occupied schedule mode.\r\n2 - Occupancy Mode = The lighting circuit shall turn on based on occupancy detected by the zone or building occupancy sensor and turn off automatically when no occupancy is detected by the sensor after the configured time delay expires.\r\n3-  Vacancy Mode = The lighting circuit shall be turned on manually by the user via a local switch and turn off automatically when no occupancy is detected by the sensor after the configured time delay expires.\r\n4 - Schedule with Auto Occupancy Mode = The lighting circuit shall turn on and remain energized during the occupied schedule mode. Outside of scheduled hours, the circuit shall transition to Auto-ON / Auto-OFF logic, turning on automatically based on occupancy detected by the sensor and turning off when the space is vacant.\r\n5 - Schedule with Auto Vacancy Mode = The lighting circuit shall turn on and remain energized during the occupied schedule mode. Outside of scheduled hours, the circuit shall transition to Manual-ON / Auto-OFF logic, requiring a manual turn-on via a local switch and turning off automatically when the space is vacant and the time delay expires.\r\n6 - Schedule with Auto Occupancy Vacancy Mode = The lighting circuit shall turn on automatically upon detected occupancy during scheduled hours, and shall strictly require a manual turn-on via a local switch outside of scheduled hours, automatically turning off in both states when the space is vacant and the time delay expires.\r\n7 - Manual Override Mode = The lighting circuit shall turn on or off based on a manual command from the user via manual override switch, overriding all existing schedules and sensors."
-        },
-        {
-          "id": "occupancySensor",
-          "category": "Input",
-          "name": "Occupancy Sensor",
-          "type": "multiselect",
-          "default": [],
-          "unit": null,
-          "options": [
-            {
-              "label": "None",
-              "value": "None"
-            },
-            {
-              "label": "Universal Input 1",
-              "value": 1
-            },
-            {
-              "label": "Universal Input 2",
-              "value": 2
-            },
-            {
-              "label": "Universal Input 3",
-              "value": 3
-            },
-            {
-              "label": "Universal Input 4",
-              "value": 4
-            },
-            {
-              "label": "OR",
-              "value": "OR"
-            },
-            {
-              "label": "POR Sensor 1",
-              "value": 1
-            },
-            {
-              "label": "POR Sensor 2",
-              "value": 2
-            },
-            {
-              "label": "POR Sensor 3",
-              "value": 3
-            },
-            {
-              "label": "POR Sensor 4",
-              "value": 4
-            }
-          ],
-          "pointMapping": {
-            "1": "occupancySensor1Sts",
-            "2": "occupancySensor2Sts",
-            "3": "occupancySensor3Sts",
-            "4": "occupancySensor4Sts"
-          },
-          "tags": [
-            "occupancy",
-            "order",
-            "lighting",
-            "run",
-            "sensor",
-            "status",
-            "cur",
-            "his",
-            "dis",
-            "id",
-            "kind",
-            "point",
-            "siteRef",
-            "tz"
-          ]
-        },
-        {
-          "id": "manualOverride",
-          "category": "Input",
-          "name": "Manual Override",
-          "type": "multiselect",
-          "default": [],
-          "unit": null,
-          "options": [
-            {
-              "label": "None",
-              "value": "None"
-            },
-            {
-              "label": "Universal Input 1",
-              "value": 1
-            },
-            {
-              "label": "Universal Input 2",
-              "value": 2
-            },
-            {
-              "label": "Universal Input 3",
-              "value": 3
-            },
-            {
-              "label": "Universal Input 4",
-              "value": 4
-            }
-          ],
-          "pointMapping": {
-            "1": "manualOverrideSwitch1",
-            "2": "manualOverrideSwitch2",
-            "3": "manualOverrideSwitch3",
-            "4": "manualOverrideSwitch4"
-          },
-          "tags": [
-            "enable",
-            "order",
-            "override",
-            "lighting",
-            "sensor",
-            "manual",
-            "switch",
-            "his",
-            "writable",
-            "dis",
-            "id",
-            "kind",
-            "point",
-            "siteRef",
-            "tz"
-          ],
-          "comments": "Momentary Press [from Universal Input]"
-        },
-        {
-          "id": "occupancyDuration",
-          "category": "Override",
-          "name": "Occupancy Duration",
-          "type": "number",
-          "default": 20,
-          "unit": "Minutes",
-          "point": "occupancyDuration",
-          "tags": [
-            "config",
-            "duration",
-            "generic",
-            "lighting",
-            "occupancy",
-            "sp",
-            "his",
-            "writable",
-            "dis",
-            "id",
-            "kind",
-            "point",
-            "siteRef",
-            "tz"
-          ],
-          "validation": {
-            "min": 0,
-            "max": 500,
-            "integer": true
-          }
-        },
-        {
-          "id": "vacancyDuration",
-          "category": "Override",
-          "name": "Vacancy Duration",
-          "type": "number",
-          "default": 20,
-          "unit": "Minutes",
-          "point": "vacancyDuration",
-          "tags": [
-            "config",
-            "duration",
-            "generic",
-            "lighting",
-            "vacancy",
-            "sp",
-            "his",
-            "writable",
-            "dis",
-            "id",
-            "kind",
-            "point",
-            "siteRef",
-            "tz"
-          ],
-          "validation": {
-            "min": 0,
-            "max": 500,
-            "integer": true
-          }
-        },
-        {
-          "id": "flashWarningTime",
-          "category": "Override",
-          "name": "Flash Warning Time",
-          "type": "number",
-          "default": 0,
-          "unit": "Minutes",
-          "point": "flashWarningTimer",
-          "tags": [
-            "config",
-            "generic",
-            "lighting",
-            "sp",
-            "timer",
-            "his",
-            "writable",
-            "dis",
-            "id",
-            "kind",
-            "point",
-            "siteRef",
-            "tz"
-          ],
-          "validation": {
-            "min": 0,
-            "max": 100,
-            "integer": true
-          }
-        },
-        {
-          "id": "scheduleMode",
-          "category": "Control",
-          "name": "Schedule Mode",
-          "type": "dropdown",
-          "default": "Yes",
-          "unit": null,
-          "options": [
-            {
-              "label": "Yes",
-              "value": "Yes"
-            },
-            {
-              "label": "No",
-              "value": "No"
-            }
-          ],
-          "point": "scheduleMode",
-          "tags": [
-            "config",
-            "generic",
-            "lighting",
-            "mode",
-            "sp",
-            "his",
-            "schedulable",
-            "writable",
-            "dis",
-            "id",
-            "kind",
-            "point",
-            "siteRef",
-            "tz"
-          ],
-          "comments": "Schedule - Yes/No"
-        }
-      ]
-    },
-    {
-      "algorithm": "Standard/Scheduled Algorithms",
-      "id": "lightingControlwithDayLightHarvesting-Daylight-Harvesting-AO_CN-zone",
-      "hayloftModel": "lightingControlwithDayLightHarvesting",
+      "id": "dayLightHarvestingAO-Daylight-Harvesting-AO_CN-zone",
+      "hayloftModel": "dayLightHarvestingAO",
       "name": "Daylight Harvesting AO_CN",
-      "description": "Modulating Day light harvesting control for Smart Node",
+      "description": "Modulating Day light harvesting control for Connect Module",
       "type": "zone",
       "equipGraphics": [
         "Daylight Harvesting AO"
@@ -21372,19 +20984,7 @@
             "config",
             "writable"
           ],
-          "comments": "ENUM Point (Lighting Circuit 1 to Circuit 4)",
-          "rules": [
-            {
-              "order": 10,
-              "type": "AUTO_SELECT_BY_COUNT",
-              "lockTarget": true,
-              "enabled": true,
-              "sourceField": "Lighting Circuits Count",
-              "params": {
-                "optionPrefix": "AO"
-              }
-            }
-          ]
+          "comments": "ENUM Point (Lighting Circuit 1 to Circuit 4)"
         },
         {
           "id": "controlType",
@@ -21483,23 +21083,14 @@
           "comments": "Schedule - Yes/No",
           "rules": [
             {
-              "order": 130,
-              "type": "LOCK_IF",
-              "lockTarget": true,
-              "enabled": true,
-              "sourceField": "Control Type",
+              "order": 10,
+              "type": "HIDE_IF",
+              "readOnly": true,
+              "sourceField": [
+                "Control Type"
+              ],
               "params": {
                 "value": "2,3,7"
-              }
-            },
-            {
-              "order": 140,
-              "type": "REQUIRE_IF",
-              "lockTarget": false,
-              "enabled": true,
-              "sourceField": "Control Type",
-              "params": {
-                "value": "1, 4, 5, 6"
               }
             }
           ]
@@ -21513,11 +21104,13 @@
           "unit": "%",
           "options": [
             {
-              "label": "N%",
-              "value": "N%"
+              "label": "0 to 50",
+              "value": 0
             }
           ],
-          "point": "minLightLevel",
+          "pointMapping": {
+            "0": "minLightLevel"
+          },
           "tags": [
             "level",
             "light",
@@ -21543,11 +21136,13 @@
           "unit": "%",
           "options": [
             {
-              "label": "N%",
-              "value": "N%"
+              "label": "50 to 100",
+              "value": 50
             }
           ],
-          "point": "maxLightLevel",
+          "pointMapping": {
+            "50": "maxLightLevel"
+          },
           "tags": [
             "level",
             "light",
@@ -21679,23 +21274,33 @@
           ],
           "rules": [
             {
-              "order": 20,
-              "type": "LOCK_IF",
-              "lockTarget": true,
-              "enabled": true,
-              "sourceField": "Control Type",
+              "order": 10,
+              "type": "HIDE_IF",
+              "readOnly": true,
+              "sourceField": [
+                "Control Type"
+              ],
               "params": {
                 "value": 7
               }
             },
             {
-              "order": 30,
+              "order": 20,
               "type": "AUTO_SELECT_BY_COUNT",
-              "lockTarget": true,
-              "enabled": true,
-              "sourceField": "Lighting Circuits Count",
+              "readOnly": true,
+              "sourceField": [
+                "Lighting Circuits Count"
+              ],
               "params": {
-                "optionPrefix": "UI"
+                "optionPrefix": "Universal Input"
+              }
+            },
+            {
+              "order": 30,
+              "type": "NONE_EXCLUSIVE",
+              "readOnly": true,
+              "params": {
+                "noneLabel": "None"
               }
             }
           ]
@@ -21751,33 +21356,33 @@
           ],
           "rules": [
             {
-              "order": 40,
-              "type": "LOCK_IF",
-              "lockTarget": true,
-              "enabled": true,
-              "sourceField": "Control Type",
+              "order": 10,
+              "type": "HIDE_IF",
+              "readOnly": true,
+              "sourceField": [
+                "Control Type"
+              ],
               "params": {
                 "value": "1, 7"
               }
             },
             {
-              "order": 50,
-              "type": "REQUIRE_IF",
-              "lockTarget": false,
-              "enabled": true,
-              "sourceField": "Control Type",
+              "order": 20,
+              "type": "EXCLUDE_SELECTED",
+              "readOnly": false,
+              "sourceField": [
+                "Lux Sensor"
+              ],
               "params": {
-                "value": "2, 3, 4, 5, 6"
+                "param1": "none"
               }
             },
             {
-              "order": 60,
-              "type": "EXCLUDE_SELECTED",
-              "lockTarget": false,
-              "enabled": true,
-              "sourceField": "Lux Sensor",
+              "order": 30,
+              "type": "NONE_EXCLUSIVE",
+              "readOnly": false,
               "params": {
-                "param1": "none"
+                "noneLabel": "None"
               }
             }
           ]
@@ -21831,31 +21436,24 @@
           "comments": "Momentary Press [from Universal Input]",
           "rules": [
             {
-              "order": 70,
-              "type": "LOCK_IF",
-              "lockTarget": true,
-              "enabled": true,
-              "sourceField": "Control Type",
+              "order": 10,
+              "type": "HIDE_IF",
+              "readOnly": true,
+              "sourceField": [
+                "Control Type"
+              ],
               "params": {
                 "value": "1, 2, 4"
               }
             },
             {
-              "order": 80,
-              "type": "REQUIRE_IF",
-              "lockTarget": false,
-              "enabled": true,
-              "sourceField": "Control Type",
-              "params": {
-                "value": "3, 5, 6, 7"
-              }
-            },
-            {
-              "order": 90,
+              "order": 20,
               "type": "EXCLUDE_SELECTED",
-              "lockTarget": false,
-              "enabled": true,
-              "sourceField": "Lux Sensor, Occ Sensor",
+              "readOnly": false,
+              "sourceField": [
+                "Lux Sensor",
+                "Occupancy Sensor"
+              ],
               "params": {
                 "param1": "none"
               }
@@ -21911,31 +21509,25 @@
           "comments": "Momentary Press [from Universal Input]",
           "rules": [
             {
-              "order": 100,
-              "type": "LOCK_IF",
-              "lockTarget": true,
-              "enabled": true,
-              "sourceField": "Control Type",
+              "order": 30,
+              "type": "HIDE_IF",
+              "readOnly": true,
+              "sourceField": [
+                "Control Type"
+              ],
               "params": {
                 "value": "1, 2, 4"
               }
             },
             {
-              "order": 110,
-              "type": "REQUIRE_IF",
-              "lockTarget": false,
-              "enabled": true,
-              "sourceField": "Control Type",
-              "params": {
-                "value": "3, 5, 6, 7"
-              }
-            },
-            {
-              "order": 120,
+              "order": 40,
               "type": "EXCLUDE_SELECTED",
-              "lockTarget": false,
-              "enabled": true,
-              "sourceField": "Lux Sensor, Occupancy Sensor, Manual Step Control Up",
+              "readOnly": false,
+              "sourceField": [
+                "Lux Sensor",
+                "Occupancy Sensor",
+                "Manual Step Control Up"
+              ],
               "params": {
                 "param1": "none"
               }
@@ -21973,11 +21565,12 @@
           },
           "rules": [
             {
-              "order": 75,
-              "type": "LOCK_IF",
-              "lockTarget": true,
-              "enabled": true,
-              "sourceField": "Control Type",
+              "order": 10,
+              "type": "HIDE_IF",
+              "readOnly": true,
+              "sourceField": [
+                "Control Type"
+              ],
               "params": {
                 "value": "1, 7"
               }
@@ -22015,11 +21608,12 @@
           },
           "rules": [
             {
-              "order": 76,
-              "type": "LOCK_IF",
-              "lockTarget": true,
-              "enabled": true,
-              "sourceField": "Control Type",
+              "order": 10,
+              "type": "HIDE_IF",
+              "readOnly": true,
+              "sourceField": [
+                "Control Type"
+              ],
               "params": {
                 "value": "1, 2, 4, 7"
               }
@@ -22036,635 +21630,17 @@
           "point": "flashWarningTimer",
           "rules": [
             {
-              "order": 77,
-              "type": "LOCK_IF",
-              "lockTarget": true,
-              "enabled": true,
-              "sourceField": "Control Type",
+              "order": 10,
+              "type": "HIDE_IF",
+              "readOnly": true,
+              "sourceField": [
+                "Control Type"
+              ],
               "params": {
                 "value": 7
               }
             }
           ]
-        },
-        {
-          "id": "lightingCircuits",
-          "category": "Output",
-          "name": "Lighting Circuits",
-          "type": "multiselect",
-          "default": [],
-          "unit": null,
-          "options": [
-            {
-              "label": "AO 1",
-              "value": 1
-            },
-            {
-              "label": "AO 2",
-              "value": 2
-            },
-            {
-              "label": "AO 3",
-              "value": 3
-            },
-            {
-              "label": "AO 4",
-              "value": 4
-            }
-          ],
-          "pointMapping": {
-            "1": "lightOut01",
-            "2": "lightOut02",
-            "3": "lightOut03",
-            "4": "lightOut04"
-          },
-          "tags": [
-            "cmd",
-            "light",
-            "lighting",
-            "order",
-            "output",
-            "run",
-            "his",
-            "writable",
-            "dis",
-            "id",
-            "kind",
-            "point",
-            "siteRef",
-            "tz"
-          ]
-        }
-      ]
-    },
-    {
-      "algorithm": "Standard/Scheduled Algorithms",
-      "id": "lightingControlwithDayLightHarvesting-Daylight-Harvesting-AO_SN-zone",
-      "hayloftModel": "lightingControlwithDayLightHarvesting",
-      "name": "Daylight Harvesting AO_SN",
-      "description": "Modulating Day light harvesting control for Smart Node",
-      "type": "zone",
-      "equipGraphics": [
-        "Daylight Harvesting AO"
-      ],
-      "analyticsName": [
-        "Equipment Connected",
-        "Cloud Connected",
-        "Seqeunce Run Time",
-        "Lighting Output vs Setpoint",
-        "Daylight (Lux) vs Setpoint",
-        "Occupancy and Schedule",
-        "Daylight Harvesting - Control Mode (Schedule, Schedule with Auto Occupancy, Occupancy Mode, Vacancy Mode, Manual Mode)",
-        "Runtime Hours"
-      ],
-      "cdd": "Daylight Harvesting AO_SN",
-      "sequenceId": "DAYLIGHT_HARVESTING_AO_SN",
-      "sequenceName": "Daylight Harvesting AO_SN",
-      "parameters": [
-        {
-          "id": "lightingCircuitsCount",
-          "category": "Basic",
-          "name": "Lighting Circuits Count",
-          "type": "dropdown",
-          "default": 1,
-          "unit": null,
-          "options": [
-            {
-              "label": "1",
-              "value": 1
-            },
-            {
-              "label": "2",
-              "value": 2
-            },
-            {
-              "label": "3",
-              "value": 3
-            },
-            {
-              "label": "4",
-              "value": 4
-            }
-          ],
-          "pointMapping": {
-            "1": "lightingCircuitCount"
-          },
-          "tags": [
-            "circuit",
-            "count",
-            "lighting",
-            "config",
-            "writable",
-            "For 1 = lightOut01",
-            "For 2 =lightOut02",
-            "For 3 =lightOut03",
-            "For 4 =lightOut04"
-          ],
-          "comments": "ENUM Point (Lighting Circuit 1 to Circuit 4)"
-        },
-        {
-          "id": "controlType",
-          "category": "Control",
-          "name": "Control Type",
-          "type": "dropdown",
-          "default": 1,
-          "unit": null,
-          "options": [
-            {
-              "label": "1- Schedule Mode",
-              "value": 1
-            },
-            {
-              "label": "2 - Occupancy Mode",
-              "value": 2
-            },
-            {
-              "label": "3-  Vacancy Mode",
-              "value": 3
-            },
-            {
-              "label": "4 - Schedule with Auto Occupancy Mode",
-              "value": 4
-            },
-            {
-              "label": "5 - Schedule with Auto Vacancy Mode",
-              "value": 5
-            },
-            {
-              "label": "6 - Schedule with Auto Occupancy Vacancy Mode",
-              "value": 6
-            },
-            {
-              "label": "7 - Manual Override Mode",
-              "value": 7
-            }
-          ],
-          "pointMapping": {
-            "1": "controlType"
-          },
-          "tags": [
-            "config",
-            "generic",
-            "lighting",
-            "mode",
-            "sp",
-            "type",
-            "control",
-            "his",
-            "schedulable",
-            "writable",
-            "dis",
-            "id",
-            "kind",
-            "point",
-            "siteRef",
-            "tz"
-          ],
-          "comments": "1. Schedule Mode = The lighting circuit shall turn on during the building or zone's occupied schedule mode.\r\n2 - Occupancy Mode = The lighting circuit shall turn on based on occupancy detected by the zone or building occupancy sensor and turn off automatically when no occupancy is detected by the sensor after the configured time delay expires.\r\n3-  Vacancy Mode = The lighting circuit shall be turned on manually by the user via a local switch and turn off automatically when no occupancy is detected by the sensor after the configured time delay expires.\r\n4 - Schedule with Auto Occupancy Mode = The lighting circuit shall turn on and remain energized during the occupied schedule mode. Outside of scheduled hours, the circuit shall transition to Auto-ON / Auto-OFF logic, turning on automatically based on occupancy detected by the sensor and turning off when the space is vacant.\r\n5 - Schedule with Auto Vacancy Mode = The lighting circuit shall turn on and remain energized during the occupied schedule mode. Outside of scheduled hours, the circuit shall transition to Manual-ON / Auto-OFF logic, requiring a manual turn-on via a local switch and turning off automatically when the space is vacant and the time delay expires.\r\n6 - Schedule with Auto Occupancy Vacancy Mode = The lighting circuit shall turn on automatically upon detected occupancy during scheduled hours, and shall strictly require a manual turn-on via a local switch outside of scheduled hours, automatically turning off in both states when the space is vacant and the time delay expires.\r\n7 - Manual Override Mode = The lighting circuit shall turn on or off based on a manual command from the user via manual override switch, overriding all existing schedules and sensors."
-        },
-        {
-          "id": "scheduleMode",
-          "category": "Control",
-          "name": "Schedule Mode",
-          "type": "dropdown",
-          "default": "Yes",
-          "unit": null,
-          "options": [
-            {
-              "label": "Yes",
-              "value": "Yes"
-            },
-            {
-              "label": "No",
-              "value": "No"
-            }
-          ],
-          "point": "scheduleMode",
-          "tags": [
-            "config",
-            "generic",
-            "lighting",
-            "mode",
-            "sp",
-            "his",
-            "schedulable",
-            "writable",
-            "dis",
-            "id",
-            "kind",
-            "point",
-            "siteRef",
-            "tz"
-          ],
-          "comments": "Schedule - Yes/No"
-        },
-        {
-          "id": "minLightLevel",
-          "category": "Control",
-          "name": "Min Light Level",
-          "type": "dropdown",
-          "default": "20%",
-          "unit": "%",
-          "options": [
-            {
-              "label": "N%",
-              "value": "N%"
-            }
-          ],
-          "point": "minLightLevel",
-          "tags": [
-            "level",
-            "light",
-            "lighting",
-            "min",
-            "sp",
-            "his",
-            "writable",
-            "dis",
-            "id",
-            "kind",
-            "point",
-            "siteRef",
-            "tz"
-          ]
-        },
-        {
-          "id": "maxLightLevel",
-          "category": "Control",
-          "name": "Max Light Level",
-          "type": "dropdown",
-          "default": "100%",
-          "unit": "%",
-          "options": [
-            {
-              "label": "N%",
-              "value": "N%"
-            }
-          ],
-          "point": "maxLightLevel",
-          "tags": [
-            "level",
-            "light",
-            "lighting",
-            "max",
-            "sp",
-            "his",
-            "writable",
-            "dis",
-            "id",
-            "kind",
-            "point",
-            "siteRef",
-            "tz"
-          ]
-        },
-        {
-          "id": "luxMinSetpoint",
-          "category": "Sensors",
-          "name": "Lux Min Setpoint",
-          "type": "dropdown",
-          "default": 80,
-          "unit": "Lux",
-          "options": [
-            {
-              "label": "0 to 2000",
-              "value": 0
-            }
-          ],
-          "pointMapping": {
-            "0": "luxMinSp"
-          },
-          "tags": [
-            "config",
-            "illuminance",
-            "level",
-            "light",
-            "lighting",
-            "min",
-            "sp",
-            "his",
-            "writable",
-            "dis",
-            "id",
-            "kind",
-            "point",
-            "siteRef",
-            "tz"
-          ]
-        },
-        {
-          "id": "luxMaxSetpoint",
-          "category": "Sensors",
-          "name": "Lux Max Setpoint",
-          "type": "dropdown",
-          "default": 250,
-          "unit": "Lux",
-          "options": [
-            {
-              "label": "0 to 2000",
-              "value": 0
-            }
-          ],
-          "pointMapping": {
-            "0": "luxMaxSp"
-          },
-          "tags": [
-            "config",
-            "illuminance",
-            "level",
-            "light",
-            "lighting",
-            "max",
-            "sp",
-            "his",
-            "writable",
-            "dis",
-            "id",
-            "kind",
-            "point",
-            "siteRef",
-            "tz"
-          ]
-        },
-        {
-          "id": "luxSensor",
-          "category": "Input",
-          "name": "Lux Sensor",
-          "type": "multiselect",
-          "default": [],
-          "unit": "lx",
-          "options": [
-            {
-              "label": "Universal Input 1",
-              "value": 1
-            },
-            {
-              "label": "Universal Input 2",
-              "value": 2
-            },
-            {
-              "label": "Universal Input 3",
-              "value": 3
-            },
-            {
-              "label": "Universal Input 4",
-              "value": 4
-            }
-          ],
-          "pointMapping": {
-            "1": "luxSensor1",
-            "2": "luxSensor2",
-            "3": "luxSensor3",
-            "4": "luxSensor4"
-          },
-          "tags": [
-            "illuminance",
-            "light",
-            "lighting",
-            "order",
-            "sensor",
-            "his",
-            "dis",
-            "id",
-            "kind",
-            "point",
-            "siteRef",
-            "tz"
-          ]
-        },
-        {
-          "id": "occupancySensor",
-          "category": "Input",
-          "name": "Occupancy Sensor",
-          "type": "multiselect",
-          "default": [],
-          "unit": null,
-          "options": [
-            {
-              "label": "None",
-              "value": "None"
-            },
-            {
-              "label": "Universal Input 1",
-              "value": 1
-            },
-            {
-              "label": "Universal Input 2",
-              "value": 2
-            },
-            {
-              "label": "Universal Input 3",
-              "value": 3
-            },
-            {
-              "label": "Universal Input 4",
-              "value": 4
-            },
-            {
-              "label": "OR",
-              "value": "OR"
-            },
-            {
-              "label": "POR Sensor 1",
-              "value": 1
-            },
-            {
-              "label": "POR Sensor 2",
-              "value": 2
-            },
-            {
-              "label": "POR Sensor 3",
-              "value": 3
-            },
-            {
-              "label": "POR Sensor 4",
-              "value": 4
-            }
-          ],
-          "pointMapping": {
-            "1": "occupancySensor1",
-            "2": "occupancySensor2",
-            "3": "occupancySensor3",
-            "4": "occupancySensor4"
-          },
-          "tags": [
-            "lighting",
-            "occupancy",
-            "occupied",
-            "order",
-            "sensor",
-            "his",
-            "cur",
-            "dis",
-            "id",
-            "kind",
-            "point",
-            "siteRef"
-          ]
-        },
-        {
-          "id": "manualStepControlUp",
-          "category": "Input",
-          "name": "Manual Step Control Up",
-          "type": "dropdown",
-          "default": 1,
-          "unit": null,
-          "options": [
-            {
-              "label": "Universal Input 1",
-              "value": 1
-            },
-            {
-              "label": "Universal Input 2",
-              "value": 2
-            },
-            {
-              "label": "Universal Input 3",
-              "value": 3
-            },
-            {
-              "label": "Universal Input 4",
-              "value": 4
-            }
-          ],
-          "pointMapping": {
-            "1": "manualStepControlUp1",
-            "2": "manualStepControlUp2",
-            "3": "manualStepControlUp3",
-            "4": "manualStepControlUp4"
-          },
-          "tags": [
-            "enable",
-            "light",
-            "lighting",
-            "manual",
-            "order",
-            "sensor",
-            "his",
-            "dis",
-            "id",
-            "kind",
-            "point",
-            "siteRef",
-            "tz"
-          ],
-          "comments": "Momentary Press [from Universal Input]"
-        },
-        {
-          "id": "manualStepControlDown",
-          "category": "Input",
-          "name": "Manual Step Control Down",
-          "type": "dropdown",
-          "default": null,
-          "unit": null,
-          "options": [
-            {
-              "label": "Universal Input 1",
-              "value": 1
-            },
-            {
-              "label": "Universal Input 2",
-              "value": 2
-            },
-            {
-              "label": "Universal Input 2",
-              "value": 2
-            },
-            {
-              "label": "Universal Input 4",
-              "value": 4
-            }
-          ],
-          "pointMapping": {
-            "1": "manualStepControlDown1",
-            "2": "manualStepControlDown3",
-            "4": "manualStepControlDown4"
-          },
-          "tags": [
-            "enable",
-            "light",
-            "lighting",
-            "manual",
-            "order",
-            "sensor",
-            "his",
-            "dis",
-            "id",
-            "kind",
-            "point",
-            "siteRef",
-            "tz"
-          ],
-          "comments": "Momentary Press [from Universal Input]"
-        },
-        {
-          "id": "occupancyDuration",
-          "category": "Override",
-          "name": "Occupancy Duration",
-          "type": "number",
-          "default": 20,
-          "unit": "Minutes",
-          "point": "occupancyDuration",
-          "tags": [
-            "config",
-            "duration",
-            "generic",
-            "lighting",
-            "occupancy",
-            "sp",
-            "his",
-            "writable",
-            "dis",
-            "id",
-            "kind",
-            "point",
-            "siteRef",
-            "tz"
-          ],
-          "validation": {
-            "min": 0,
-            "max": 500,
-            "integer": true
-          }
-        },
-        {
-          "id": "vacancyDuration",
-          "category": "Override",
-          "name": "Vacancy Duration",
-          "type": "number",
-          "default": 20,
-          "unit": "Minutes",
-          "point": "vacancyDuration",
-          "tags": [
-            "config",
-            "duration",
-            "generic",
-            "lighting",
-            "vacancy",
-            "sp",
-            "his",
-            "writable",
-            "dis",
-            "id",
-            "kind",
-            "point",
-            "siteRef",
-            "tz"
-          ],
-          "validation": {
-            "min": 0,
-            "max": 500,
-            "integer": true
-          }
-        },
-        {
-          "id": "flashWarningTime",
-          "category": "Override",
-          "name": "Flash Warning Time",
-          "type": "number",
-          "default": 5,
-          "unit": "Minutes",
-          "point": "flashWarningTimer"
         },
         {
           "id": "lightingCircuits",
@@ -22721,7 +21697,7 @@
       "id": "exhaustFanControl-Exhaust-Fan-Control_CN-zone",
       "hayloftModel": "exhaustFanControl",
       "name": "Exhaust Fan Control_CN",
-      "description": "Exhaust Fan  control for Smart Node",
+      "description": "Exhaust Fan  control for Connect Module",
       "type": "zone",
       "equipGraphics": [
         "Exhaust Fan Control"
@@ -22810,19 +21786,7 @@
             "order",
             "run"
           ],
-          "comments": "ENUM Point (Exhaust Fan 1 to 8)",
-          "rules": [
-            {
-              "order": 10,
-              "type": "AUTO_SELECT_BY_COUNT",
-              "lockTarget": true,
-              "enabled": true,
-              "sourceField": "Exhaust Fan Circuit Count",
-              "params": {
-                "optionPrefix": "BO"
-              }
-            }
-          ]
+          "comments": "ENUM Point (Exhaust Fan 1 to 8)"
         },
         {
           "id": "scheduleMode",
@@ -22907,24 +21871,77 @@
           "comments": "Exhaust Fan Interlock with Dedicated AHU/RTU or any other field device like damper actuator.",
           "rules": [
             {
-              "order": 50,
-              "type": "LOCK_IF",
-              "lockTarget": true,
-              "enabled": true,
-              "sourceField": "Interlock Enable",
+              "order": 10,
+              "type": "HIDE_IF",
+              "readOnly": true,
+              "sourceField": [
+                "Interlock Enable"
+              ],
               "params": {
                 "value": "No"
               }
+            }
+          ]
+        },
+        {
+          "id": "fanStatusRequired",
+          "category": "Fan Status Required",
+          "name": "Fan Status Required",
+          "type": "dropdown",
+          "default": "Yes",
+          "unit": null,
+          "options": [
+            {
+              "label": "Yes",
+              "value": "Yes"
             },
             {
-              "order": 60,
-              "type": "REQUIRE_IF",
-              "lockTarget": false,
-              "enabled": true,
-              "sourceField": "Interlock Enable",
-              "params": {
-                "value": "Yes"
-              }
+              "label": "No",
+              "value": "No"
+            },
+            {
+              "label": "None",
+              "value": "If No"
+            },
+            {
+              "label": "If Yes",
+              "value": "If Yes"
+            },
+            {
+              "label": "then",
+              "value": "then"
+            },
+            {
+              "label": "Universal Input 1",
+              "value": 1
+            },
+            {
+              "label": "Universal Input 2",
+              "value": 2
+            },
+            {
+              "label": "Universal Input 3",
+              "value": 3
+            },
+            {
+              "label": "Universal Input 4",
+              "value": 4
+            },
+            {
+              "label": "Universal Input 5",
+              "value": 5
+            },
+            {
+              "label": "Universal Input 6",
+              "value": 6
+            },
+            {
+              "label": "Universal Input 7",
+              "value": 7
+            },
+            {
+              "label": "Universal Input 8",
+              "value": 8
             }
           ]
         },
@@ -23017,33 +22034,33 @@
           "comments": "For Fan Status Monitoring",
           "rules": [
             {
-              "order": 20,
-              "type": "LOCK_IF",
-              "lockTarget": true,
-              "enabled": true,
-              "sourceField": "Fan Status",
+              "order": 10,
+              "type": "HIDE_IF",
+              "readOnly": true,
+              "sourceField": [
+                "Fan Status"
+              ],
               "params": {
                 "value": "No"
               }
             },
             {
               "order": 30,
-              "type": "REQUIRE_IF",
-              "lockTarget": false,
-              "enabled": true,
-              "sourceField": "Fan Status",
+              "type": "AUTO_SELECT_BY_COUNT",
+              "readOnly": true,
+              "sourceField": [
+                "Exhaust Fan Circuit Count"
+              ],
               "params": {
-                "value": "Yes"
+                "optionPrefix": "Universal Input"
               }
             },
             {
               "order": 40,
-              "type": "AUTO_SELECT_BY_COUNT",
-              "lockTarget": false,
-              "enabled": true,
-              "sourceField": "Exhaust Fan Circuit Count",
+              "type": "NONE_EXCLUSIVE",
+              "readOnly": true,
               "params": {
-                "optionPrefix": "UI"
+                "noneLabel": "None"
               }
             }
           ]
@@ -23228,2578 +22245,14 @@
           "comments": "External interlock status input for Exhaust Fans",
           "rules": [
             {
-              "order": 70,
-              "type": "EXCLUDE_SELECTED",
-              "lockTarget": false,
-              "enabled": true,
-              "sourceField": "Interlock Status",
-              "params": {
-                "param1": "none"
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "algorithm": "Standard/Scheduled Algorithms",
-      "id": "exhaustFanControl-Exhaust-Fan-Control_SN-zone",
-      "hayloftModel": "exhaustFanControl",
-      "name": "Exhaust Fan Control_SN",
-      "description": "Exhaust Fan  control for Smart Node",
-      "type": "zone",
-      "equipGraphics": [
-        "Exhaust Fan Control"
-      ],
-      "analyticsName": [
-        "Equipment Connected",
-        "Cloud Connected",
-        "Seqeunce Run Time",
-        "Fan Status vs Command",
-        "Control Mode (Auto Mode (Schedule Based), Manual Override On, Manual Override Off)",
-        "Runtime Hours",
-        "Faults and Events"
-      ],
-      "cdd": "Exhaust Fan Control_SN",
-      "sequenceId": "EXHAUST_FAN_CONTROL_SN",
-      "sequenceName": "Exhaust Fan Control_SN",
-      "parameters": [
-        {
-          "id": "exhaustFanCircuitCount",
-          "category": "Basic",
-          "name": "Exhaust Fan Circuit Count",
-          "type": "multiselect",
-          "default": [],
-          "unit": null,
-          "options": [
-            {
-              "label": "1",
-              "value": 1
-            },
-            {
-              "label": "2",
-              "value": 2
-            },
-            {
-              "label": "3",
-              "value": 3
-            },
-            {
-              "label": "4",
-              "value": 4
-            }
-          ],
-          "pointMapping": {
-            "1": "exhaustFanCount",
-            "2": "For 1= exhaustFan1Cmd",
-            "3": "For 2= exhaustFan2Cmd",
-            "4": "For 3= exhaustFan3Cmd"
-          },
-          "tags": [
-            "For exhaustFanCount (circuit",
-            "config",
-            "exhaust",
-            "fan",
-            "generic",
-            "sp",
-            "his",
-            "writable",
-            "dis",
-            "id",
-            "kind",
-            "point",
-            "siteRef",
-            "tz)",
-            "For exhaustFanCmd (cmd",
-            "enable",
-            "order",
-            "run"
-          ],
-          "comments": "ENUM Point (Exhaust Fan 1 to 4)"
-        },
-        {
-          "id": "scheduleMode",
-          "category": "Control",
-          "name": "Schedule Mode",
-          "type": "dropdown",
-          "default": "Off",
-          "unit": null,
-          "options": [
-            {
-              "label": "Yes",
-              "value": "Yes"
-            },
-            {
-              "label": "No",
-              "value": "No"
-            }
-          ],
-          "point": "ScheduleMode",
-          "tags": [
-            "config",
-            "exhaust",
-            "fan",
-            "mode",
-            "operating",
-            "sp",
-            "his",
-            "schedulable",
-            "writable",
-            "dis",
-            "id",
-            "kind",
-            "point",
-            "siteRef",
-            "tz"
-          ],
-          "comments": "Scheduling Enable/Disable of Exhaust Fan"
-        },
-        {
-          "id": "interlockEnable",
-          "category": "Interlock",
-          "name": "Interlock Enable",
-          "type": "dropdown",
-          "default": "No",
-          "unit": null,
-          "options": [
-            {
-              "label": "Enable",
-              "value": "Enable"
-            },
-            {
-              "label": "Disable",
-              "value": "Disable"
-            }
-          ],
-          "pointMapping": {
-            "1": "interlockEnableEF1",
-            "2": "interlockEnableEF2",
-            "3": "interlockEnableEF3",
-            "4": "interlockEnableEF4"
-          },
-          "tags": [
-            "disable",
-            "enable",
-            "exhaust",
-            "fan",
-            "order",
-            "sensor",
-            "his",
-            "writable",
-            "dis",
-            "id",
-            "kind",
-            "point",
-            "siteRef",
-            "tz"
-          ],
-          "comments": "Exhaust Fan Interlock with Dedicated AHU/RTU or any other field device like damper actuator."
-        },
-        {
-          "id": "fanStatus",
-          "category": "Monitoring",
-          "name": "Fan Status",
-          "type": "dropdown",
-          "default": "No",
-          "unit": null,
-          "options": [
-            {
-              "label": "Yes",
-              "value": "Yes"
-            },
-            {
-              "label": "No",
-              "value": "No"
-            },
-            {
-              "label": "None",
-              "value": "If No"
-            },
-            {
-              "label": "If Yes",
-              "value": "If Yes"
-            },
-            {
-              "label": "then",
-              "value": "then"
-            },
-            {
-              "label": "Universal Input 1",
-              "value": 1
-            },
-            {
-              "label": "Universal Input 2",
-              "value": 2
-            },
-            {
-              "label": "Universal Input 3",
-              "value": 3
-            },
-            {
-              "label": "Universal Input 4",
-              "value": 4
-            }
-          ],
-          "pointMapping": {
-            "1": "exhaustFan1Sts",
-            "2": "exhaustFan2Sts",
-            "3": "exhaustFan3Sts",
-            "4": "exhaustFan4Sts"
-          },
-          "tags": [
-            "exhaust",
-            "fan",
-            "order",
-            "run",
-            "sensor",
-            "status",
-            "his",
-            "dis",
-            "id",
-            "kind",
-            "point",
-            "siteRef",
-            "tz"
-          ],
-          "comments": "For Fan Status Monitoring"
-        },
-        {
-          "id": "fanMode",
-          "category": "Control",
-          "name": "Fan Mode",
-          "type": "dropdown",
-          "default": "NO",
-          "unit": null,
-          "options": [
-            {
-              "label": "NO (Normally Open)",
-              "value": "NO (Normally Open)"
-            },
-            {
-              "label": "NC (Normally Closed)",
-              "value": "NC (Normally Closed)"
-            }
-          ],
-          "pointMapping": {
-            "1": "fan1Mode",
-            "2": "fan2Mode",
-            "3": "fan3Mode",
-            "4": "fan4Mode"
-          },
-          "tags": [
-            "exhaust",
-            "fan",
-            "mode",
-            "normallyClosed",
-            "normallyOpen",
-            "operating",
-            "order",
-            "output",
-            "relay",
-            "sensor",
-            "his",
-            "writable",
-            "dis",
-            "id",
-            "kind",
-            "point",
-            "siteRef",
-            "tz"
-          ],
-          "comments": "Relay contact configuration (Normally Closed / Normally Open)"
-        },
-        {
-          "id": "manualOverride",
-          "category": "Control",
-          "name": "Manual Override",
-          "type": "dropdown",
-          "default": "Auto",
-          "unit": null,
-          "options": [
-            {
-              "label": "Auto",
-              "value": "Auto"
-            },
-            {
-              "label": "Override On",
-              "value": "Override On"
-            },
-            {
-              "label": "Override Off",
-              "value": "Override Off"
-            }
-          ],
-          "pointMapping": {
-            "1": "manualOverrideEF1",
-            "2": "manualOverrideEF2",
-            "3": "manualOverrideEF3",
-            "4": "manualOverrideEF4"
-          },
-          "tags": [
-            "config",
-            "exhaust",
-            "fan",
-            "generic",
-            "order",
-            "override",
-            "sp",
-            "his",
-            "writable",
-            "dis",
-            "id",
-            "kind",
-            "point",
-            "siteRef",
-            "tz"
-          ]
-        },
-        {
-          "id": "interlockStatus",
-          "category": "Interlock",
-          "name": "Interlock Status",
-          "type": "dropdown",
-          "default": null,
-          "unit": null,
-          "options": [
-            {
-              "label": "None",
-              "value": "If interlock Enable toggle is \"Disabled\" then No"
-            },
-            {
-              "label": "If Enabled",
-              "value": "If Enabled"
-            },
-            {
-              "label": "then",
-              "value": "then"
-            },
-            {
-              "label": "Universal Input 1",
-              "value": 1
-            },
-            {
-              "label": "Universal Input 2",
-              "value": 2
-            },
-            {
-              "label": "Universal Input 3",
-              "value": 3
-            },
-            {
-              "label": "Universal Input 4",
-              "value": 4
-            }
-          ],
-          "pointMapping": {
-            "1": "interlockStatusEF1",
-            "2": "interlockStatusEF2",
-            "3": "interlockStatusEF3",
-            "4": "interlockStatusEF4"
-          },
-          "tags": [
-            "enable",
-            "exhaust",
-            "fan",
-            "input",
-            "order",
-            "sensor",
-            "status",
-            "his",
-            "dis",
-            "id",
-            "kind",
-            "point",
-            "siteRef",
-            "tz"
-          ],
-          "comments": "External interlock status input for Exhaust Fans"
-        }
-      ]
-    },
-    {
-      "algorithm": "Dedicated Outside Air Units",
-      "id": "MAU-Supply-Air-Control-MAU-Supply-Air-Control_CN-system",
-      "hayloftModel": "MAU Supply Air Control",
-      "name": "MAU Supply Air Control_CN",
-      "description": "MAU - SAT based control",
-      "type": "system",
-      "equipGraphics": [
-        "MAU Supply Air Temp Control"
-      ],
-      "analyticsName": [
-        "Equipment Connected",
-        "Cloud Connected",
-        "Seqeunce Run Time",
-        "Temperature Control",
-        "Heating and Cooling",
-        "Economizer Performance",
-        "Fan and Airflow",
-        "Energy and Runtime Hours",
-        "Faults Events"
-      ],
-      "cdd": "MAU Supply Air Temp Control",
-      "sequenceId": "MAU_SUPPLY_AIR_CONTROL_CN",
-      "sequenceName": "MAU Supply Air Control_CN",
-      "parameters": [
-        {
-          "id": "lightingCircuitsCount",
-          "category": "Basic",
-          "name": "Lighting Circuits Count",
-          "type": "dropdown",
-          "default": 1,
-          "unit": null,
-          "options": [
-            {
-              "label": "1",
-              "value": 1
-            },
-            {
-              "label": "2",
-              "value": 2
-            },
-            {
-              "label": "3",
-              "value": 3
-            },
-            {
-              "label": "4",
-              "value": 4
-            },
-            {
-              "label": "5",
-              "value": 5
-            },
-            {
-              "label": "6",
-              "value": 6
-            },
-            {
-              "label": "7",
-              "value": 7
-            },
-            {
-              "label": "8",
-              "value": 8
-            }
-          ],
-          "pointMapping": {
-            "1": "lightingCircuitCount",
-            "2": "For 1 = lightingcirc1Cmd",
-            "3": "For 2 = lightingcirc2Cmd",
-            "4": "For 3 = lightingcirc3Cmd",
-            "5": "For 4 = lightingcirc4Cmd",
-            "6": "For 5 = lightingcirc5Cmd",
-            "7": "For 6 = lightingcirc6Cmd",
-            "8": "For 7 = lightingcirc7Cmd"
-          },
-          "tags": [
-            "circuit",
-            "count",
-            "lighting",
-            "config",
-            "writable"
-          ],
-          "comments": "ENUM Point (Lighting Circuit 1 to Circuit 8)",
-          "rules": [
-            {
-              "order": 10,
-              "type": "AUTO_SELECT_BY_COUNT",
-              "lockTarget": true,
-              "enabled": true,
-              "sourceField": "Lighting Circuits Count",
-              "params": {
-                "optionPrefix": "BO"
-              }
-            }
-          ]
-        },
-        {
-          "id": "controlType",
-          "category": "Control",
-          "name": "Control Type",
-          "type": "dropdown",
-          "default": 1,
-          "unit": null,
-          "options": [
-            {
-              "label": "1- Schedule Mode",
-              "value": 1
-            },
-            {
-              "label": "2 - Occupancy Mode",
-              "value": 2
-            },
-            {
-              "label": "3-  Vacancy Mode",
-              "value": 3
-            },
-            {
-              "label": "4 - Schedule with Auto Occupancy Mode",
-              "value": 4
-            },
-            {
-              "label": "5 - Schedule with Auto Vacancy Mode",
-              "value": 5
-            },
-            {
-              "label": "6 - Schedule with Auto Occupancy Vacancy Mode",
-              "value": 6
-            },
-            {
-              "label": "7 - Manual Override Mode",
-              "value": 7
-            }
-          ],
-          "pointMapping": {
-            "1": "controlType"
-          },
-          "tags": [
-            "config",
-            "generic",
-            "lighting",
-            "mode",
-            "sp",
-            "type",
-            "control",
-            "schedulable",
-            "writable",
-            "dis",
-            "id",
-            "kind",
-            "point",
-            "siteRef",
-            "tz"
-          ],
-          "comments": "1. Schedule Mode = The lighting circuit shall turn on during the building or zone's occupied schedule mode.\r\n2 - Occupancy Mode = The lighting circuit shall turn on based on occupancy detected by the zone or building occupancy sensor and turn off automatically when no occupancy is detected by the sensor after the configured time delay expires.\r\n3-  Vacancy Mode = The lighting circuit shall be turned on manually by the user via a local switch and turn off automatically when no occupancy is detected by the sensor after the configured time delay expires.\r\n4 - Schedule with Auto Occupancy Mode = The lighting circuit shall turn on and remain energized during the occupied schedule mode. Outside of scheduled hours, the circuit shall transition to Auto-ON / Auto-OFF logic, turning on automatically based on occupancy detected by the sensor and turn off automatically when no occupancy is detected by the sensor after the configured time delay expires.\r\n5 - Schedule with Auto Vacancy Mode = The lighting circuit shall turn on and remain energized during the occupied schedule mode. Outside of scheduled hours, the circuit shall transition to Manual-ON / Auto-OFF logic, requiring a manual turn-on via a local switch and turning off automatically when the space is vacant and the time delay expires.\r\n6 - Schedule with Auto Occupancy Vacancy Mode = The lighting circuit shall turn on automatically upon detected occupancy during scheduled hours, and shall strictly require a manual turn-on via a local switch outside of scheduled hours, automatically turning off in both states when the space is vacant and the time delay expires.\r\n7 - Manual Override Mode = The lighting circuit shall turn on or off based on a manual command from the user via manual override switch, overriding all existing schedules and sensors."
-        },
-        {
-          "id": "occupancySensor",
-          "category": "Input",
-          "name": "Occupancy Sensor",
-          "type": "multiselect",
-          "default": [],
-          "unit": null,
-          "options": [
-            {
-              "label": "None",
-              "value": "None"
-            },
-            {
-              "label": "Universal Input 1",
-              "value": 1
-            },
-            {
-              "label": "Universal Input 2",
-              "value": 2
-            },
-            {
-              "label": "Universal Input 3",
-              "value": 3
-            },
-            {
-              "label": "Universal Input 4",
-              "value": 4
-            },
-            {
-              "label": "Universal Input 5",
-              "value": 5
-            },
-            {
-              "label": "Universal Input 6",
-              "value": 6
-            },
-            {
-              "label": "Universal Input 7",
-              "value": 7
-            },
-            {
-              "label": "Universal Input 8",
-              "value": 8
-            }
-          ],
-          "pointMapping": {
-            "1": "occupancySensor1Sts",
-            "2": "occupancySensor2Sts",
-            "3": "occupancySensor3Sts",
-            "4": "occupancySensor4Sts",
-            "5": "occupancySensor5Sts",
-            "6": "occupancySensor6Sts",
-            "7": "occupancySensor7Sts",
-            "8": "occupancySensor8Sts"
-          },
-          "tags": [
-            "occupancy",
-            "order",
-            "lighting",
-            "run",
-            "sensor",
-            "status",
-            "cur",
-            "his",
-            "dis",
-            "id",
-            "kind",
-            "point",
-            "siteRef",
-            "tz"
-          ],
-          "rules": [
-            {
-              "order": 20,
-              "type": "LOCK_IF",
-              "lockTarget": true,
-              "enabled": true,
-              "sourceField": "Control Type",
-              "params": {
-                "value": "1, 7"
-              }
-            },
-            {
               "order": 30,
-              "type": "REQUIRE_IF",
-              "lockTarget": false,
-              "enabled": true,
-              "sourceField": "Control Type",
-              "params": {
-                "value": "2, 3, 4, 5, 6"
-              }
-            },
-            {
-              "order": 40,
-              "type": "AUTO_SELECT_BY_COUNT",
-              "lockTarget": false,
-              "enabled": true,
-              "sourceField": "Lighting Circuits Count",
-              "params": {
-                "optionPrefix": "UI"
-              }
-            },
-            {
-              "order": 50,
-              "type": "LOCK_IF",
-              "lockTarget": true,
-              "enabled": true,
-              "sourceField": "Control Type",
-              "params": {
-                "value": "1, 2, 4"
-              }
-            }
-          ]
-        },
-        {
-          "id": "manualOverride",
-          "category": "Input",
-          "name": "Manual Override",
-          "type": "multiselect",
-          "default": [],
-          "unit": null,
-          "options": [
-            {
-              "label": "Universal Input 1",
-              "value": 1
-            },
-            {
-              "label": "Universal Input 2",
-              "value": 2
-            },
-            {
-              "label": "Universal Input 3",
-              "value": 3
-            },
-            {
-              "label": "Universal Input 4",
-              "value": 4
-            },
-            {
-              "label": "Universal Input 5",
-              "value": 5
-            },
-            {
-              "label": "Universal Input 6",
-              "value": 6
-            },
-            {
-              "label": "Universal Input 7",
-              "value": 7
-            },
-            {
-              "label": "Universal Input 8",
-              "value": 8
-            }
-          ],
-          "pointMapping": {
-            "1": "manualOverrideSwitch1",
-            "2": "manualOverrideSwitch2",
-            "3": "manualOverrideSwitch3",
-            "4": "manualOverrideSwitch4",
-            "5": "manualOverrideSwitch5",
-            "6": "manualOverrideSwitch6",
-            "7": "manualOverrideSwitch7",
-            "8": "manualOverrideSwitch8"
-          },
-          "tags": [
-            "enable",
-            "order",
-            "override",
-            "lighting",
-            "sensor",
-            "manual",
-            "switch",
-            "his",
-            "writable",
-            "dis",
-            "id",
-            "kind",
-            "point",
-            "siteRef",
-            "tz"
-          ],
-          "comments": "Momentary Press [from Universal Input]",
-          "rules": [
-            {
-              "order": 60,
-              "type": "REQUIRE_IF",
-              "lockTarget": false,
-              "enabled": true,
-              "sourceField": "Control Type",
-              "params": {
-                "value": "3, 5, 6, 7"
-              }
-            },
-            {
-              "order": 70,
               "type": "EXCLUDE_SELECTED",
-              "lockTarget": false,
-              "enabled": true,
-              "sourceField": "Occupancy Sensor",
+              "readOnly": false,
+              "sourceField": [
+                "Interlock Status"
+              ],
               "params": {
                 "param1": "none"
-              }
-            }
-          ]
-        },
-        {
-          "id": "occupancyDuration",
-          "category": "Override",
-          "name": "Occupancy Duration",
-          "type": "number",
-          "default": 20,
-          "unit": "Minutes",
-          "point": "occupancyDuration",
-          "tags": [
-            "config",
-            "duration",
-            "generic",
-            "lighting",
-            "occupancy",
-            "sp",
-            "his",
-            "writable",
-            "dis",
-            "id",
-            "kind",
-            "point",
-            "siteRef",
-            "tz"
-          ],
-          "validation": {
-            "min": 0,
-            "max": 500,
-            "integer": true
-          },
-          "rules": [
-            {
-              "order": 75,
-              "type": "LOCK_IF",
-              "lockTarget": true,
-              "enabled": true,
-              "sourceField": "Control Type",
-              "params": {
-                "value": "1, 7"
-              }
-            }
-          ]
-        },
-        {
-          "id": "vacancyDuration",
-          "category": "Override",
-          "name": "Vacancy Duration",
-          "type": "number",
-          "default": 20,
-          "unit": "Minutes",
-          "point": "vacancyDuration",
-          "tags": [
-            "config",
-            "duration",
-            "generic",
-            "lighting",
-            "vacancy",
-            "sp",
-            "his",
-            "writable",
-            "dis",
-            "id",
-            "kind",
-            "point",
-            "siteRef",
-            "tz"
-          ],
-          "validation": {
-            "min": 0,
-            "max": 500,
-            "integer": true
-          },
-          "rules": [
-            {
-              "order": 76,
-              "type": "LOCK_IF",
-              "lockTarget": true,
-              "enabled": true,
-              "sourceField": "Control Type",
-              "params": {
-                "value": "1, 2, 4, 7"
-              }
-            }
-          ]
-        },
-        {
-          "id": "flashWarningTime",
-          "category": "Override",
-          "name": "Flash Warning Time",
-          "type": "number",
-          "default": 0,
-          "unit": "Minutes",
-          "point": "flashWarningTimer",
-          "tags": [
-            "config",
-            "generic",
-            "lighting",
-            "sp",
-            "timer",
-            "his",
-            "writable",
-            "dis",
-            "id",
-            "kind",
-            "point",
-            "siteRef",
-            "tz"
-          ],
-          "validation": {
-            "min": 0,
-            "max": 100,
-            "integer": true
-          },
-          "rules": [
-            {
-              "order": 77,
-              "type": "LOCK_IF",
-              "lockTarget": true,
-              "enabled": true,
-              "sourceField": "Control Type",
-              "params": {
-                "value": 7
-              }
-            }
-          ]
-        },
-        {
-          "id": "scheduleMode",
-          "category": "Control",
-          "name": "Schedule Mode",
-          "type": "dropdown",
-          "default": "Yes",
-          "unit": null,
-          "options": [
-            {
-              "label": "Yes",
-              "value": "Yes"
-            },
-            {
-              "label": "No",
-              "value": "No"
-            }
-          ],
-          "point": "scheduleMode",
-          "tags": [
-            "config",
-            "generic",
-            "lighting",
-            "mode",
-            "sp",
-            "his",
-            "schedulable",
-            "writable",
-            "dis",
-            "id",
-            "kind",
-            "point",
-            "siteRef",
-            "tz"
-          ],
-          "comments": "Schedule - Yes/No",
-          "rules": [
-            {
-              "order": 80,
-              "type": "LOCK_IF",
-              "lockTarget": true,
-              "enabled": true,
-              "sourceField": "Control Type",
-              "params": {
-                "value": "2,3,7"
-              }
-            },
-            {
-              "order": 90,
-              "type": "REQUIRE_IF",
-              "lockTarget": false,
-              "enabled": true,
-              "sourceField": "Control Type",
-              "params": {
-                "value": "1, 4, 5, 6"
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "algorithm": "Dedicated Outside Air Units",
-      "id": "MAU-Supply-Air-Control-MAU-Supply-Air-Control_CN-zone",
-      "hayloftModel": "MAU Supply Air Control",
-      "name": "MAU Supply Air Control_CN",
-      "description": "MAU - SAT based control",
-      "type": "zone",
-      "equipGraphics": [
-        "MAU Supply Air Temp Control"
-      ],
-      "analyticsName": [
-        "Equipment Connected",
-        "Cloud Connected",
-        "Seqeunce Run Time",
-        "Temperature Control",
-        "Heating and Cooling",
-        "Economizer Performance",
-        "Fan and Airflow",
-        "Energy and Runtime Hours",
-        "Faults Events"
-      ],
-      "cdd": "MAU Supply Air Temp Control",
-      "sequenceId": "MAU_SUPPLY_AIR_CONTROL_CN",
-      "sequenceName": "MAU Supply Air Control_CN",
-      "parameters": [
-        {
-          "id": "lightingCircuitsCount",
-          "category": "Basic",
-          "name": "Lighting Circuits Count",
-          "type": "dropdown",
-          "default": 1,
-          "unit": null,
-          "options": [
-            {
-              "label": "1",
-              "value": 1
-            },
-            {
-              "label": "2",
-              "value": 2
-            },
-            {
-              "label": "3",
-              "value": 3
-            },
-            {
-              "label": "4",
-              "value": 4
-            },
-            {
-              "label": "5",
-              "value": 5
-            },
-            {
-              "label": "6",
-              "value": 6
-            },
-            {
-              "label": "7",
-              "value": 7
-            },
-            {
-              "label": "8",
-              "value": 8
-            }
-          ],
-          "pointMapping": {
-            "1": "lightingCircuitCount",
-            "2": "For 1 = lightingcirc1Cmd",
-            "3": "For 2 = lightingcirc2Cmd",
-            "4": "For 3 = lightingcirc3Cmd",
-            "5": "For 4 = lightingcirc4Cmd",
-            "6": "For 5 = lightingcirc5Cmd",
-            "7": "For 6 = lightingcirc6Cmd",
-            "8": "For 7 = lightingcirc7Cmd"
-          },
-          "tags": [
-            "circuit",
-            "count",
-            "lighting",
-            "config",
-            "writable"
-          ],
-          "comments": "ENUM Point (Lighting Circuit 1 to Circuit 8)",
-          "rules": [
-            {
-              "order": 10,
-              "type": "AUTO_SELECT_BY_COUNT",
-              "lockTarget": true,
-              "enabled": true,
-              "sourceField": "Lighting Circuits Count",
-              "params": {
-                "optionPrefix": "BO"
-              }
-            }
-          ]
-        },
-        {
-          "id": "controlType",
-          "category": "Control",
-          "name": "Control Type",
-          "type": "dropdown",
-          "default": 1,
-          "unit": null,
-          "options": [
-            {
-              "label": "1- Schedule Mode",
-              "value": 1
-            },
-            {
-              "label": "2 - Occupancy Mode",
-              "value": 2
-            },
-            {
-              "label": "3-  Vacancy Mode",
-              "value": 3
-            },
-            {
-              "label": "4 - Schedule with Auto Occupancy Mode",
-              "value": 4
-            },
-            {
-              "label": "5 - Schedule with Auto Vacancy Mode",
-              "value": 5
-            },
-            {
-              "label": "6 - Schedule with Auto Occupancy Vacancy Mode",
-              "value": 6
-            },
-            {
-              "label": "7 - Manual Override Mode",
-              "value": 7
-            }
-          ],
-          "pointMapping": {
-            "1": "controlType"
-          },
-          "tags": [
-            "config",
-            "generic",
-            "lighting",
-            "mode",
-            "sp",
-            "type",
-            "control",
-            "schedulable",
-            "writable",
-            "dis",
-            "id",
-            "kind",
-            "point",
-            "siteRef",
-            "tz"
-          ],
-          "comments": "1. Schedule Mode = The lighting circuit shall turn on during the building or zone's occupied schedule mode.\r\n2 - Occupancy Mode = The lighting circuit shall turn on based on occupancy detected by the zone or building occupancy sensor and turn off automatically when no occupancy is detected by the sensor after the configured time delay expires.\r\n3-  Vacancy Mode = The lighting circuit shall be turned on manually by the user via a local switch and turn off automatically when no occupancy is detected by the sensor after the configured time delay expires.\r\n4 - Schedule with Auto Occupancy Mode = The lighting circuit shall turn on and remain energized during the occupied schedule mode. Outside of scheduled hours, the circuit shall transition to Auto-ON / Auto-OFF logic, turning on automatically based on occupancy detected by the sensor and turn off automatically when no occupancy is detected by the sensor after the configured time delay expires.\r\n5 - Schedule with Auto Vacancy Mode = The lighting circuit shall turn on and remain energized during the occupied schedule mode. Outside of scheduled hours, the circuit shall transition to Manual-ON / Auto-OFF logic, requiring a manual turn-on via a local switch and turning off automatically when the space is vacant and the time delay expires.\r\n6 - Schedule with Auto Occupancy Vacancy Mode = The lighting circuit shall turn on automatically upon detected occupancy during scheduled hours, and shall strictly require a manual turn-on via a local switch outside of scheduled hours, automatically turning off in both states when the space is vacant and the time delay expires.\r\n7 - Manual Override Mode = The lighting circuit shall turn on or off based on a manual command from the user via manual override switch, overriding all existing schedules and sensors."
-        },
-        {
-          "id": "occupancySensor",
-          "category": "Input",
-          "name": "Occupancy Sensor",
-          "type": "multiselect",
-          "default": [],
-          "unit": null,
-          "options": [
-            {
-              "label": "None",
-              "value": "None"
-            },
-            {
-              "label": "Universal Input 1",
-              "value": 1
-            },
-            {
-              "label": "Universal Input 2",
-              "value": 2
-            },
-            {
-              "label": "Universal Input 3",
-              "value": 3
-            },
-            {
-              "label": "Universal Input 4",
-              "value": 4
-            },
-            {
-              "label": "Universal Input 5",
-              "value": 5
-            },
-            {
-              "label": "Universal Input 6",
-              "value": 6
-            },
-            {
-              "label": "Universal Input 7",
-              "value": 7
-            },
-            {
-              "label": "Universal Input 8",
-              "value": 8
-            }
-          ],
-          "pointMapping": {
-            "1": "occupancySensor1Sts",
-            "2": "occupancySensor2Sts",
-            "3": "occupancySensor3Sts",
-            "4": "occupancySensor4Sts",
-            "5": "occupancySensor5Sts",
-            "6": "occupancySensor6Sts",
-            "7": "occupancySensor7Sts",
-            "8": "occupancySensor8Sts"
-          },
-          "tags": [
-            "occupancy",
-            "order",
-            "lighting",
-            "run",
-            "sensor",
-            "status",
-            "cur",
-            "his",
-            "dis",
-            "id",
-            "kind",
-            "point",
-            "siteRef",
-            "tz"
-          ],
-          "rules": [
-            {
-              "order": 20,
-              "type": "LOCK_IF",
-              "lockTarget": true,
-              "enabled": true,
-              "sourceField": "Control Type",
-              "params": {
-                "value": "1, 7"
-              }
-            },
-            {
-              "order": 30,
-              "type": "REQUIRE_IF",
-              "lockTarget": false,
-              "enabled": true,
-              "sourceField": "Control Type",
-              "params": {
-                "value": "2, 3, 4, 5, 6"
-              }
-            },
-            {
-              "order": 40,
-              "type": "AUTO_SELECT_BY_COUNT",
-              "lockTarget": false,
-              "enabled": true,
-              "sourceField": "Lighting Circuits Count",
-              "params": {
-                "optionPrefix": "UI"
-              }
-            },
-            {
-              "order": 50,
-              "type": "LOCK_IF",
-              "lockTarget": true,
-              "enabled": true,
-              "sourceField": "Control Type",
-              "params": {
-                "value": "1, 2, 4"
-              }
-            }
-          ]
-        },
-        {
-          "id": "manualOverride",
-          "category": "Input",
-          "name": "Manual Override",
-          "type": "multiselect",
-          "default": [],
-          "unit": null,
-          "options": [
-            {
-              "label": "Universal Input 1",
-              "value": 1
-            },
-            {
-              "label": "Universal Input 2",
-              "value": 2
-            },
-            {
-              "label": "Universal Input 3",
-              "value": 3
-            },
-            {
-              "label": "Universal Input 4",
-              "value": 4
-            },
-            {
-              "label": "Universal Input 5",
-              "value": 5
-            },
-            {
-              "label": "Universal Input 6",
-              "value": 6
-            },
-            {
-              "label": "Universal Input 7",
-              "value": 7
-            },
-            {
-              "label": "Universal Input 8",
-              "value": 8
-            }
-          ],
-          "pointMapping": {
-            "1": "manualOverrideSwitch1",
-            "2": "manualOverrideSwitch2",
-            "3": "manualOverrideSwitch3",
-            "4": "manualOverrideSwitch4",
-            "5": "manualOverrideSwitch5",
-            "6": "manualOverrideSwitch6",
-            "7": "manualOverrideSwitch7",
-            "8": "manualOverrideSwitch8"
-          },
-          "tags": [
-            "enable",
-            "order",
-            "override",
-            "lighting",
-            "sensor",
-            "manual",
-            "switch",
-            "his",
-            "writable",
-            "dis",
-            "id",
-            "kind",
-            "point",
-            "siteRef",
-            "tz"
-          ],
-          "comments": "Momentary Press [from Universal Input]",
-          "rules": [
-            {
-              "order": 60,
-              "type": "REQUIRE_IF",
-              "lockTarget": false,
-              "enabled": true,
-              "sourceField": "Control Type",
-              "params": {
-                "value": "3, 5, 6, 7"
-              }
-            },
-            {
-              "order": 70,
-              "type": "EXCLUDE_SELECTED",
-              "lockTarget": false,
-              "enabled": true,
-              "sourceField": "Occupancy Sensor",
-              "params": {
-                "param1": "none"
-              }
-            }
-          ]
-        },
-        {
-          "id": "occupancyDuration",
-          "category": "Override",
-          "name": "Occupancy Duration",
-          "type": "number",
-          "default": 20,
-          "unit": "Minutes",
-          "point": "occupancyDuration",
-          "tags": [
-            "config",
-            "duration",
-            "generic",
-            "lighting",
-            "occupancy",
-            "sp",
-            "his",
-            "writable",
-            "dis",
-            "id",
-            "kind",
-            "point",
-            "siteRef",
-            "tz"
-          ],
-          "validation": {
-            "min": 0,
-            "max": 500,
-            "integer": true
-          },
-          "rules": [
-            {
-              "order": 75,
-              "type": "LOCK_IF",
-              "lockTarget": true,
-              "enabled": true,
-              "sourceField": "Control Type",
-              "params": {
-                "value": "1, 7"
-              }
-            }
-          ]
-        },
-        {
-          "id": "vacancyDuration",
-          "category": "Override",
-          "name": "Vacancy Duration",
-          "type": "number",
-          "default": 20,
-          "unit": "Minutes",
-          "point": "vacancyDuration",
-          "tags": [
-            "config",
-            "duration",
-            "generic",
-            "lighting",
-            "vacancy",
-            "sp",
-            "his",
-            "writable",
-            "dis",
-            "id",
-            "kind",
-            "point",
-            "siteRef",
-            "tz"
-          ],
-          "validation": {
-            "min": 0,
-            "max": 500,
-            "integer": true
-          },
-          "rules": [
-            {
-              "order": 76,
-              "type": "LOCK_IF",
-              "lockTarget": true,
-              "enabled": true,
-              "sourceField": "Control Type",
-              "params": {
-                "value": "1, 2, 4, 7"
-              }
-            }
-          ]
-        },
-        {
-          "id": "flashWarningTime",
-          "category": "Override",
-          "name": "Flash Warning Time",
-          "type": "number",
-          "default": 0,
-          "unit": "Minutes",
-          "point": "flashWarningTimer",
-          "tags": [
-            "config",
-            "generic",
-            "lighting",
-            "sp",
-            "timer",
-            "his",
-            "writable",
-            "dis",
-            "id",
-            "kind",
-            "point",
-            "siteRef",
-            "tz"
-          ],
-          "validation": {
-            "min": 0,
-            "max": 100,
-            "integer": true
-          },
-          "rules": [
-            {
-              "order": 77,
-              "type": "LOCK_IF",
-              "lockTarget": true,
-              "enabled": true,
-              "sourceField": "Control Type",
-              "params": {
-                "value": 7
-              }
-            }
-          ]
-        },
-        {
-          "id": "scheduleMode",
-          "category": "Control",
-          "name": "Schedule Mode",
-          "type": "dropdown",
-          "default": "Yes",
-          "unit": null,
-          "options": [
-            {
-              "label": "Yes",
-              "value": "Yes"
-            },
-            {
-              "label": "No",
-              "value": "No"
-            }
-          ],
-          "point": "scheduleMode",
-          "tags": [
-            "config",
-            "generic",
-            "lighting",
-            "mode",
-            "sp",
-            "his",
-            "schedulable",
-            "writable",
-            "dis",
-            "id",
-            "kind",
-            "point",
-            "siteRef",
-            "tz"
-          ],
-          "comments": "Schedule - Yes/No",
-          "rules": [
-            {
-              "order": 80,
-              "type": "LOCK_IF",
-              "lockTarget": true,
-              "enabled": true,
-              "sourceField": "Control Type",
-              "params": {
-                "value": "2,3,7"
-              }
-            },
-            {
-              "order": 90,
-              "type": "REQUIRE_IF",
-              "lockTarget": false,
-              "enabled": true,
-              "sourceField": "Control Type",
-              "params": {
-                "value": "1, 4, 5, 6"
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "algorithm": "Dedicated Outside Air Units",
-      "id": "MAU-Zone-Temp-Control-MAU-Zone-Temp-Control_CN-system",
-      "hayloftModel": "MAU Zone Temp Control",
-      "name": "MAU Zone Temp Control_CN",
-      "description": "MA - Zone Temp based Control",
-      "type": "system",
-      "equipGraphics": [
-        "MAU Zone Temp Control"
-      ],
-      "analyticsName": [
-        "Equipment Connected",
-        "Cloud Connected",
-        "Seqeunce Run Time",
-        "Zone Temperature Control",
-        "Heating and Cooling Operation",
-        "Economizer and Ventilation",
-        "CO₂ Control (IAQ)",
-        "Humidity Control",
-        "Fan and Airflow",
-        "Faults Events"
-      ],
-      "cdd": "MAU Zone Temp Control",
-      "sequenceId": "MAU_ZONE_TEMP_CONTROL_CN",
-      "sequenceName": "MAU Zone Temp Control_CN",
-      "parameters": [
-        {
-          "id": "lightingCircuitsCount",
-          "category": "Basic",
-          "name": "Lighting Circuits Count",
-          "type": "dropdown",
-          "default": 1,
-          "unit": null,
-          "options": [
-            {
-              "label": "1",
-              "value": 1
-            },
-            {
-              "label": "2",
-              "value": 2
-            },
-            {
-              "label": "3",
-              "value": 3
-            },
-            {
-              "label": "4",
-              "value": 4
-            },
-            {
-              "label": "5",
-              "value": 5
-            },
-            {
-              "label": "6",
-              "value": 6
-            },
-            {
-              "label": "7",
-              "value": 7
-            },
-            {
-              "label": "8",
-              "value": 8
-            }
-          ],
-          "pointMapping": {
-            "1": "lightingCircuitCount",
-            "2": "For 1 = lightingcirc1Cmd",
-            "3": "For 2 = lightingcirc2Cmd",
-            "4": "For 3 = lightingcirc3Cmd",
-            "5": "For 4 = lightingcirc4Cmd",
-            "6": "For 5 = lightingcirc5Cmd",
-            "7": "For 6 = lightingcirc6Cmd",
-            "8": "For 7 = lightingcirc7Cmd"
-          },
-          "tags": [
-            "circuit",
-            "count",
-            "lighting",
-            "config",
-            "writable"
-          ],
-          "comments": "ENUM Point (Lighting Circuit 1 to Circuit 8)",
-          "rules": [
-            {
-              "order": 10,
-              "type": "AUTO_SELECT_BY_COUNT",
-              "lockTarget": true,
-              "enabled": true,
-              "sourceField": "Lighting Circuits Count",
-              "params": {
-                "optionPrefix": "BO"
-              }
-            }
-          ]
-        },
-        {
-          "id": "controlType",
-          "category": "Control",
-          "name": "Control Type",
-          "type": "dropdown",
-          "default": 1,
-          "unit": null,
-          "options": [
-            {
-              "label": "1- Schedule Mode",
-              "value": 1
-            },
-            {
-              "label": "2 - Occupancy Mode",
-              "value": 2
-            },
-            {
-              "label": "3-  Vacancy Mode",
-              "value": 3
-            },
-            {
-              "label": "4 - Schedule with Auto Occupancy Mode",
-              "value": 4
-            },
-            {
-              "label": "5 - Schedule with Auto Vacancy Mode",
-              "value": 5
-            },
-            {
-              "label": "6 - Schedule with Auto Occupancy Vacancy Mode",
-              "value": 6
-            },
-            {
-              "label": "7 - Manual Override Mode",
-              "value": 7
-            }
-          ],
-          "pointMapping": {
-            "1": "controlType"
-          },
-          "tags": [
-            "config",
-            "generic",
-            "lighting",
-            "mode",
-            "sp",
-            "type",
-            "control",
-            "schedulable",
-            "writable",
-            "dis",
-            "id",
-            "kind",
-            "point",
-            "siteRef",
-            "tz"
-          ],
-          "comments": "1. Schedule Mode = The lighting circuit shall turn on during the building or zone's occupied schedule mode.\r\n2 - Occupancy Mode = The lighting circuit shall turn on based on occupancy detected by the zone or building occupancy sensor and turn off automatically when no occupancy is detected by the sensor after the configured time delay expires.\r\n3-  Vacancy Mode = The lighting circuit shall be turned on manually by the user via a local switch and turn off automatically when no occupancy is detected by the sensor after the configured time delay expires.\r\n4 - Schedule with Auto Occupancy Mode = The lighting circuit shall turn on and remain energized during the occupied schedule mode. Outside of scheduled hours, the circuit shall transition to Auto-ON / Auto-OFF logic, turning on automatically based on occupancy detected by the sensor and turn off automatically when no occupancy is detected by the sensor after the configured time delay expires.\r\n5 - Schedule with Auto Vacancy Mode = The lighting circuit shall turn on and remain energized during the occupied schedule mode. Outside of scheduled hours, the circuit shall transition to Manual-ON / Auto-OFF logic, requiring a manual turn-on via a local switch and turning off automatically when the space is vacant and the time delay expires.\r\n6 - Schedule with Auto Occupancy Vacancy Mode = The lighting circuit shall turn on automatically upon detected occupancy during scheduled hours, and shall strictly require a manual turn-on via a local switch outside of scheduled hours, automatically turning off in both states when the space is vacant and the time delay expires.\r\n7 - Manual Override Mode = The lighting circuit shall turn on or off based on a manual command from the user via manual override switch, overriding all existing schedules and sensors."
-        },
-        {
-          "id": "occupancySensor",
-          "category": "Input",
-          "name": "Occupancy Sensor",
-          "type": "multiselect",
-          "default": [],
-          "unit": null,
-          "options": [
-            {
-              "label": "None",
-              "value": "None"
-            },
-            {
-              "label": "Universal Input 1",
-              "value": 1
-            },
-            {
-              "label": "Universal Input 2",
-              "value": 2
-            },
-            {
-              "label": "Universal Input 3",
-              "value": 3
-            },
-            {
-              "label": "Universal Input 4",
-              "value": 4
-            },
-            {
-              "label": "Universal Input 5",
-              "value": 5
-            },
-            {
-              "label": "Universal Input 6",
-              "value": 6
-            },
-            {
-              "label": "Universal Input 7",
-              "value": 7
-            },
-            {
-              "label": "Universal Input 8",
-              "value": 8
-            }
-          ],
-          "pointMapping": {
-            "1": "occupancySensor1Sts",
-            "2": "occupancySensor2Sts",
-            "3": "occupancySensor3Sts",
-            "4": "occupancySensor4Sts",
-            "5": "occupancySensor5Sts",
-            "6": "occupancySensor6Sts",
-            "7": "occupancySensor7Sts",
-            "8": "occupancySensor8Sts"
-          },
-          "tags": [
-            "occupancy",
-            "order",
-            "lighting",
-            "run",
-            "sensor",
-            "status",
-            "cur",
-            "his",
-            "dis",
-            "id",
-            "kind",
-            "point",
-            "siteRef",
-            "tz"
-          ],
-          "rules": [
-            {
-              "order": 20,
-              "type": "LOCK_IF",
-              "lockTarget": true,
-              "enabled": true,
-              "sourceField": "Control Type",
-              "params": {
-                "value": "1, 7"
-              }
-            },
-            {
-              "order": 30,
-              "type": "REQUIRE_IF",
-              "lockTarget": false,
-              "enabled": true,
-              "sourceField": "Control Type",
-              "params": {
-                "value": "2, 3, 4, 5, 6"
-              }
-            },
-            {
-              "order": 40,
-              "type": "AUTO_SELECT_BY_COUNT",
-              "lockTarget": false,
-              "enabled": true,
-              "sourceField": "Lighting Circuits Count",
-              "params": {
-                "optionPrefix": "UI"
-              }
-            },
-            {
-              "order": 50,
-              "type": "LOCK_IF",
-              "lockTarget": true,
-              "enabled": true,
-              "sourceField": "Control Type",
-              "params": {
-                "value": "1, 2, 4"
-              }
-            }
-          ]
-        },
-        {
-          "id": "manualOverride",
-          "category": "Input",
-          "name": "Manual Override",
-          "type": "multiselect",
-          "default": [],
-          "unit": null,
-          "options": [
-            {
-              "label": "Universal Input 1",
-              "value": 1
-            },
-            {
-              "label": "Universal Input 2",
-              "value": 2
-            },
-            {
-              "label": "Universal Input 3",
-              "value": 3
-            },
-            {
-              "label": "Universal Input 4",
-              "value": 4
-            },
-            {
-              "label": "Universal Input 5",
-              "value": 5
-            },
-            {
-              "label": "Universal Input 6",
-              "value": 6
-            },
-            {
-              "label": "Universal Input 7",
-              "value": 7
-            },
-            {
-              "label": "Universal Input 8",
-              "value": 8
-            }
-          ],
-          "pointMapping": {
-            "1": "manualOverrideSwitch1",
-            "2": "manualOverrideSwitch2",
-            "3": "manualOverrideSwitch3",
-            "4": "manualOverrideSwitch4",
-            "5": "manualOverrideSwitch5",
-            "6": "manualOverrideSwitch6",
-            "7": "manualOverrideSwitch7",
-            "8": "manualOverrideSwitch8"
-          },
-          "tags": [
-            "enable",
-            "order",
-            "override",
-            "lighting",
-            "sensor",
-            "manual",
-            "switch",
-            "his",
-            "writable",
-            "dis",
-            "id",
-            "kind",
-            "point",
-            "siteRef",
-            "tz"
-          ],
-          "comments": "Momentary Press [from Universal Input]",
-          "rules": [
-            {
-              "order": 60,
-              "type": "REQUIRE_IF",
-              "lockTarget": false,
-              "enabled": true,
-              "sourceField": "Control Type",
-              "params": {
-                "value": "3, 5, 6, 7"
-              }
-            },
-            {
-              "order": 70,
-              "type": "EXCLUDE_SELECTED",
-              "lockTarget": false,
-              "enabled": true,
-              "sourceField": "Occupancy Sensor",
-              "params": {
-                "param1": "none"
-              }
-            }
-          ]
-        },
-        {
-          "id": "occupancyDuration",
-          "category": "Override",
-          "name": "Occupancy Duration",
-          "type": "number",
-          "default": 20,
-          "unit": "Minutes",
-          "point": "occupancyDuration",
-          "tags": [
-            "config",
-            "duration",
-            "generic",
-            "lighting",
-            "occupancy",
-            "sp",
-            "his",
-            "writable",
-            "dis",
-            "id",
-            "kind",
-            "point",
-            "siteRef",
-            "tz"
-          ],
-          "validation": {
-            "min": 0,
-            "max": 500,
-            "integer": true
-          },
-          "rules": [
-            {
-              "order": 75,
-              "type": "LOCK_IF",
-              "lockTarget": true,
-              "enabled": true,
-              "sourceField": "Control Type",
-              "params": {
-                "value": "1, 7"
-              }
-            }
-          ]
-        },
-        {
-          "id": "vacancyDuration",
-          "category": "Override",
-          "name": "Vacancy Duration",
-          "type": "number",
-          "default": 20,
-          "unit": "Minutes",
-          "point": "vacancyDuration",
-          "tags": [
-            "config",
-            "duration",
-            "generic",
-            "lighting",
-            "vacancy",
-            "sp",
-            "his",
-            "writable",
-            "dis",
-            "id",
-            "kind",
-            "point",
-            "siteRef",
-            "tz"
-          ],
-          "validation": {
-            "min": 0,
-            "max": 500,
-            "integer": true
-          },
-          "rules": [
-            {
-              "order": 76,
-              "type": "LOCK_IF",
-              "lockTarget": true,
-              "enabled": true,
-              "sourceField": "Control Type",
-              "params": {
-                "value": "1, 2, 4, 7"
-              }
-            }
-          ]
-        },
-        {
-          "id": "flashWarningTime",
-          "category": "Override",
-          "name": "Flash Warning Time",
-          "type": "number",
-          "default": 0,
-          "unit": "Minutes",
-          "point": "flashWarningTimer",
-          "tags": [
-            "config",
-            "generic",
-            "lighting",
-            "sp",
-            "timer",
-            "his",
-            "writable",
-            "dis",
-            "id",
-            "kind",
-            "point",
-            "siteRef",
-            "tz"
-          ],
-          "validation": {
-            "min": 0,
-            "max": 100,
-            "integer": true
-          },
-          "rules": [
-            {
-              "order": 77,
-              "type": "LOCK_IF",
-              "lockTarget": true,
-              "enabled": true,
-              "sourceField": "Control Type",
-              "params": {
-                "value": 7
-              }
-            }
-          ]
-        },
-        {
-          "id": "scheduleMode",
-          "category": "Control",
-          "name": "Schedule Mode",
-          "type": "dropdown",
-          "default": "Yes",
-          "unit": null,
-          "options": [
-            {
-              "label": "Yes",
-              "value": "Yes"
-            },
-            {
-              "label": "No",
-              "value": "No"
-            }
-          ],
-          "point": "scheduleMode",
-          "tags": [
-            "config",
-            "generic",
-            "lighting",
-            "mode",
-            "sp",
-            "his",
-            "schedulable",
-            "writable",
-            "dis",
-            "id",
-            "kind",
-            "point",
-            "siteRef",
-            "tz"
-          ],
-          "comments": "Schedule - Yes/No",
-          "rules": [
-            {
-              "order": 80,
-              "type": "LOCK_IF",
-              "lockTarget": true,
-              "enabled": true,
-              "sourceField": "Control Type",
-              "params": {
-                "value": "2,3,7"
-              }
-            },
-            {
-              "order": 90,
-              "type": "REQUIRE_IF",
-              "lockTarget": false,
-              "enabled": true,
-              "sourceField": "Control Type",
-              "params": {
-                "value": "1, 4, 5, 6"
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "algorithm": "Dedicated Outside Air Units",
-      "id": "MAU-Zone-Temp-Control-MAU-Zone-Temp-Control_CN-zone",
-      "hayloftModel": "MAU Zone Temp Control",
-      "name": "MAU Zone Temp Control_CN",
-      "description": "MA - Zone Temp based Control",
-      "type": "zone",
-      "equipGraphics": [
-        "MAU Zone Temp Control"
-      ],
-      "analyticsName": [
-        "Equipment Connected",
-        "Cloud Connected",
-        "Seqeunce Run Time",
-        "Zone Temperature Control",
-        "Heating and Cooling Operation",
-        "Economizer and Ventilation",
-        "CO₂ Control (IAQ)",
-        "Humidity Control",
-        "Fan and Airflow",
-        "Faults Events"
-      ],
-      "cdd": "MAU Zone Temp Control",
-      "sequenceId": "MAU_ZONE_TEMP_CONTROL_CN",
-      "sequenceName": "MAU Zone Temp Control_CN",
-      "parameters": [
-        {
-          "id": "lightingCircuitsCount",
-          "category": "Basic",
-          "name": "Lighting Circuits Count",
-          "type": "dropdown",
-          "default": 1,
-          "unit": null,
-          "options": [
-            {
-              "label": "1",
-              "value": 1
-            },
-            {
-              "label": "2",
-              "value": 2
-            },
-            {
-              "label": "3",
-              "value": 3
-            },
-            {
-              "label": "4",
-              "value": 4
-            },
-            {
-              "label": "5",
-              "value": 5
-            },
-            {
-              "label": "6",
-              "value": 6
-            },
-            {
-              "label": "7",
-              "value": 7
-            },
-            {
-              "label": "8",
-              "value": 8
-            }
-          ],
-          "pointMapping": {
-            "1": "lightingCircuitCount",
-            "2": "For 1 = lightingcirc1Cmd",
-            "3": "For 2 = lightingcirc2Cmd",
-            "4": "For 3 = lightingcirc3Cmd",
-            "5": "For 4 = lightingcirc4Cmd",
-            "6": "For 5 = lightingcirc5Cmd",
-            "7": "For 6 = lightingcirc6Cmd",
-            "8": "For 7 = lightingcirc7Cmd"
-          },
-          "tags": [
-            "circuit",
-            "count",
-            "lighting",
-            "config",
-            "writable"
-          ],
-          "comments": "ENUM Point (Lighting Circuit 1 to Circuit 8)",
-          "rules": [
-            {
-              "order": 10,
-              "type": "AUTO_SELECT_BY_COUNT",
-              "lockTarget": true,
-              "enabled": true,
-              "sourceField": "Lighting Circuits Count",
-              "params": {
-                "optionPrefix": "BO"
-              }
-            }
-          ]
-        },
-        {
-          "id": "controlType",
-          "category": "Control",
-          "name": "Control Type",
-          "type": "dropdown",
-          "default": 1,
-          "unit": null,
-          "options": [
-            {
-              "label": "1- Schedule Mode",
-              "value": 1
-            },
-            {
-              "label": "2 - Occupancy Mode",
-              "value": 2
-            },
-            {
-              "label": "3-  Vacancy Mode",
-              "value": 3
-            },
-            {
-              "label": "4 - Schedule with Auto Occupancy Mode",
-              "value": 4
-            },
-            {
-              "label": "5 - Schedule with Auto Vacancy Mode",
-              "value": 5
-            },
-            {
-              "label": "6 - Schedule with Auto Occupancy Vacancy Mode",
-              "value": 6
-            },
-            {
-              "label": "7 - Manual Override Mode",
-              "value": 7
-            }
-          ],
-          "pointMapping": {
-            "1": "controlType"
-          },
-          "tags": [
-            "config",
-            "generic",
-            "lighting",
-            "mode",
-            "sp",
-            "type",
-            "control",
-            "schedulable",
-            "writable",
-            "dis",
-            "id",
-            "kind",
-            "point",
-            "siteRef",
-            "tz"
-          ],
-          "comments": "1. Schedule Mode = The lighting circuit shall turn on during the building or zone's occupied schedule mode.\r\n2 - Occupancy Mode = The lighting circuit shall turn on based on occupancy detected by the zone or building occupancy sensor and turn off automatically when no occupancy is detected by the sensor after the configured time delay expires.\r\n3-  Vacancy Mode = The lighting circuit shall be turned on manually by the user via a local switch and turn off automatically when no occupancy is detected by the sensor after the configured time delay expires.\r\n4 - Schedule with Auto Occupancy Mode = The lighting circuit shall turn on and remain energized during the occupied schedule mode. Outside of scheduled hours, the circuit shall transition to Auto-ON / Auto-OFF logic, turning on automatically based on occupancy detected by the sensor and turn off automatically when no occupancy is detected by the sensor after the configured time delay expires.\r\n5 - Schedule with Auto Vacancy Mode = The lighting circuit shall turn on and remain energized during the occupied schedule mode. Outside of scheduled hours, the circuit shall transition to Manual-ON / Auto-OFF logic, requiring a manual turn-on via a local switch and turning off automatically when the space is vacant and the time delay expires.\r\n6 - Schedule with Auto Occupancy Vacancy Mode = The lighting circuit shall turn on automatically upon detected occupancy during scheduled hours, and shall strictly require a manual turn-on via a local switch outside of scheduled hours, automatically turning off in both states when the space is vacant and the time delay expires.\r\n7 - Manual Override Mode = The lighting circuit shall turn on or off based on a manual command from the user via manual override switch, overriding all existing schedules and sensors."
-        },
-        {
-          "id": "occupancySensor",
-          "category": "Input",
-          "name": "Occupancy Sensor",
-          "type": "multiselect",
-          "default": [],
-          "unit": null,
-          "options": [
-            {
-              "label": "None",
-              "value": "None"
-            },
-            {
-              "label": "Universal Input 1",
-              "value": 1
-            },
-            {
-              "label": "Universal Input 2",
-              "value": 2
-            },
-            {
-              "label": "Universal Input 3",
-              "value": 3
-            },
-            {
-              "label": "Universal Input 4",
-              "value": 4
-            },
-            {
-              "label": "Universal Input 5",
-              "value": 5
-            },
-            {
-              "label": "Universal Input 6",
-              "value": 6
-            },
-            {
-              "label": "Universal Input 7",
-              "value": 7
-            },
-            {
-              "label": "Universal Input 8",
-              "value": 8
-            }
-          ],
-          "pointMapping": {
-            "1": "occupancySensor1Sts",
-            "2": "occupancySensor2Sts",
-            "3": "occupancySensor3Sts",
-            "4": "occupancySensor4Sts",
-            "5": "occupancySensor5Sts",
-            "6": "occupancySensor6Sts",
-            "7": "occupancySensor7Sts",
-            "8": "occupancySensor8Sts"
-          },
-          "tags": [
-            "occupancy",
-            "order",
-            "lighting",
-            "run",
-            "sensor",
-            "status",
-            "cur",
-            "his",
-            "dis",
-            "id",
-            "kind",
-            "point",
-            "siteRef",
-            "tz"
-          ],
-          "rules": [
-            {
-              "order": 20,
-              "type": "LOCK_IF",
-              "lockTarget": true,
-              "enabled": true,
-              "sourceField": "Control Type",
-              "params": {
-                "value": "1, 7"
-              }
-            },
-            {
-              "order": 30,
-              "type": "REQUIRE_IF",
-              "lockTarget": false,
-              "enabled": true,
-              "sourceField": "Control Type",
-              "params": {
-                "value": "2, 3, 4, 5, 6"
-              }
-            },
-            {
-              "order": 40,
-              "type": "AUTO_SELECT_BY_COUNT",
-              "lockTarget": false,
-              "enabled": true,
-              "sourceField": "Lighting Circuits Count",
-              "params": {
-                "optionPrefix": "UI"
-              }
-            },
-            {
-              "order": 50,
-              "type": "LOCK_IF",
-              "lockTarget": true,
-              "enabled": true,
-              "sourceField": "Control Type",
-              "params": {
-                "value": "1, 2, 4"
-              }
-            }
-          ]
-        },
-        {
-          "id": "manualOverride",
-          "category": "Input",
-          "name": "Manual Override",
-          "type": "multiselect",
-          "default": [],
-          "unit": null,
-          "options": [
-            {
-              "label": "Universal Input 1",
-              "value": 1
-            },
-            {
-              "label": "Universal Input 2",
-              "value": 2
-            },
-            {
-              "label": "Universal Input 3",
-              "value": 3
-            },
-            {
-              "label": "Universal Input 4",
-              "value": 4
-            },
-            {
-              "label": "Universal Input 5",
-              "value": 5
-            },
-            {
-              "label": "Universal Input 6",
-              "value": 6
-            },
-            {
-              "label": "Universal Input 7",
-              "value": 7
-            },
-            {
-              "label": "Universal Input 8",
-              "value": 8
-            }
-          ],
-          "pointMapping": {
-            "1": "manualOverrideSwitch1",
-            "2": "manualOverrideSwitch2",
-            "3": "manualOverrideSwitch3",
-            "4": "manualOverrideSwitch4",
-            "5": "manualOverrideSwitch5",
-            "6": "manualOverrideSwitch6",
-            "7": "manualOverrideSwitch7",
-            "8": "manualOverrideSwitch8"
-          },
-          "tags": [
-            "enable",
-            "order",
-            "override",
-            "lighting",
-            "sensor",
-            "manual",
-            "switch",
-            "his",
-            "writable",
-            "dis",
-            "id",
-            "kind",
-            "point",
-            "siteRef",
-            "tz"
-          ],
-          "comments": "Momentary Press [from Universal Input]",
-          "rules": [
-            {
-              "order": 60,
-              "type": "REQUIRE_IF",
-              "lockTarget": false,
-              "enabled": true,
-              "sourceField": "Control Type",
-              "params": {
-                "value": "3, 5, 6, 7"
-              }
-            },
-            {
-              "order": 70,
-              "type": "EXCLUDE_SELECTED",
-              "lockTarget": false,
-              "enabled": true,
-              "sourceField": "Occupancy Sensor",
-              "params": {
-                "param1": "none"
-              }
-            }
-          ]
-        },
-        {
-          "id": "occupancyDuration",
-          "category": "Override",
-          "name": "Occupancy Duration",
-          "type": "number",
-          "default": 20,
-          "unit": "Minutes",
-          "point": "occupancyDuration",
-          "tags": [
-            "config",
-            "duration",
-            "generic",
-            "lighting",
-            "occupancy",
-            "sp",
-            "his",
-            "writable",
-            "dis",
-            "id",
-            "kind",
-            "point",
-            "siteRef",
-            "tz"
-          ],
-          "validation": {
-            "min": 0,
-            "max": 500,
-            "integer": true
-          },
-          "rules": [
-            {
-              "order": 75,
-              "type": "LOCK_IF",
-              "lockTarget": true,
-              "enabled": true,
-              "sourceField": "Control Type",
-              "params": {
-                "value": "1, 7"
-              }
-            }
-          ]
-        },
-        {
-          "id": "vacancyDuration",
-          "category": "Override",
-          "name": "Vacancy Duration",
-          "type": "number",
-          "default": 20,
-          "unit": "Minutes",
-          "point": "vacancyDuration",
-          "tags": [
-            "config",
-            "duration",
-            "generic",
-            "lighting",
-            "vacancy",
-            "sp",
-            "his",
-            "writable",
-            "dis",
-            "id",
-            "kind",
-            "point",
-            "siteRef",
-            "tz"
-          ],
-          "validation": {
-            "min": 0,
-            "max": 500,
-            "integer": true
-          },
-          "rules": [
-            {
-              "order": 76,
-              "type": "LOCK_IF",
-              "lockTarget": true,
-              "enabled": true,
-              "sourceField": "Control Type",
-              "params": {
-                "value": "1, 2, 4, 7"
-              }
-            }
-          ]
-        },
-        {
-          "id": "flashWarningTime",
-          "category": "Override",
-          "name": "Flash Warning Time",
-          "type": "number",
-          "default": 0,
-          "unit": "Minutes",
-          "point": "flashWarningTimer",
-          "tags": [
-            "config",
-            "generic",
-            "lighting",
-            "sp",
-            "timer",
-            "his",
-            "writable",
-            "dis",
-            "id",
-            "kind",
-            "point",
-            "siteRef",
-            "tz"
-          ],
-          "validation": {
-            "min": 0,
-            "max": 100,
-            "integer": true
-          },
-          "rules": [
-            {
-              "order": 77,
-              "type": "LOCK_IF",
-              "lockTarget": true,
-              "enabled": true,
-              "sourceField": "Control Type",
-              "params": {
-                "value": 7
-              }
-            }
-          ]
-        },
-        {
-          "id": "scheduleMode",
-          "category": "Control",
-          "name": "Schedule Mode",
-          "type": "dropdown",
-          "default": "Yes",
-          "unit": null,
-          "options": [
-            {
-              "label": "Yes",
-              "value": "Yes"
-            },
-            {
-              "label": "No",
-              "value": "No"
-            }
-          ],
-          "point": "scheduleMode",
-          "tags": [
-            "config",
-            "generic",
-            "lighting",
-            "mode",
-            "sp",
-            "his",
-            "schedulable",
-            "writable",
-            "dis",
-            "id",
-            "kind",
-            "point",
-            "siteRef",
-            "tz"
-          ],
-          "comments": "Schedule - Yes/No",
-          "rules": [
-            {
-              "order": 80,
-              "type": "LOCK_IF",
-              "lockTarget": true,
-              "enabled": true,
-              "sourceField": "Control Type",
-              "params": {
-                "value": "2,3,7"
-              }
-            },
-            {
-              "order": 90,
-              "type": "REQUIRE_IF",
-              "lockTarget": false,
-              "enabled": true,
-              "sourceField": "Control Type",
-              "params": {
-                "value": "1, 4, 5, 6"
               }
             }
           ]
