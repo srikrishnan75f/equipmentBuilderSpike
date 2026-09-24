@@ -696,9 +696,41 @@ function extractIdentifier(value) {
     return null;
 }
 
+function parseBasicTagMapping(value) {
+    // Basic rows can define one domain point followed by TAG:point pairs for output tags.
+    const text = clean(value);
+    if (!text.includes(':')) return null;
+
+    const tagMapping = [];
+    const tagPattern = /(?:^|[,;\n\r])\s*([^,;:\n\r]+?)\s*:\s*([^,;\n\r]+)/g;
+    let match = tagPattern.exec(text);
+    const domainName = match ? clean(text.slice(0, match.index).replace(/[,;\n\r]+$/g, '')) : '';
+
+    while (match) {
+        const tag = clean(match[1]);
+        const point = clean(match[2]);
+
+        if (tag && point) {
+            tagMapping.push({ tag, point });
+        }
+
+        match = tagPattern.exec(text);
+    }
+
+    if (!domainName || tagMapping.length === 0) return null;
+
+    return {
+        pointMapping: {
+            domainName,
+            tagMapping,
+        },
+    };
+}
+
 function parsePointMapping(pointValue, options) {
     const points = parsePoints(pointValue);
     if (points.length === 0) return [null, null];
+    if (points.length === 1) return [null, points[0]];
 
     const optionIdentifiers = options.map((option) => {
         const label = clean(option?.label);
@@ -733,7 +765,6 @@ function parsePointMapping(pointValue, options) {
         if (Object.keys(mapping).length > 0) return [mapping, null];
     }
 
-    if (points.length === 1) return [null, points[0]];
     return [null, null];
 }
 
@@ -832,9 +863,14 @@ function parseParametersFromSheet(sheet, sequenceTabName, rules = [], sequenceNa
             if (parsedOptions.length > 0) parameter.options = parsedOptions;
         }
 
-        const [pointMapping, point] = parsePointMapping(pointRaw, parsedOptions);
-        if (pointMapping) parameter.pointMapping = pointMapping;
-        else if (point) parameter.point = point;
+        const basicTagMapping = normalize(category) === 'basic' ? parseBasicTagMapping(pointRaw) : null;
+        if (basicTagMapping) {
+            Object.assign(parameter, basicTagMapping);
+        } else {
+            const [pointMapping, point] = parsePointMapping(pointRaw, parsedOptions);
+            if (pointMapping) parameter.pointMapping = pointMapping;
+            else if (point) parameter.pointMapping = { domainName: point };
+        }
 
         const tags = parseTags(tagsRaw);
         if (tags.length > 0) parameter.tags = tags;

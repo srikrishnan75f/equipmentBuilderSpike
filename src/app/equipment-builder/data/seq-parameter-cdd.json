@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-09-23T14:23:11.689Z",
+  "generatedAt": "2026-09-24T12:45:56.131Z",
   "sourceWorkbooks": [
-    "1790173390416-Equipment_Builder-Latest.xlsx"
+    "1790253955664-sri_modified.xlsx"
   ],
   "sequences": [
     {
       "sequenceId": "DAYLIGHT_HARVESTING_AO_CN",
       "sequenceName": "Daylight Harvesting AO_CN",
-      "sourceWorkbook": "1790173390416-Equipment_Builder-Latest.xlsx",
+      "sourceWorkbook": "1790253955664-sri_modified.xlsx",
       "sourceSheet": null,
       "dimensions": [],
       "pointGroups": [],
@@ -20,12 +20,11 @@
     {
       "sequenceId": "EXHAUST_FAN_CONTROL_CN",
       "sequenceName": "EXHAUST FAN CONTROL_CN",
-      "sourceWorkbook": "1790173390416-Equipment_Builder-Latest.xlsx",
+      "sourceWorkbook": "1790253955664-sri_modified.xlsx",
       "sourceSheet": "EXHAUST FAN CONTROL_CN-MATRIX",
       "dimensions": [
         "Exhaust Fan Count",
-        "Fan Status Required?",
-        "Interlock Required?"
+        "Interlock Enable"
       ],
       "pointGroups": [
         {
@@ -378,16 +377,12 @@
             7,
             8
           ],
-          "fanStatusRequired": [
-            false,
-            true
-          ],
-          "interlockRequired": [
+          "interlockEnable": [
             false,
             true
           ]
         },
-        "actualCount": 32
+        "actualCount": 16
       },
       "scenarios": [
         {
@@ -395,148 +390,7 @@
           "sourceRow": 2,
           "match": {
             "exhaustFanCount": 1,
-            "fanStatusRequired": false,
-            "interlockRequired": false
-          },
-          "pointGroups": {
-            "bo": [
-              {
-                "terminal": "BO1",
-                "ioType": "Digital Output",
-                "point": "BO1",
-                "description": "EXHAUST FAN 1 CMD",
-                "tag": "EF1_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              }
-            ],
-            "status": [],
-            "interlock": []
-          },
-          "spares": {
-            "spareUis": [
-              "UI1",
-              "UI2",
-              "UI3",
-              "UI4",
-              "UI5",
-              "UI6",
-              "UI7",
-              "UI8"
-            ]
-          },
-          "points": [
-            {
-              "terminal": "BO1",
-              "ioType": "Digital Output",
-              "point": "BO1",
-              "description": "EXHAUST FAN 1 CMD",
-              "tag": "EF1_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            }
-          ],
-          "raw": {
-            "Scenario #": "1",
-            "Exhaust Fan Count": "1",
-            "Fan Status Required?": "No",
-            "Interlock Required?": "No",
-            "BO Map (CMD)": "BO1",
-            "BO Details (Point ➔ Name & Tag)": "BO1 ➔ EXHAUST FAN 1 CMD (EF1_CMD)",
-            "UI Map (Status)": "None",
-            "Status Details (Point ➔ Name & Tag)": "None",
-            "UI Map (Interlock)": "None",
-            "Interlock Details (Point ➔ Name & Tag)": "None",
-            "Spare UIs": "UI1 to UI8",
-            "Hardware Status": "OK"
-          }
-        },
-        {
-          "scenario": 2,
-          "sourceRow": 3,
-          "match": {
-            "exhaustFanCount": 1,
-            "fanStatusRequired": false,
-            "interlockRequired": true
-          },
-          "pointGroups": {
-            "bo": [
-              {
-                "terminal": "BO1",
-                "ioType": "Digital Output",
-                "point": "BO1",
-                "description": "EXHAUST FAN 1 CMD",
-                "tag": "EF1_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              }
-            ],
-            "status": [],
-            "interlock": [
-              {
-                "terminal": "UI1",
-                "ioType": "Digital Input",
-                "point": "UI1",
-                "description": "INTERLOCK STATUS EF1",
-                "tag": "ITRLK_STS_EF1",
-                "deviceRange": "",
-                "sourceGroup": "Interlock"
-              }
-            ]
-          },
-          "spares": {
-            "spareUis": [
-              "UI2",
-              "UI3",
-              "UI4",
-              "UI5",
-              "UI6",
-              "UI7",
-              "UI8"
-            ]
-          },
-          "points": [
-            {
-              "terminal": "BO1",
-              "ioType": "Digital Output",
-              "point": "BO1",
-              "description": "EXHAUST FAN 1 CMD",
-              "tag": "EF1_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "UI1",
-              "ioType": "Digital Input",
-              "point": "UI1",
-              "description": "INTERLOCK STATUS EF1",
-              "tag": "ITRLK_STS_EF1",
-              "deviceRange": "",
-              "sourceGroup": "Interlock"
-            }
-          ],
-          "raw": {
-            "Scenario #": "2",
-            "Exhaust Fan Count": "1",
-            "Fan Status Required?": "No",
-            "Interlock Required?": "Yes",
-            "BO Map (CMD)": "BO1",
-            "BO Details (Point ➔ Name & Tag)": "BO1 ➔ EXHAUST FAN 1 CMD (EF1_CMD)",
-            "UI Map (Status)": "None",
-            "Status Details (Point ➔ Name & Tag)": "None",
-            "UI Map (Interlock)": "UI1 to UI1",
-            "Interlock Details (Point ➔ Name & Tag)": "UI1 ➔ INTERLOCK STATUS EF1 (ITRLK_STS_EF1)",
-            "Spare UIs": "UI2 to UI8",
-            "Hardware Status": "OK"
-          }
-        },
-        {
-          "scenario": 3,
-          "sourceRow": 4,
-          "match": {
-            "exhaustFanCount": 1,
-            "fanStatusRequired": true,
-            "interlockRequired": false
+            "interlockEnable": false
           },
           "pointGroups": {
             "bo": [
@@ -595,10 +449,9 @@
             }
           ],
           "raw": {
-            "Scenario #": "3",
+            "Scenario #": "1",
             "Exhaust Fan Count": "1",
-            "Fan Status Required?": "Yes",
-            "Interlock Required?": "No",
+            "Interlock Enable": "No",
             "BO Map (CMD)": "BO1",
             "BO Details (Point ➔ Name & Tag)": "BO1 ➔ EXHAUST FAN 1 CMD (EF1_CMD)",
             "UI Map (Status)": "UI1 to UI1",
@@ -610,12 +463,11 @@
           }
         },
         {
-          "scenario": 4,
-          "sourceRow": 5,
+          "scenario": 2,
+          "sourceRow": 3,
           "match": {
             "exhaustFanCount": 1,
-            "fanStatusRequired": true,
-            "interlockRequired": true
+            "interlockEnable": true
           },
           "pointGroups": {
             "bo": [
@@ -692,10 +544,9 @@
             }
           ],
           "raw": {
-            "Scenario #": "4",
+            "Scenario #": "2",
             "Exhaust Fan Count": "1",
-            "Fan Status Required?": "Yes",
-            "Interlock Required?": "Yes",
+            "Interlock Enable": "Yes",
             "BO Map (CMD)": "BO1",
             "BO Details (Point ➔ Name & Tag)": "BO1 ➔ EXHAUST FAN 1 CMD (EF1_CMD)",
             "UI Map (Status)": "UI1 to UI1",
@@ -707,205 +558,11 @@
           }
         },
         {
-          "scenario": 5,
-          "sourceRow": 6,
+          "scenario": 3,
+          "sourceRow": 4,
           "match": {
             "exhaustFanCount": 2,
-            "fanStatusRequired": false,
-            "interlockRequired": false
-          },
-          "pointGroups": {
-            "bo": [
-              {
-                "terminal": "BO1",
-                "ioType": "Digital Output",
-                "point": "BO1",
-                "description": "EXHAUST FAN 1 CMD",
-                "tag": "EF1_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              },
-              {
-                "terminal": "BO2",
-                "ioType": "Digital Output",
-                "point": "BO2",
-                "description": "EXHAUST FAN 2 CMD",
-                "tag": "EF2_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              }
-            ],
-            "status": [],
-            "interlock": []
-          },
-          "spares": {
-            "spareUis": [
-              "UI1",
-              "UI2",
-              "UI3",
-              "UI4",
-              "UI5",
-              "UI6",
-              "UI7",
-              "UI8"
-            ]
-          },
-          "points": [
-            {
-              "terminal": "BO1",
-              "ioType": "Digital Output",
-              "point": "BO1",
-              "description": "EXHAUST FAN 1 CMD",
-              "tag": "EF1_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "BO2",
-              "ioType": "Digital Output",
-              "point": "BO2",
-              "description": "EXHAUST FAN 2 CMD",
-              "tag": "EF2_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            }
-          ],
-          "raw": {
-            "Scenario #": "5",
-            "Exhaust Fan Count": "2",
-            "Fan Status Required?": "No",
-            "Interlock Required?": "No",
-            "BO Map (CMD)": "BO1 to BO2",
-            "BO Details (Point ➔ Name & Tag)": "BO1 ➔ EXHAUST FAN 1 CMD (EF1_CMD)\r\nBO2 ➔ EXHAUST FAN 2 CMD (EF2_CMD)",
-            "UI Map (Status)": "None",
-            "Status Details (Point ➔ Name & Tag)": "None",
-            "UI Map (Interlock)": "None",
-            "Interlock Details (Point ➔ Name & Tag)": "None",
-            "Spare UIs": "UI1 to UI8",
-            "Hardware Status": "OK"
-          }
-        },
-        {
-          "scenario": 6,
-          "sourceRow": 7,
-          "match": {
-            "exhaustFanCount": 2,
-            "fanStatusRequired": false,
-            "interlockRequired": true
-          },
-          "pointGroups": {
-            "bo": [
-              {
-                "terminal": "BO1",
-                "ioType": "Digital Output",
-                "point": "BO1",
-                "description": "EXHAUST FAN 1 CMD",
-                "tag": "EF1_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              },
-              {
-                "terminal": "BO2",
-                "ioType": "Digital Output",
-                "point": "BO2",
-                "description": "EXHAUST FAN 2 CMD",
-                "tag": "EF2_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              }
-            ],
-            "status": [],
-            "interlock": [
-              {
-                "terminal": "UI1",
-                "ioType": "Digital Input",
-                "point": "UI1",
-                "description": "INTERLOCK STATUS EF1",
-                "tag": "ITRLK_STS_EF1",
-                "deviceRange": "",
-                "sourceGroup": "Interlock"
-              },
-              {
-                "terminal": "UI2",
-                "ioType": "Digital Input",
-                "point": "UI2",
-                "description": "INTERLOCK STATUS EF2",
-                "tag": "ITRLK_STS_EF2",
-                "deviceRange": "",
-                "sourceGroup": "Interlock"
-              }
-            ]
-          },
-          "spares": {
-            "spareUis": [
-              "UI3",
-              "UI4",
-              "UI5",
-              "UI6",
-              "UI7",
-              "UI8"
-            ]
-          },
-          "points": [
-            {
-              "terminal": "BO1",
-              "ioType": "Digital Output",
-              "point": "BO1",
-              "description": "EXHAUST FAN 1 CMD",
-              "tag": "EF1_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "BO2",
-              "ioType": "Digital Output",
-              "point": "BO2",
-              "description": "EXHAUST FAN 2 CMD",
-              "tag": "EF2_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "UI1",
-              "ioType": "Digital Input",
-              "point": "UI1",
-              "description": "INTERLOCK STATUS EF1",
-              "tag": "ITRLK_STS_EF1",
-              "deviceRange": "",
-              "sourceGroup": "Interlock"
-            },
-            {
-              "terminal": "UI2",
-              "ioType": "Digital Input",
-              "point": "UI2",
-              "description": "INTERLOCK STATUS EF2",
-              "tag": "ITRLK_STS_EF2",
-              "deviceRange": "",
-              "sourceGroup": "Interlock"
-            }
-          ],
-          "raw": {
-            "Scenario #": "6",
-            "Exhaust Fan Count": "2",
-            "Fan Status Required?": "No",
-            "Interlock Required?": "Yes",
-            "BO Map (CMD)": "BO1 to BO2",
-            "BO Details (Point ➔ Name & Tag)": "BO1 ➔ EXHAUST FAN 1 CMD (EF1_CMD)\r\nBO2 ➔ EXHAUST FAN 2 CMD (EF2_CMD)",
-            "UI Map (Status)": "None",
-            "Status Details (Point ➔ Name & Tag)": "None",
-            "UI Map (Interlock)": "UI1 to UI2",
-            "Interlock Details (Point ➔ Name & Tag)": "UI1 ➔ INTERLOCK STATUS EF1 (ITRLK_STS_EF1)\r\nUI2 ➔ INTERLOCK STATUS EF2 (ITRLK_STS_EF2)",
-            "Spare UIs": "UI3 to UI8",
-            "Hardware Status": "OK"
-          }
-        },
-        {
-          "scenario": 7,
-          "sourceRow": 8,
-          "match": {
-            "exhaustFanCount": 2,
-            "fanStatusRequired": true,
-            "interlockRequired": false
+            "interlockEnable": false
           },
           "pointGroups": {
             "bo": [
@@ -999,10 +656,9 @@
             }
           ],
           "raw": {
-            "Scenario #": "7",
+            "Scenario #": "3",
             "Exhaust Fan Count": "2",
-            "Fan Status Required?": "Yes",
-            "Interlock Required?": "No",
+            "Interlock Enable": "No",
             "BO Map (CMD)": "BO1 to BO2",
             "BO Details (Point ➔ Name & Tag)": "BO1 ➔ EXHAUST FAN 1 CMD (EF1_CMD)\r\nBO2 ➔ EXHAUST FAN 2 CMD (EF2_CMD)",
             "UI Map (Status)": "UI1 to UI2",
@@ -1014,12 +670,11 @@
           }
         },
         {
-          "scenario": 8,
-          "sourceRow": 9,
+          "scenario": 4,
+          "sourceRow": 5,
           "match": {
             "exhaustFanCount": 2,
-            "fanStatusRequired": true,
-            "interlockRequired": true
+            "interlockEnable": true
           },
           "pointGroups": {
             "bo": [
@@ -1148,10 +803,9 @@
             }
           ],
           "raw": {
-            "Scenario #": "8",
+            "Scenario #": "4",
             "Exhaust Fan Count": "2",
-            "Fan Status Required?": "Yes",
-            "Interlock Required?": "Yes",
+            "Interlock Enable": "Yes",
             "BO Map (CMD)": "BO1 to BO2",
             "BO Details (Point ➔ Name & Tag)": "BO1 ➔ EXHAUST FAN 1 CMD (EF1_CMD)\r\nBO2 ➔ EXHAUST FAN 2 CMD (EF2_CMD)",
             "UI Map (Status)": "UI1 to UI2",
@@ -1163,258 +817,11 @@
           }
         },
         {
-          "scenario": 9,
-          "sourceRow": 10,
+          "scenario": 5,
+          "sourceRow": 6,
           "match": {
             "exhaustFanCount": 3,
-            "fanStatusRequired": false,
-            "interlockRequired": false
-          },
-          "pointGroups": {
-            "bo": [
-              {
-                "terminal": "BO1",
-                "ioType": "Digital Output",
-                "point": "BO1",
-                "description": "EXHAUST FAN 1 CMD",
-                "tag": "EF1_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              },
-              {
-                "terminal": "BO2",
-                "ioType": "Digital Output",
-                "point": "BO2",
-                "description": "EXHAUST FAN 2 CMD",
-                "tag": "EF2_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              },
-              {
-                "terminal": "BO3",
-                "ioType": "Digital Output",
-                "point": "BO3",
-                "description": "EXHAUST FAN 3 CMD",
-                "tag": "EF3_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              }
-            ],
-            "status": [],
-            "interlock": []
-          },
-          "spares": {
-            "spareUis": [
-              "UI1",
-              "UI2",
-              "UI3",
-              "UI4",
-              "UI5",
-              "UI6",
-              "UI7",
-              "UI8"
-            ]
-          },
-          "points": [
-            {
-              "terminal": "BO1",
-              "ioType": "Digital Output",
-              "point": "BO1",
-              "description": "EXHAUST FAN 1 CMD",
-              "tag": "EF1_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "BO2",
-              "ioType": "Digital Output",
-              "point": "BO2",
-              "description": "EXHAUST FAN 2 CMD",
-              "tag": "EF2_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "BO3",
-              "ioType": "Digital Output",
-              "point": "BO3",
-              "description": "EXHAUST FAN 3 CMD",
-              "tag": "EF3_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            }
-          ],
-          "raw": {
-            "Scenario #": "9",
-            "Exhaust Fan Count": "3",
-            "Fan Status Required?": "No",
-            "Interlock Required?": "No",
-            "BO Map (CMD)": "BO1 to BO3",
-            "BO Details (Point ➔ Name & Tag)": "BO1 ➔ EXHAUST FAN 1 CMD (EF1_CMD)\r\nBO2 ➔ EXHAUST FAN 2 CMD (EF2_CMD)\r\nBO3 ➔ EXHAUST FAN 3 CMD (EF3_CMD)",
-            "UI Map (Status)": "None",
-            "Status Details (Point ➔ Name & Tag)": "None",
-            "UI Map (Interlock)": "None",
-            "Interlock Details (Point ➔ Name & Tag)": "None",
-            "Spare UIs": "UI1 to UI8",
-            "Hardware Status": "OK"
-          }
-        },
-        {
-          "scenario": 10,
-          "sourceRow": 11,
-          "match": {
-            "exhaustFanCount": 3,
-            "fanStatusRequired": false,
-            "interlockRequired": true
-          },
-          "pointGroups": {
-            "bo": [
-              {
-                "terminal": "BO1",
-                "ioType": "Digital Output",
-                "point": "BO1",
-                "description": "EXHAUST FAN 1 CMD",
-                "tag": "EF1_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              },
-              {
-                "terminal": "BO2",
-                "ioType": "Digital Output",
-                "point": "BO2",
-                "description": "EXHAUST FAN 2 CMD",
-                "tag": "EF2_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              },
-              {
-                "terminal": "BO3",
-                "ioType": "Digital Output",
-                "point": "BO3",
-                "description": "EXHAUST FAN 3 CMD",
-                "tag": "EF3_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              }
-            ],
-            "status": [],
-            "interlock": [
-              {
-                "terminal": "UI1",
-                "ioType": "Digital Input",
-                "point": "UI1",
-                "description": "INTERLOCK STATUS EF1",
-                "tag": "ITRLK_STS_EF1",
-                "deviceRange": "",
-                "sourceGroup": "Interlock"
-              },
-              {
-                "terminal": "UI2",
-                "ioType": "Digital Input",
-                "point": "UI2",
-                "description": "INTERLOCK STATUS EF2",
-                "tag": "ITRLK_STS_EF2",
-                "deviceRange": "",
-                "sourceGroup": "Interlock"
-              },
-              {
-                "terminal": "UI3",
-                "ioType": "Digital Input",
-                "point": "UI3",
-                "description": "INTERLOCK STATUS EF3",
-                "tag": "ITRLK_STS_EF3",
-                "deviceRange": "",
-                "sourceGroup": "Interlock"
-              }
-            ]
-          },
-          "spares": {
-            "spareUis": [
-              "UI4",
-              "UI5",
-              "UI6",
-              "UI7",
-              "UI8"
-            ]
-          },
-          "points": [
-            {
-              "terminal": "BO1",
-              "ioType": "Digital Output",
-              "point": "BO1",
-              "description": "EXHAUST FAN 1 CMD",
-              "tag": "EF1_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "BO2",
-              "ioType": "Digital Output",
-              "point": "BO2",
-              "description": "EXHAUST FAN 2 CMD",
-              "tag": "EF2_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "BO3",
-              "ioType": "Digital Output",
-              "point": "BO3",
-              "description": "EXHAUST FAN 3 CMD",
-              "tag": "EF3_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "UI1",
-              "ioType": "Digital Input",
-              "point": "UI1",
-              "description": "INTERLOCK STATUS EF1",
-              "tag": "ITRLK_STS_EF1",
-              "deviceRange": "",
-              "sourceGroup": "Interlock"
-            },
-            {
-              "terminal": "UI2",
-              "ioType": "Digital Input",
-              "point": "UI2",
-              "description": "INTERLOCK STATUS EF2",
-              "tag": "ITRLK_STS_EF2",
-              "deviceRange": "",
-              "sourceGroup": "Interlock"
-            },
-            {
-              "terminal": "UI3",
-              "ioType": "Digital Input",
-              "point": "UI3",
-              "description": "INTERLOCK STATUS EF3",
-              "tag": "ITRLK_STS_EF3",
-              "deviceRange": "",
-              "sourceGroup": "Interlock"
-            }
-          ],
-          "raw": {
-            "Scenario #": "10",
-            "Exhaust Fan Count": "3",
-            "Fan Status Required?": "No",
-            "Interlock Required?": "Yes",
-            "BO Map (CMD)": "BO1 to BO3",
-            "BO Details (Point ➔ Name & Tag)": "BO1 ➔ EXHAUST FAN 1 CMD (EF1_CMD)\r\nBO2 ➔ EXHAUST FAN 2 CMD (EF2_CMD)\r\nBO3 ➔ EXHAUST FAN 3 CMD (EF3_CMD)",
-            "UI Map (Status)": "None",
-            "Status Details (Point ➔ Name & Tag)": "None",
-            "UI Map (Interlock)": "UI1 to UI3",
-            "Interlock Details (Point ➔ Name & Tag)": "UI1 ➔ INTERLOCK STATUS EF1 (ITRLK_STS_EF1)\r\nUI2 ➔ INTERLOCK STATUS EF2 (ITRLK_STS_EF2)\r\nUI3 ➔ INTERLOCK STATUS EF3 (ITRLK_STS_EF3)",
-            "Spare UIs": "UI4 to UI8",
-            "Hardware Status": "OK"
-          }
-        },
-        {
-          "scenario": 11,
-          "sourceRow": 12,
-          "match": {
-            "exhaustFanCount": 3,
-            "fanStatusRequired": true,
-            "interlockRequired": false
+            "interlockEnable": false
           },
           "pointGroups": {
             "bo": [
@@ -1543,10 +950,9 @@
             }
           ],
           "raw": {
-            "Scenario #": "11",
+            "Scenario #": "5",
             "Exhaust Fan Count": "3",
-            "Fan Status Required?": "Yes",
-            "Interlock Required?": "No",
+            "Interlock Enable": "No",
             "BO Map (CMD)": "BO1 to BO3",
             "BO Details (Point ➔ Name & Tag)": "BO1 ➔ EXHAUST FAN 1 CMD (EF1_CMD)\r\nBO2 ➔ EXHAUST FAN 2 CMD (EF2_CMD)\r\nBO3 ➔ EXHAUST FAN 3 CMD (EF3_CMD)",
             "UI Map (Status)": "UI1 to UI3",
@@ -1558,12 +964,11 @@
           }
         },
         {
-          "scenario": 12,
-          "sourceRow": 13,
+          "scenario": 6,
+          "sourceRow": 7,
           "match": {
             "exhaustFanCount": 3,
-            "fanStatusRequired": true,
-            "interlockRequired": true
+            "interlockEnable": true
           },
           "pointGroups": {
             "bo": [
@@ -1744,10 +1149,9 @@
             }
           ],
           "raw": {
-            "Scenario #": "12",
+            "Scenario #": "6",
             "Exhaust Fan Count": "3",
-            "Fan Status Required?": "Yes",
-            "Interlock Required?": "Yes",
+            "Interlock Enable": "Yes",
             "BO Map (CMD)": "BO1 to BO3",
             "BO Details (Point ➔ Name & Tag)": "BO1 ➔ EXHAUST FAN 1 CMD (EF1_CMD)\r\nBO2 ➔ EXHAUST FAN 2 CMD (EF2_CMD)\r\nBO3 ➔ EXHAUST FAN 3 CMD (EF3_CMD)",
             "UI Map (Status)": "UI1 to UI3",
@@ -1759,311 +1163,11 @@
           }
         },
         {
-          "scenario": 13,
-          "sourceRow": 14,
+          "scenario": 7,
+          "sourceRow": 8,
           "match": {
             "exhaustFanCount": 4,
-            "fanStatusRequired": false,
-            "interlockRequired": false
-          },
-          "pointGroups": {
-            "bo": [
-              {
-                "terminal": "BO1",
-                "ioType": "Digital Output",
-                "point": "BO1",
-                "description": "EXHAUST FAN 1 CMD",
-                "tag": "EF1_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              },
-              {
-                "terminal": "BO2",
-                "ioType": "Digital Output",
-                "point": "BO2",
-                "description": "EXHAUST FAN 2 CMD",
-                "tag": "EF2_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              },
-              {
-                "terminal": "BO3",
-                "ioType": "Digital Output",
-                "point": "BO3",
-                "description": "EXHAUST FAN 3 CMD",
-                "tag": "EF3_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              },
-              {
-                "terminal": "BO4",
-                "ioType": "Digital Output",
-                "point": "BO4",
-                "description": "EXHAUST FAN 4 CMD",
-                "tag": "EF4_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              }
-            ],
-            "status": [],
-            "interlock": []
-          },
-          "spares": {
-            "spareUis": [
-              "UI1",
-              "UI2",
-              "UI3",
-              "UI4",
-              "UI5",
-              "UI6",
-              "UI7",
-              "UI8"
-            ]
-          },
-          "points": [
-            {
-              "terminal": "BO1",
-              "ioType": "Digital Output",
-              "point": "BO1",
-              "description": "EXHAUST FAN 1 CMD",
-              "tag": "EF1_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "BO2",
-              "ioType": "Digital Output",
-              "point": "BO2",
-              "description": "EXHAUST FAN 2 CMD",
-              "tag": "EF2_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "BO3",
-              "ioType": "Digital Output",
-              "point": "BO3",
-              "description": "EXHAUST FAN 3 CMD",
-              "tag": "EF3_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "BO4",
-              "ioType": "Digital Output",
-              "point": "BO4",
-              "description": "EXHAUST FAN 4 CMD",
-              "tag": "EF4_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            }
-          ],
-          "raw": {
-            "Scenario #": "13",
-            "Exhaust Fan Count": "4",
-            "Fan Status Required?": "No",
-            "Interlock Required?": "No",
-            "BO Map (CMD)": "BO1 to BO4",
-            "BO Details (Point ➔ Name & Tag)": "BO1 ➔ EXHAUST FAN 1 CMD (EF1_CMD)\r\nBO2 ➔ EXHAUST FAN 2 CMD (EF2_CMD)\r\nBO3 ➔ EXHAUST FAN 3 CMD (EF3_CMD)\r\nBO4 ➔ EXHAUST FAN 4 CMD (EF4_CMD)",
-            "UI Map (Status)": "None",
-            "Status Details (Point ➔ Name & Tag)": "None",
-            "UI Map (Interlock)": "None",
-            "Interlock Details (Point ➔ Name & Tag)": "None",
-            "Spare UIs": "UI1 to UI8",
-            "Hardware Status": "OK"
-          }
-        },
-        {
-          "scenario": 14,
-          "sourceRow": 15,
-          "match": {
-            "exhaustFanCount": 4,
-            "fanStatusRequired": false,
-            "interlockRequired": true
-          },
-          "pointGroups": {
-            "bo": [
-              {
-                "terminal": "BO1",
-                "ioType": "Digital Output",
-                "point": "BO1",
-                "description": "EXHAUST FAN 1 CMD",
-                "tag": "EF1_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              },
-              {
-                "terminal": "BO2",
-                "ioType": "Digital Output",
-                "point": "BO2",
-                "description": "EXHAUST FAN 2 CMD",
-                "tag": "EF2_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              },
-              {
-                "terminal": "BO3",
-                "ioType": "Digital Output",
-                "point": "BO3",
-                "description": "EXHAUST FAN 3 CMD",
-                "tag": "EF3_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              },
-              {
-                "terminal": "BO4",
-                "ioType": "Digital Output",
-                "point": "BO4",
-                "description": "EXHAUST FAN 4 CMD",
-                "tag": "EF4_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              }
-            ],
-            "status": [],
-            "interlock": [
-              {
-                "terminal": "UI1",
-                "ioType": "Digital Input",
-                "point": "UI1",
-                "description": "INTERLOCK STATUS EF1",
-                "tag": "ITRLK_STS_EF1",
-                "deviceRange": "",
-                "sourceGroup": "Interlock"
-              },
-              {
-                "terminal": "UI2",
-                "ioType": "Digital Input",
-                "point": "UI2",
-                "description": "INTERLOCK STATUS EF2",
-                "tag": "ITRLK_STS_EF2",
-                "deviceRange": "",
-                "sourceGroup": "Interlock"
-              },
-              {
-                "terminal": "UI3",
-                "ioType": "Digital Input",
-                "point": "UI3",
-                "description": "INTERLOCK STATUS EF3",
-                "tag": "ITRLK_STS_EF3",
-                "deviceRange": "",
-                "sourceGroup": "Interlock"
-              },
-              {
-                "terminal": "UI4",
-                "ioType": "Digital Input",
-                "point": "UI4",
-                "description": "INTERLOCK STATUS EF4",
-                "tag": "ITRLK_STS_EF4",
-                "deviceRange": "",
-                "sourceGroup": "Interlock"
-              }
-            ]
-          },
-          "spares": {
-            "spareUis": [
-              "UI5",
-              "UI6",
-              "UI7",
-              "UI8"
-            ]
-          },
-          "points": [
-            {
-              "terminal": "BO1",
-              "ioType": "Digital Output",
-              "point": "BO1",
-              "description": "EXHAUST FAN 1 CMD",
-              "tag": "EF1_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "BO2",
-              "ioType": "Digital Output",
-              "point": "BO2",
-              "description": "EXHAUST FAN 2 CMD",
-              "tag": "EF2_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "BO3",
-              "ioType": "Digital Output",
-              "point": "BO3",
-              "description": "EXHAUST FAN 3 CMD",
-              "tag": "EF3_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "BO4",
-              "ioType": "Digital Output",
-              "point": "BO4",
-              "description": "EXHAUST FAN 4 CMD",
-              "tag": "EF4_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "UI1",
-              "ioType": "Digital Input",
-              "point": "UI1",
-              "description": "INTERLOCK STATUS EF1",
-              "tag": "ITRLK_STS_EF1",
-              "deviceRange": "",
-              "sourceGroup": "Interlock"
-            },
-            {
-              "terminal": "UI2",
-              "ioType": "Digital Input",
-              "point": "UI2",
-              "description": "INTERLOCK STATUS EF2",
-              "tag": "ITRLK_STS_EF2",
-              "deviceRange": "",
-              "sourceGroup": "Interlock"
-            },
-            {
-              "terminal": "UI3",
-              "ioType": "Digital Input",
-              "point": "UI3",
-              "description": "INTERLOCK STATUS EF3",
-              "tag": "ITRLK_STS_EF3",
-              "deviceRange": "",
-              "sourceGroup": "Interlock"
-            },
-            {
-              "terminal": "UI4",
-              "ioType": "Digital Input",
-              "point": "UI4",
-              "description": "INTERLOCK STATUS EF4",
-              "tag": "ITRLK_STS_EF4",
-              "deviceRange": "",
-              "sourceGroup": "Interlock"
-            }
-          ],
-          "raw": {
-            "Scenario #": "14",
-            "Exhaust Fan Count": "4",
-            "Fan Status Required?": "No",
-            "Interlock Required?": "Yes",
-            "BO Map (CMD)": "BO1 to BO4",
-            "BO Details (Point ➔ Name & Tag)": "BO1 ➔ EXHAUST FAN 1 CMD (EF1_CMD)\r\nBO2 ➔ EXHAUST FAN 2 CMD (EF2_CMD)\r\nBO3 ➔ EXHAUST FAN 3 CMD (EF3_CMD)\r\nBO4 ➔ EXHAUST FAN 4 CMD (EF4_CMD)",
-            "UI Map (Status)": "None",
-            "Status Details (Point ➔ Name & Tag)": "None",
-            "UI Map (Interlock)": "UI1 to UI4",
-            "Interlock Details (Point ➔ Name & Tag)": "UI1 ➔ INTERLOCK STATUS EF1 (ITRLK_STS_EF1)\r\nUI2 ➔ INTERLOCK STATUS EF2 (ITRLK_STS_EF2)\r\nUI3 ➔ INTERLOCK STATUS EF3 (ITRLK_STS_EF3)\r\nUI4 ➔ INTERLOCK STATUS EF4 (ITRLK_STS_EF4)",
-            "Spare UIs": "UI5 to UI8",
-            "Hardware Status": "OK"
-          }
-        },
-        {
-          "scenario": 15,
-          "sourceRow": 16,
-          "match": {
-            "exhaustFanCount": 4,
-            "fanStatusRequired": true,
-            "interlockRequired": false
+            "interlockEnable": false
           },
           "pointGroups": {
             "bo": [
@@ -2227,10 +1331,9 @@
             }
           ],
           "raw": {
-            "Scenario #": "15",
+            "Scenario #": "7",
             "Exhaust Fan Count": "4",
-            "Fan Status Required?": "Yes",
-            "Interlock Required?": "No",
+            "Interlock Enable": "No",
             "BO Map (CMD)": "BO1 to BO4",
             "BO Details (Point ➔ Name & Tag)": "BO1 ➔ EXHAUST FAN 1 CMD (EF1_CMD)\r\nBO2 ➔ EXHAUST FAN 2 CMD (EF2_CMD)\r\nBO3 ➔ EXHAUST FAN 3 CMD (EF3_CMD)\r\nBO4 ➔ EXHAUST FAN 4 CMD (EF4_CMD)",
             "UI Map (Status)": "UI1 to UI4",
@@ -2242,12 +1345,11 @@
           }
         },
         {
-          "scenario": 16,
-          "sourceRow": 17,
+          "scenario": 8,
+          "sourceRow": 9,
           "match": {
             "exhaustFanCount": 4,
-            "fanStatusRequired": true,
-            "interlockRequired": true
+            "interlockEnable": true
           },
           "pointGroups": {
             "bo": [
@@ -2479,10 +1581,9 @@
             }
           ],
           "raw": {
-            "Scenario #": "16",
+            "Scenario #": "8",
             "Exhaust Fan Count": "4",
-            "Fan Status Required?": "Yes",
-            "Interlock Required?": "Yes",
+            "Interlock Enable": "Yes",
             "BO Map (CMD)": "BO1 to BO4",
             "BO Details (Point ➔ Name & Tag)": "BO1 ➔ EXHAUST FAN 1 CMD (EF1_CMD)\r\nBO2 ➔ EXHAUST FAN 2 CMD (EF2_CMD)\r\nBO3 ➔ EXHAUST FAN 3 CMD (EF3_CMD)\r\nBO4 ➔ EXHAUST FAN 4 CMD (EF4_CMD)",
             "UI Map (Status)": "UI1 to UI4",
@@ -2494,364 +1595,11 @@
           }
         },
         {
-          "scenario": 17,
-          "sourceRow": 18,
+          "scenario": 9,
+          "sourceRow": 10,
           "match": {
             "exhaustFanCount": 5,
-            "fanStatusRequired": false,
-            "interlockRequired": false
-          },
-          "pointGroups": {
-            "bo": [
-              {
-                "terminal": "BO1",
-                "ioType": "Digital Output",
-                "point": "BO1",
-                "description": "EXHAUST FAN 1 CMD",
-                "tag": "EF1_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              },
-              {
-                "terminal": "BO2",
-                "ioType": "Digital Output",
-                "point": "BO2",
-                "description": "EXHAUST FAN 2 CMD",
-                "tag": "EF2_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              },
-              {
-                "terminal": "BO3",
-                "ioType": "Digital Output",
-                "point": "BO3",
-                "description": "EXHAUST FAN 3 CMD",
-                "tag": "EF3_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              },
-              {
-                "terminal": "BO4",
-                "ioType": "Digital Output",
-                "point": "BO4",
-                "description": "EXHAUST FAN 4 CMD",
-                "tag": "EF4_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              },
-              {
-                "terminal": "BO5",
-                "ioType": "Digital Output",
-                "point": "BO5",
-                "description": "EXHAUST FAN 5 CMD",
-                "tag": "EF5_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              }
-            ],
-            "status": [],
-            "interlock": []
-          },
-          "spares": {
-            "spareUis": [
-              "UI1",
-              "UI2",
-              "UI3",
-              "UI4",
-              "UI5",
-              "UI6",
-              "UI7",
-              "UI8"
-            ]
-          },
-          "points": [
-            {
-              "terminal": "BO1",
-              "ioType": "Digital Output",
-              "point": "BO1",
-              "description": "EXHAUST FAN 1 CMD",
-              "tag": "EF1_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "BO2",
-              "ioType": "Digital Output",
-              "point": "BO2",
-              "description": "EXHAUST FAN 2 CMD",
-              "tag": "EF2_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "BO3",
-              "ioType": "Digital Output",
-              "point": "BO3",
-              "description": "EXHAUST FAN 3 CMD",
-              "tag": "EF3_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "BO4",
-              "ioType": "Digital Output",
-              "point": "BO4",
-              "description": "EXHAUST FAN 4 CMD",
-              "tag": "EF4_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "BO5",
-              "ioType": "Digital Output",
-              "point": "BO5",
-              "description": "EXHAUST FAN 5 CMD",
-              "tag": "EF5_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            }
-          ],
-          "raw": {
-            "Scenario #": "17",
-            "Exhaust Fan Count": "5",
-            "Fan Status Required?": "No",
-            "Interlock Required?": "No",
-            "BO Map (CMD)": "BO1 to BO5",
-            "BO Details (Point ➔ Name & Tag)": "BO1 ➔ EXHAUST FAN 1 CMD (EF1_CMD)\r\nBO2 ➔ EXHAUST FAN 2 CMD (EF2_CMD)\r\nBO3 ➔ EXHAUST FAN 3 CMD (EF3_CMD)\r\nBO4 ➔ EXHAUST FAN 4 CMD (EF4_CMD)\r\nBO5 ➔ EXHAUST FAN 5 CMD (EF5_CMD)",
-            "UI Map (Status)": "None",
-            "Status Details (Point ➔ Name & Tag)": "None",
-            "UI Map (Interlock)": "None",
-            "Interlock Details (Point ➔ Name & Tag)": "None",
-            "Spare UIs": "UI1 to UI8",
-            "Hardware Status": "OK"
-          }
-        },
-        {
-          "scenario": 18,
-          "sourceRow": 19,
-          "match": {
-            "exhaustFanCount": 5,
-            "fanStatusRequired": false,
-            "interlockRequired": true
-          },
-          "pointGroups": {
-            "bo": [
-              {
-                "terminal": "BO1",
-                "ioType": "Digital Output",
-                "point": "BO1",
-                "description": "EXHAUST FAN 1 CMD",
-                "tag": "EF1_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              },
-              {
-                "terminal": "BO2",
-                "ioType": "Digital Output",
-                "point": "BO2",
-                "description": "EXHAUST FAN 2 CMD",
-                "tag": "EF2_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              },
-              {
-                "terminal": "BO3",
-                "ioType": "Digital Output",
-                "point": "BO3",
-                "description": "EXHAUST FAN 3 CMD",
-                "tag": "EF3_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              },
-              {
-                "terminal": "BO4",
-                "ioType": "Digital Output",
-                "point": "BO4",
-                "description": "EXHAUST FAN 4 CMD",
-                "tag": "EF4_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              },
-              {
-                "terminal": "BO5",
-                "ioType": "Digital Output",
-                "point": "BO5",
-                "description": "EXHAUST FAN 5 CMD",
-                "tag": "EF5_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              }
-            ],
-            "status": [],
-            "interlock": [
-              {
-                "terminal": "UI1",
-                "ioType": "Digital Input",
-                "point": "UI1",
-                "description": "INTERLOCK STATUS EF1",
-                "tag": "ITRLK_STS_EF1",
-                "deviceRange": "",
-                "sourceGroup": "Interlock"
-              },
-              {
-                "terminal": "UI2",
-                "ioType": "Digital Input",
-                "point": "UI2",
-                "description": "INTERLOCK STATUS EF2",
-                "tag": "ITRLK_STS_EF2",
-                "deviceRange": "",
-                "sourceGroup": "Interlock"
-              },
-              {
-                "terminal": "UI3",
-                "ioType": "Digital Input",
-                "point": "UI3",
-                "description": "INTERLOCK STATUS EF3",
-                "tag": "ITRLK_STS_EF3",
-                "deviceRange": "",
-                "sourceGroup": "Interlock"
-              },
-              {
-                "terminal": "UI4",
-                "ioType": "Digital Input",
-                "point": "UI4",
-                "description": "INTERLOCK STATUS EF4",
-                "tag": "ITRLK_STS_EF4",
-                "deviceRange": "",
-                "sourceGroup": "Interlock"
-              },
-              {
-                "terminal": "UI5",
-                "ioType": "Digital Input",
-                "point": "UI5",
-                "description": "INTERLOCK STATUS EF5",
-                "tag": "ITRLK_STS_EF5",
-                "deviceRange": "",
-                "sourceGroup": "Interlock"
-              }
-            ]
-          },
-          "spares": {
-            "spareUis": [
-              "UI6",
-              "UI7",
-              "UI8"
-            ]
-          },
-          "points": [
-            {
-              "terminal": "BO1",
-              "ioType": "Digital Output",
-              "point": "BO1",
-              "description": "EXHAUST FAN 1 CMD",
-              "tag": "EF1_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "BO2",
-              "ioType": "Digital Output",
-              "point": "BO2",
-              "description": "EXHAUST FAN 2 CMD",
-              "tag": "EF2_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "BO3",
-              "ioType": "Digital Output",
-              "point": "BO3",
-              "description": "EXHAUST FAN 3 CMD",
-              "tag": "EF3_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "BO4",
-              "ioType": "Digital Output",
-              "point": "BO4",
-              "description": "EXHAUST FAN 4 CMD",
-              "tag": "EF4_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "BO5",
-              "ioType": "Digital Output",
-              "point": "BO5",
-              "description": "EXHAUST FAN 5 CMD",
-              "tag": "EF5_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "UI1",
-              "ioType": "Digital Input",
-              "point": "UI1",
-              "description": "INTERLOCK STATUS EF1",
-              "tag": "ITRLK_STS_EF1",
-              "deviceRange": "",
-              "sourceGroup": "Interlock"
-            },
-            {
-              "terminal": "UI2",
-              "ioType": "Digital Input",
-              "point": "UI2",
-              "description": "INTERLOCK STATUS EF2",
-              "tag": "ITRLK_STS_EF2",
-              "deviceRange": "",
-              "sourceGroup": "Interlock"
-            },
-            {
-              "terminal": "UI3",
-              "ioType": "Digital Input",
-              "point": "UI3",
-              "description": "INTERLOCK STATUS EF3",
-              "tag": "ITRLK_STS_EF3",
-              "deviceRange": "",
-              "sourceGroup": "Interlock"
-            },
-            {
-              "terminal": "UI4",
-              "ioType": "Digital Input",
-              "point": "UI4",
-              "description": "INTERLOCK STATUS EF4",
-              "tag": "ITRLK_STS_EF4",
-              "deviceRange": "",
-              "sourceGroup": "Interlock"
-            },
-            {
-              "terminal": "UI5",
-              "ioType": "Digital Input",
-              "point": "UI5",
-              "description": "INTERLOCK STATUS EF5",
-              "tag": "ITRLK_STS_EF5",
-              "deviceRange": "",
-              "sourceGroup": "Interlock"
-            }
-          ],
-          "raw": {
-            "Scenario #": "18",
-            "Exhaust Fan Count": "5",
-            "Fan Status Required?": "No",
-            "Interlock Required?": "Yes",
-            "BO Map (CMD)": "BO1 to BO5",
-            "BO Details (Point ➔ Name & Tag)": "BO1 ➔ EXHAUST FAN 1 CMD (EF1_CMD)\r\nBO2 ➔ EXHAUST FAN 2 CMD (EF2_CMD)\r\nBO3 ➔ EXHAUST FAN 3 CMD (EF3_CMD)\r\nBO4 ➔ EXHAUST FAN 4 CMD (EF4_CMD)\r\nBO5 ➔ EXHAUST FAN 5 CMD (EF5_CMD)",
-            "UI Map (Status)": "None",
-            "Status Details (Point ➔ Name & Tag)": "None",
-            "UI Map (Interlock)": "UI1 to UI5",
-            "Interlock Details (Point ➔ Name & Tag)": "UI1 ➔ INTERLOCK STATUS EF1 (ITRLK_STS_EF1)\r\nUI2 ➔ INTERLOCK STATUS EF2 (ITRLK_STS_EF2)\r\nUI3 ➔ INTERLOCK STATUS EF3 (ITRLK_STS_EF3)\r\nUI4 ➔ INTERLOCK STATUS EF4 (ITRLK_STS_EF4)\r\nUI5 ➔ INTERLOCK STATUS EF5 (ITRLK_STS_EF5)",
-            "Spare UIs": "UI6 to UI8",
-            "Hardware Status": "OK"
-          }
-        },
-        {
-          "scenario": 19,
-          "sourceRow": 20,
-          "match": {
-            "exhaustFanCount": 5,
-            "fanStatusRequired": true,
-            "interlockRequired": false
+            "interlockEnable": false
           },
           "pointGroups": {
             "bo": [
@@ -3050,10 +1798,9 @@
             }
           ],
           "raw": {
-            "Scenario #": "19",
+            "Scenario #": "9",
             "Exhaust Fan Count": "5",
-            "Fan Status Required?": "Yes",
-            "Interlock Required?": "No",
+            "Interlock Enable": "No",
             "BO Map (CMD)": "BO1 to BO5",
             "BO Details (Point ➔ Name & Tag)": "BO1 ➔ EXHAUST FAN 1 CMD (EF1_CMD)\r\nBO2 ➔ EXHAUST FAN 2 CMD (EF2_CMD)\r\nBO3 ➔ EXHAUST FAN 3 CMD (EF3_CMD)\r\nBO4 ➔ EXHAUST FAN 4 CMD (EF4_CMD)\r\nBO5 ➔ EXHAUST FAN 5 CMD (EF5_CMD)",
             "UI Map (Status)": "UI1 to UI5",
@@ -3065,12 +1812,11 @@
           }
         },
         {
-          "scenario": 20,
-          "sourceRow": 21,
+          "scenario": 10,
+          "sourceRow": 11,
           "match": {
             "exhaustFanCount": 5,
-            "fanStatusRequired": true,
-            "interlockRequired": true
+            "interlockEnable": true
           },
           "pointGroups": {
             "bo": [
@@ -3356,10 +2102,9 @@
             }
           ],
           "raw": {
-            "Scenario #": "20",
+            "Scenario #": "10",
             "Exhaust Fan Count": "5",
-            "Fan Status Required?": "Yes",
-            "Interlock Required?": "Yes",
+            "Interlock Enable": "Yes",
             "BO Map (CMD)": "BO1 to BO5",
             "BO Details (Point ➔ Name & Tag)": "BO1 ➔ EXHAUST FAN 1 CMD (EF1_CMD)\r\nBO2 ➔ EXHAUST FAN 2 CMD (EF2_CMD)\r\nBO3 ➔ EXHAUST FAN 3 CMD (EF3_CMD)\r\nBO4 ➔ EXHAUST FAN 4 CMD (EF4_CMD)\r\nBO5 ➔ EXHAUST FAN 5 CMD (EF5_CMD)",
             "UI Map (Status)": "UI1 to UI5",
@@ -3371,417 +2116,11 @@
           }
         },
         {
-          "scenario": 21,
-          "sourceRow": 22,
+          "scenario": 11,
+          "sourceRow": 12,
           "match": {
             "exhaustFanCount": 6,
-            "fanStatusRequired": false,
-            "interlockRequired": false
-          },
-          "pointGroups": {
-            "bo": [
-              {
-                "terminal": "BO1",
-                "ioType": "Digital Output",
-                "point": "BO1",
-                "description": "EXHAUST FAN 1 CMD",
-                "tag": "EF1_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              },
-              {
-                "terminal": "BO2",
-                "ioType": "Digital Output",
-                "point": "BO2",
-                "description": "EXHAUST FAN 2 CMD",
-                "tag": "EF2_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              },
-              {
-                "terminal": "BO3",
-                "ioType": "Digital Output",
-                "point": "BO3",
-                "description": "EXHAUST FAN 3 CMD",
-                "tag": "EF3_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              },
-              {
-                "terminal": "BO4",
-                "ioType": "Digital Output",
-                "point": "BO4",
-                "description": "EXHAUST FAN 4 CMD",
-                "tag": "EF4_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              },
-              {
-                "terminal": "BO5",
-                "ioType": "Digital Output",
-                "point": "BO5",
-                "description": "EXHAUST FAN 5 CMD",
-                "tag": "EF5_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              },
-              {
-                "terminal": "BO6",
-                "ioType": "Digital Output",
-                "point": "BO6",
-                "description": "EXHAUST FAN 6 CMD",
-                "tag": "EF6_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              }
-            ],
-            "status": [],
-            "interlock": []
-          },
-          "spares": {
-            "spareUis": [
-              "UI1",
-              "UI2",
-              "UI3",
-              "UI4",
-              "UI5",
-              "UI6",
-              "UI7",
-              "UI8"
-            ]
-          },
-          "points": [
-            {
-              "terminal": "BO1",
-              "ioType": "Digital Output",
-              "point": "BO1",
-              "description": "EXHAUST FAN 1 CMD",
-              "tag": "EF1_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "BO2",
-              "ioType": "Digital Output",
-              "point": "BO2",
-              "description": "EXHAUST FAN 2 CMD",
-              "tag": "EF2_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "BO3",
-              "ioType": "Digital Output",
-              "point": "BO3",
-              "description": "EXHAUST FAN 3 CMD",
-              "tag": "EF3_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "BO4",
-              "ioType": "Digital Output",
-              "point": "BO4",
-              "description": "EXHAUST FAN 4 CMD",
-              "tag": "EF4_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "BO5",
-              "ioType": "Digital Output",
-              "point": "BO5",
-              "description": "EXHAUST FAN 5 CMD",
-              "tag": "EF5_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "BO6",
-              "ioType": "Digital Output",
-              "point": "BO6",
-              "description": "EXHAUST FAN 6 CMD",
-              "tag": "EF6_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            }
-          ],
-          "raw": {
-            "Scenario #": "21",
-            "Exhaust Fan Count": "6",
-            "Fan Status Required?": "No",
-            "Interlock Required?": "No",
-            "BO Map (CMD)": "BO1 to BO6",
-            "BO Details (Point ➔ Name & Tag)": "BO1 ➔ EXHAUST FAN 1 CMD (EF1_CMD)\r\nBO2 ➔ EXHAUST FAN 2 CMD (EF2_CMD)\r\nBO3 ➔ EXHAUST FAN 3 CMD (EF3_CMD)\r\nBO4 ➔ EXHAUST FAN 4 CMD (EF4_CMD)\r\nBO5 ➔ EXHAUST FAN 5 CMD (EF5_CMD)\r\nBO6 ➔ EXHAUST FAN 6 CMD (EF6_CMD)",
-            "UI Map (Status)": "None",
-            "Status Details (Point ➔ Name & Tag)": "None",
-            "UI Map (Interlock)": "None",
-            "Interlock Details (Point ➔ Name & Tag)": "None",
-            "Spare UIs": "UI1 to UI8",
-            "Hardware Status": "OK"
-          }
-        },
-        {
-          "scenario": 22,
-          "sourceRow": 23,
-          "match": {
-            "exhaustFanCount": 6,
-            "fanStatusRequired": false,
-            "interlockRequired": true
-          },
-          "pointGroups": {
-            "bo": [
-              {
-                "terminal": "BO1",
-                "ioType": "Digital Output",
-                "point": "BO1",
-                "description": "EXHAUST FAN 1 CMD",
-                "tag": "EF1_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              },
-              {
-                "terminal": "BO2",
-                "ioType": "Digital Output",
-                "point": "BO2",
-                "description": "EXHAUST FAN 2 CMD",
-                "tag": "EF2_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              },
-              {
-                "terminal": "BO3",
-                "ioType": "Digital Output",
-                "point": "BO3",
-                "description": "EXHAUST FAN 3 CMD",
-                "tag": "EF3_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              },
-              {
-                "terminal": "BO4",
-                "ioType": "Digital Output",
-                "point": "BO4",
-                "description": "EXHAUST FAN 4 CMD",
-                "tag": "EF4_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              },
-              {
-                "terminal": "BO5",
-                "ioType": "Digital Output",
-                "point": "BO5",
-                "description": "EXHAUST FAN 5 CMD",
-                "tag": "EF5_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              },
-              {
-                "terminal": "BO6",
-                "ioType": "Digital Output",
-                "point": "BO6",
-                "description": "EXHAUST FAN 6 CMD",
-                "tag": "EF6_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              }
-            ],
-            "status": [],
-            "interlock": [
-              {
-                "terminal": "UI1",
-                "ioType": "Digital Input",
-                "point": "UI1",
-                "description": "INTERLOCK STATUS EF1",
-                "tag": "ITRLK_STS_EF1",
-                "deviceRange": "",
-                "sourceGroup": "Interlock"
-              },
-              {
-                "terminal": "UI2",
-                "ioType": "Digital Input",
-                "point": "UI2",
-                "description": "INTERLOCK STATUS EF2",
-                "tag": "ITRLK_STS_EF2",
-                "deviceRange": "",
-                "sourceGroup": "Interlock"
-              },
-              {
-                "terminal": "UI3",
-                "ioType": "Digital Input",
-                "point": "UI3",
-                "description": "INTERLOCK STATUS EF3",
-                "tag": "ITRLK_STS_EF3",
-                "deviceRange": "",
-                "sourceGroup": "Interlock"
-              },
-              {
-                "terminal": "UI4",
-                "ioType": "Digital Input",
-                "point": "UI4",
-                "description": "INTERLOCK STATUS EF4",
-                "tag": "ITRLK_STS_EF4",
-                "deviceRange": "",
-                "sourceGroup": "Interlock"
-              },
-              {
-                "terminal": "UI5",
-                "ioType": "Digital Input",
-                "point": "UI5",
-                "description": "INTERLOCK STATUS EF5",
-                "tag": "ITRLK_STS_EF5",
-                "deviceRange": "",
-                "sourceGroup": "Interlock"
-              },
-              {
-                "terminal": "UI6",
-                "ioType": "Digital Input",
-                "point": "UI6",
-                "description": "INTERLOCK STATUS EF6",
-                "tag": "ITRLK_STS_EF6",
-                "deviceRange": "",
-                "sourceGroup": "Interlock"
-              }
-            ]
-          },
-          "spares": {
-            "spareUis": [
-              "UI7",
-              "UI8"
-            ]
-          },
-          "points": [
-            {
-              "terminal": "BO1",
-              "ioType": "Digital Output",
-              "point": "BO1",
-              "description": "EXHAUST FAN 1 CMD",
-              "tag": "EF1_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "BO2",
-              "ioType": "Digital Output",
-              "point": "BO2",
-              "description": "EXHAUST FAN 2 CMD",
-              "tag": "EF2_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "BO3",
-              "ioType": "Digital Output",
-              "point": "BO3",
-              "description": "EXHAUST FAN 3 CMD",
-              "tag": "EF3_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "BO4",
-              "ioType": "Digital Output",
-              "point": "BO4",
-              "description": "EXHAUST FAN 4 CMD",
-              "tag": "EF4_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "BO5",
-              "ioType": "Digital Output",
-              "point": "BO5",
-              "description": "EXHAUST FAN 5 CMD",
-              "tag": "EF5_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "BO6",
-              "ioType": "Digital Output",
-              "point": "BO6",
-              "description": "EXHAUST FAN 6 CMD",
-              "tag": "EF6_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "UI1",
-              "ioType": "Digital Input",
-              "point": "UI1",
-              "description": "INTERLOCK STATUS EF1",
-              "tag": "ITRLK_STS_EF1",
-              "deviceRange": "",
-              "sourceGroup": "Interlock"
-            },
-            {
-              "terminal": "UI2",
-              "ioType": "Digital Input",
-              "point": "UI2",
-              "description": "INTERLOCK STATUS EF2",
-              "tag": "ITRLK_STS_EF2",
-              "deviceRange": "",
-              "sourceGroup": "Interlock"
-            },
-            {
-              "terminal": "UI3",
-              "ioType": "Digital Input",
-              "point": "UI3",
-              "description": "INTERLOCK STATUS EF3",
-              "tag": "ITRLK_STS_EF3",
-              "deviceRange": "",
-              "sourceGroup": "Interlock"
-            },
-            {
-              "terminal": "UI4",
-              "ioType": "Digital Input",
-              "point": "UI4",
-              "description": "INTERLOCK STATUS EF4",
-              "tag": "ITRLK_STS_EF4",
-              "deviceRange": "",
-              "sourceGroup": "Interlock"
-            },
-            {
-              "terminal": "UI5",
-              "ioType": "Digital Input",
-              "point": "UI5",
-              "description": "INTERLOCK STATUS EF5",
-              "tag": "ITRLK_STS_EF5",
-              "deviceRange": "",
-              "sourceGroup": "Interlock"
-            },
-            {
-              "terminal": "UI6",
-              "ioType": "Digital Input",
-              "point": "UI6",
-              "description": "INTERLOCK STATUS EF6",
-              "tag": "ITRLK_STS_EF6",
-              "deviceRange": "",
-              "sourceGroup": "Interlock"
-            }
-          ],
-          "raw": {
-            "Scenario #": "22",
-            "Exhaust Fan Count": "6",
-            "Fan Status Required?": "No",
-            "Interlock Required?": "Yes",
-            "BO Map (CMD)": "BO1 to BO6",
-            "BO Details (Point ➔ Name & Tag)": "BO1 ➔ EXHAUST FAN 1 CMD (EF1_CMD)\r\nBO2 ➔ EXHAUST FAN 2 CMD (EF2_CMD)\r\nBO3 ➔ EXHAUST FAN 3 CMD (EF3_CMD)\r\nBO4 ➔ EXHAUST FAN 4 CMD (EF4_CMD)\r\nBO5 ➔ EXHAUST FAN 5 CMD (EF5_CMD)\r\nBO6 ➔ EXHAUST FAN 6 CMD (EF6_CMD)",
-            "UI Map (Status)": "None",
-            "Status Details (Point ➔ Name & Tag)": "None",
-            "UI Map (Interlock)": "UI1 to UI6",
-            "Interlock Details (Point ➔ Name & Tag)": "UI1 ➔ INTERLOCK STATUS EF1 (ITRLK_STS_EF1)\r\nUI2 ➔ INTERLOCK STATUS EF2 (ITRLK_STS_EF2)\r\nUI3 ➔ INTERLOCK STATUS EF3 (ITRLK_STS_EF3)\r\nUI4 ➔ INTERLOCK STATUS EF4 (ITRLK_STS_EF4)\r\nUI5 ➔ INTERLOCK STATUS EF5 (ITRLK_STS_EF5)\r\nUI6 ➔ INTERLOCK STATUS EF6 (ITRLK_STS_EF6)",
-            "Spare UIs": "UI7 to UI8",
-            "Hardware Status": "OK"
-          }
-        },
-        {
-          "scenario": 23,
-          "sourceRow": 24,
-          "match": {
-            "exhaustFanCount": 6,
-            "fanStatusRequired": true,
-            "interlockRequired": false
+            "interlockEnable": false
           },
           "pointGroups": {
             "bo": [
@@ -4015,10 +2354,9 @@
             }
           ],
           "raw": {
-            "Scenario #": "23",
+            "Scenario #": "11",
             "Exhaust Fan Count": "6",
-            "Fan Status Required?": "Yes",
-            "Interlock Required?": "No",
+            "Interlock Enable": "No",
             "BO Map (CMD)": "BO1 to BO6",
             "BO Details (Point ➔ Name & Tag)": "BO1 ➔ EXHAUST FAN 1 CMD (EF1_CMD)\r\nBO2 ➔ EXHAUST FAN 2 CMD (EF2_CMD)\r\nBO3 ➔ EXHAUST FAN 3 CMD (EF3_CMD)\r\nBO4 ➔ EXHAUST FAN 4 CMD (EF4_CMD)\r\nBO5 ➔ EXHAUST FAN 5 CMD (EF5_CMD)\r\nBO6 ➔ EXHAUST FAN 6 CMD (EF6_CMD)",
             "UI Map (Status)": "UI1 to UI6",
@@ -4030,12 +2368,11 @@
           }
         },
         {
-          "scenario": 24,
-          "sourceRow": 25,
+          "scenario": 12,
+          "sourceRow": 13,
           "match": {
             "exhaustFanCount": 6,
-            "fanStatusRequired": true,
-            "interlockRequired": true
+            "interlockEnable": true
           },
           "pointGroups": {
             "bo": [
@@ -4375,10 +2712,9 @@
             }
           ],
           "raw": {
-            "Scenario #": "24",
+            "Scenario #": "12",
             "Exhaust Fan Count": "6",
-            "Fan Status Required?": "Yes",
-            "Interlock Required?": "Yes",
+            "Interlock Enable": "Yes",
             "BO Map (CMD)": "BO1 to BO6",
             "BO Details (Point ➔ Name & Tag)": "BO1 ➔ EXHAUST FAN 1 CMD (EF1_CMD)\r\nBO2 ➔ EXHAUST FAN 2 CMD (EF2_CMD)\r\nBO3 ➔ EXHAUST FAN 3 CMD (EF3_CMD)\r\nBO4 ➔ EXHAUST FAN 4 CMD (EF4_CMD)\r\nBO5 ➔ EXHAUST FAN 5 CMD (EF5_CMD)\r\nBO6 ➔ EXHAUST FAN 6 CMD (EF6_CMD)",
             "UI Map (Status)": "UI1 to UI6",
@@ -4390,470 +2726,11 @@
           }
         },
         {
-          "scenario": 25,
-          "sourceRow": 26,
+          "scenario": 13,
+          "sourceRow": 14,
           "match": {
             "exhaustFanCount": 7,
-            "fanStatusRequired": false,
-            "interlockRequired": false
-          },
-          "pointGroups": {
-            "bo": [
-              {
-                "terminal": "BO1",
-                "ioType": "Digital Output",
-                "point": "BO1",
-                "description": "EXHAUST FAN 1 CMD",
-                "tag": "EF1_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              },
-              {
-                "terminal": "BO2",
-                "ioType": "Digital Output",
-                "point": "BO2",
-                "description": "EXHAUST FAN 2 CMD",
-                "tag": "EF2_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              },
-              {
-                "terminal": "BO3",
-                "ioType": "Digital Output",
-                "point": "BO3",
-                "description": "EXHAUST FAN 3 CMD",
-                "tag": "EF3_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              },
-              {
-                "terminal": "BO4",
-                "ioType": "Digital Output",
-                "point": "BO4",
-                "description": "EXHAUST FAN 4 CMD",
-                "tag": "EF4_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              },
-              {
-                "terminal": "BO5",
-                "ioType": "Digital Output",
-                "point": "BO5",
-                "description": "EXHAUST FAN 5 CMD",
-                "tag": "EF5_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              },
-              {
-                "terminal": "BO6",
-                "ioType": "Digital Output",
-                "point": "BO6",
-                "description": "EXHAUST FAN 6 CMD",
-                "tag": "EF6_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              },
-              {
-                "terminal": "BO7",
-                "ioType": "Digital Output",
-                "point": "BO7",
-                "description": "EXHAUST FAN 7 CMD",
-                "tag": "EF7_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              }
-            ],
-            "status": [],
-            "interlock": []
-          },
-          "spares": {
-            "spareUis": [
-              "UI1",
-              "UI2",
-              "UI3",
-              "UI4",
-              "UI5",
-              "UI6",
-              "UI7",
-              "UI8"
-            ]
-          },
-          "points": [
-            {
-              "terminal": "BO1",
-              "ioType": "Digital Output",
-              "point": "BO1",
-              "description": "EXHAUST FAN 1 CMD",
-              "tag": "EF1_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "BO2",
-              "ioType": "Digital Output",
-              "point": "BO2",
-              "description": "EXHAUST FAN 2 CMD",
-              "tag": "EF2_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "BO3",
-              "ioType": "Digital Output",
-              "point": "BO3",
-              "description": "EXHAUST FAN 3 CMD",
-              "tag": "EF3_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "BO4",
-              "ioType": "Digital Output",
-              "point": "BO4",
-              "description": "EXHAUST FAN 4 CMD",
-              "tag": "EF4_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "BO5",
-              "ioType": "Digital Output",
-              "point": "BO5",
-              "description": "EXHAUST FAN 5 CMD",
-              "tag": "EF5_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "BO6",
-              "ioType": "Digital Output",
-              "point": "BO6",
-              "description": "EXHAUST FAN 6 CMD",
-              "tag": "EF6_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "BO7",
-              "ioType": "Digital Output",
-              "point": "BO7",
-              "description": "EXHAUST FAN 7 CMD",
-              "tag": "EF7_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            }
-          ],
-          "raw": {
-            "Scenario #": "25",
-            "Exhaust Fan Count": "7",
-            "Fan Status Required?": "No",
-            "Interlock Required?": "No",
-            "BO Map (CMD)": "BO1 to BO7",
-            "BO Details (Point ➔ Name & Tag)": "BO1 ➔ EXHAUST FAN 1 CMD (EF1_CMD)\r\nBO2 ➔ EXHAUST FAN 2 CMD (EF2_CMD)\r\nBO3 ➔ EXHAUST FAN 3 CMD (EF3_CMD)\r\nBO4 ➔ EXHAUST FAN 4 CMD (EF4_CMD)\r\nBO5 ➔ EXHAUST FAN 5 CMD (EF5_CMD)\r\nBO6 ➔ EXHAUST FAN 6 CMD (EF6_CMD)\r\nBO7 ➔ EXHAUST FAN 7 CMD (EF7_CMD)",
-            "UI Map (Status)": "None",
-            "Status Details (Point ➔ Name & Tag)": "None",
-            "UI Map (Interlock)": "None",
-            "Interlock Details (Point ➔ Name & Tag)": "None",
-            "Spare UIs": "UI1 to UI8",
-            "Hardware Status": "OK"
-          }
-        },
-        {
-          "scenario": 26,
-          "sourceRow": 27,
-          "match": {
-            "exhaustFanCount": 7,
-            "fanStatusRequired": false,
-            "interlockRequired": true
-          },
-          "pointGroups": {
-            "bo": [
-              {
-                "terminal": "BO1",
-                "ioType": "Digital Output",
-                "point": "BO1",
-                "description": "EXHAUST FAN 1 CMD",
-                "tag": "EF1_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              },
-              {
-                "terminal": "BO2",
-                "ioType": "Digital Output",
-                "point": "BO2",
-                "description": "EXHAUST FAN 2 CMD",
-                "tag": "EF2_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              },
-              {
-                "terminal": "BO3",
-                "ioType": "Digital Output",
-                "point": "BO3",
-                "description": "EXHAUST FAN 3 CMD",
-                "tag": "EF3_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              },
-              {
-                "terminal": "BO4",
-                "ioType": "Digital Output",
-                "point": "BO4",
-                "description": "EXHAUST FAN 4 CMD",
-                "tag": "EF4_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              },
-              {
-                "terminal": "BO5",
-                "ioType": "Digital Output",
-                "point": "BO5",
-                "description": "EXHAUST FAN 5 CMD",
-                "tag": "EF5_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              },
-              {
-                "terminal": "BO6",
-                "ioType": "Digital Output",
-                "point": "BO6",
-                "description": "EXHAUST FAN 6 CMD",
-                "tag": "EF6_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              },
-              {
-                "terminal": "BO7",
-                "ioType": "Digital Output",
-                "point": "BO7",
-                "description": "EXHAUST FAN 7 CMD",
-                "tag": "EF7_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              }
-            ],
-            "status": [],
-            "interlock": [
-              {
-                "terminal": "UI1",
-                "ioType": "Digital Input",
-                "point": "UI1",
-                "description": "INTERLOCK STATUS EF1",
-                "tag": "ITRLK_STS_EF1",
-                "deviceRange": "",
-                "sourceGroup": "Interlock"
-              },
-              {
-                "terminal": "UI2",
-                "ioType": "Digital Input",
-                "point": "UI2",
-                "description": "INTERLOCK STATUS EF2",
-                "tag": "ITRLK_STS_EF2",
-                "deviceRange": "",
-                "sourceGroup": "Interlock"
-              },
-              {
-                "terminal": "UI3",
-                "ioType": "Digital Input",
-                "point": "UI3",
-                "description": "INTERLOCK STATUS EF3",
-                "tag": "ITRLK_STS_EF3",
-                "deviceRange": "",
-                "sourceGroup": "Interlock"
-              },
-              {
-                "terminal": "UI4",
-                "ioType": "Digital Input",
-                "point": "UI4",
-                "description": "INTERLOCK STATUS EF4",
-                "tag": "ITRLK_STS_EF4",
-                "deviceRange": "",
-                "sourceGroup": "Interlock"
-              },
-              {
-                "terminal": "UI5",
-                "ioType": "Digital Input",
-                "point": "UI5",
-                "description": "INTERLOCK STATUS EF5",
-                "tag": "ITRLK_STS_EF5",
-                "deviceRange": "",
-                "sourceGroup": "Interlock"
-              },
-              {
-                "terminal": "UI6",
-                "ioType": "Digital Input",
-                "point": "UI6",
-                "description": "INTERLOCK STATUS EF6",
-                "tag": "ITRLK_STS_EF6",
-                "deviceRange": "",
-                "sourceGroup": "Interlock"
-              },
-              {
-                "terminal": "UI7",
-                "ioType": "Digital Input",
-                "point": "UI7",
-                "description": "INTERLOCK STATUS EF7",
-                "tag": "ITRLK_STS_EF7",
-                "deviceRange": "",
-                "sourceGroup": "Interlock"
-              }
-            ]
-          },
-          "spares": {
-            "spareUis": [
-              "UI8"
-            ]
-          },
-          "points": [
-            {
-              "terminal": "BO1",
-              "ioType": "Digital Output",
-              "point": "BO1",
-              "description": "EXHAUST FAN 1 CMD",
-              "tag": "EF1_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "BO2",
-              "ioType": "Digital Output",
-              "point": "BO2",
-              "description": "EXHAUST FAN 2 CMD",
-              "tag": "EF2_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "BO3",
-              "ioType": "Digital Output",
-              "point": "BO3",
-              "description": "EXHAUST FAN 3 CMD",
-              "tag": "EF3_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "BO4",
-              "ioType": "Digital Output",
-              "point": "BO4",
-              "description": "EXHAUST FAN 4 CMD",
-              "tag": "EF4_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "BO5",
-              "ioType": "Digital Output",
-              "point": "BO5",
-              "description": "EXHAUST FAN 5 CMD",
-              "tag": "EF5_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "BO6",
-              "ioType": "Digital Output",
-              "point": "BO6",
-              "description": "EXHAUST FAN 6 CMD",
-              "tag": "EF6_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "BO7",
-              "ioType": "Digital Output",
-              "point": "BO7",
-              "description": "EXHAUST FAN 7 CMD",
-              "tag": "EF7_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "UI1",
-              "ioType": "Digital Input",
-              "point": "UI1",
-              "description": "INTERLOCK STATUS EF1",
-              "tag": "ITRLK_STS_EF1",
-              "deviceRange": "",
-              "sourceGroup": "Interlock"
-            },
-            {
-              "terminal": "UI2",
-              "ioType": "Digital Input",
-              "point": "UI2",
-              "description": "INTERLOCK STATUS EF2",
-              "tag": "ITRLK_STS_EF2",
-              "deviceRange": "",
-              "sourceGroup": "Interlock"
-            },
-            {
-              "terminal": "UI3",
-              "ioType": "Digital Input",
-              "point": "UI3",
-              "description": "INTERLOCK STATUS EF3",
-              "tag": "ITRLK_STS_EF3",
-              "deviceRange": "",
-              "sourceGroup": "Interlock"
-            },
-            {
-              "terminal": "UI4",
-              "ioType": "Digital Input",
-              "point": "UI4",
-              "description": "INTERLOCK STATUS EF4",
-              "tag": "ITRLK_STS_EF4",
-              "deviceRange": "",
-              "sourceGroup": "Interlock"
-            },
-            {
-              "terminal": "UI5",
-              "ioType": "Digital Input",
-              "point": "UI5",
-              "description": "INTERLOCK STATUS EF5",
-              "tag": "ITRLK_STS_EF5",
-              "deviceRange": "",
-              "sourceGroup": "Interlock"
-            },
-            {
-              "terminal": "UI6",
-              "ioType": "Digital Input",
-              "point": "UI6",
-              "description": "INTERLOCK STATUS EF6",
-              "tag": "ITRLK_STS_EF6",
-              "deviceRange": "",
-              "sourceGroup": "Interlock"
-            },
-            {
-              "terminal": "UI7",
-              "ioType": "Digital Input",
-              "point": "UI7",
-              "description": "INTERLOCK STATUS EF7",
-              "tag": "ITRLK_STS_EF7",
-              "deviceRange": "",
-              "sourceGroup": "Interlock"
-            }
-          ],
-          "raw": {
-            "Scenario #": "26",
-            "Exhaust Fan Count": "7",
-            "Fan Status Required?": "No",
-            "Interlock Required?": "Yes",
-            "BO Map (CMD)": "BO1 to BO7",
-            "BO Details (Point ➔ Name & Tag)": "BO1 ➔ EXHAUST FAN 1 CMD (EF1_CMD)\r\nBO2 ➔ EXHAUST FAN 2 CMD (EF2_CMD)\r\nBO3 ➔ EXHAUST FAN 3 CMD (EF3_CMD)\r\nBO4 ➔ EXHAUST FAN 4 CMD (EF4_CMD)\r\nBO5 ➔ EXHAUST FAN 5 CMD (EF5_CMD)\r\nBO6 ➔ EXHAUST FAN 6 CMD (EF6_CMD)\r\nBO7 ➔ EXHAUST FAN 7 CMD (EF7_CMD)",
-            "UI Map (Status)": "None",
-            "Status Details (Point ➔ Name & Tag)": "None",
-            "UI Map (Interlock)": "UI1 to UI7",
-            "Interlock Details (Point ➔ Name & Tag)": "UI1 ➔ INTERLOCK STATUS EF1 (ITRLK_STS_EF1)\r\nUI2 ➔ INTERLOCK STATUS EF2 (ITRLK_STS_EF2)\r\nUI3 ➔ INTERLOCK STATUS EF3 (ITRLK_STS_EF3)\r\nUI4 ➔ INTERLOCK STATUS EF4 (ITRLK_STS_EF4)\r\nUI5 ➔ INTERLOCK STATUS EF5 (ITRLK_STS_EF5)\r\nUI6 ➔ INTERLOCK STATUS EF6 (ITRLK_STS_EF6)\r\nUI7 ➔ INTERLOCK STATUS EF7 (ITRLK_STS_EF7)",
-            "Spare UIs": "UI8",
-            "Hardware Status": "OK"
-          }
-        },
-        {
-          "scenario": 27,
-          "sourceRow": 28,
-          "match": {
-            "exhaustFanCount": 7,
-            "fanStatusRequired": true,
-            "interlockRequired": false
+            "interlockEnable": false
           },
           "pointGroups": {
             "bo": [
@@ -5122,10 +2999,9 @@
             }
           ],
           "raw": {
-            "Scenario #": "27",
+            "Scenario #": "13",
             "Exhaust Fan Count": "7",
-            "Fan Status Required?": "Yes",
-            "Interlock Required?": "No",
+            "Interlock Enable": "No",
             "BO Map (CMD)": "BO1 to BO7",
             "BO Details (Point ➔ Name & Tag)": "BO1 ➔ EXHAUST FAN 1 CMD (EF1_CMD)\r\nBO2 ➔ EXHAUST FAN 2 CMD (EF2_CMD)\r\nBO3 ➔ EXHAUST FAN 3 CMD (EF3_CMD)\r\nBO4 ➔ EXHAUST FAN 4 CMD (EF4_CMD)\r\nBO5 ➔ EXHAUST FAN 5 CMD (EF5_CMD)\r\nBO6 ➔ EXHAUST FAN 6 CMD (EF6_CMD)\r\nBO7 ➔ EXHAUST FAN 7 CMD (EF7_CMD)",
             "UI Map (Status)": "UI1 to UI7",
@@ -5137,12 +3013,11 @@
           }
         },
         {
-          "scenario": 28,
-          "sourceRow": 29,
+          "scenario": 14,
+          "sourceRow": 15,
           "match": {
             "exhaustFanCount": 7,
-            "fanStatusRequired": true,
-            "interlockRequired": true
+            "interlockEnable": true
           },
           "pointGroups": {
             "bo": [
@@ -5536,10 +3411,9 @@
             }
           ],
           "raw": {
-            "Scenario #": "28",
+            "Scenario #": "14",
             "Exhaust Fan Count": "7",
-            "Fan Status Required?": "Yes",
-            "Interlock Required?": "Yes",
+            "Interlock Enable": "Yes",
             "BO Map (CMD)": "BO1 to BO7",
             "BO Details (Point ➔ Name & Tag)": "BO1 ➔ EXHAUST FAN 1 CMD (EF1_CMD)\r\nBO2 ➔ EXHAUST FAN 2 CMD (EF2_CMD)\r\nBO3 ➔ EXHAUST FAN 3 CMD (EF3_CMD)\r\nBO4 ➔ EXHAUST FAN 4 CMD (EF4_CMD)\r\nBO5 ➔ EXHAUST FAN 5 CMD (EF5_CMD)\r\nBO6 ➔ EXHAUST FAN 6 CMD (EF6_CMD)\r\nBO7 ➔ EXHAUST FAN 7 CMD (EF7_CMD)",
             "UI Map (Status)": "UI1 to UI7",
@@ -5551,522 +3425,11 @@
           }
         },
         {
-          "scenario": 29,
-          "sourceRow": 30,
+          "scenario": 15,
+          "sourceRow": 16,
           "match": {
             "exhaustFanCount": 8,
-            "fanStatusRequired": false,
-            "interlockRequired": false
-          },
-          "pointGroups": {
-            "bo": [
-              {
-                "terminal": "BO1",
-                "ioType": "Digital Output",
-                "point": "BO1",
-                "description": "EXHAUST FAN 1 CMD",
-                "tag": "EF1_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              },
-              {
-                "terminal": "BO2",
-                "ioType": "Digital Output",
-                "point": "BO2",
-                "description": "EXHAUST FAN 2 CMD",
-                "tag": "EF2_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              },
-              {
-                "terminal": "BO3",
-                "ioType": "Digital Output",
-                "point": "BO3",
-                "description": "EXHAUST FAN 3 CMD",
-                "tag": "EF3_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              },
-              {
-                "terminal": "BO4",
-                "ioType": "Digital Output",
-                "point": "BO4",
-                "description": "EXHAUST FAN 4 CMD",
-                "tag": "EF4_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              },
-              {
-                "terminal": "BO5",
-                "ioType": "Digital Output",
-                "point": "BO5",
-                "description": "EXHAUST FAN 5 CMD",
-                "tag": "EF5_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              },
-              {
-                "terminal": "BO6",
-                "ioType": "Digital Output",
-                "point": "BO6",
-                "description": "EXHAUST FAN 6 CMD",
-                "tag": "EF6_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              },
-              {
-                "terminal": "BO7",
-                "ioType": "Digital Output",
-                "point": "BO7",
-                "description": "EXHAUST FAN 7 CMD",
-                "tag": "EF7_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              },
-              {
-                "terminal": "BO8",
-                "ioType": "Digital Output",
-                "point": "BO8",
-                "description": "EXHAUST FAN 8 CMD",
-                "tag": "EF8_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              }
-            ],
-            "status": [],
-            "interlock": []
-          },
-          "spares": {
-            "spareUis": [
-              "UI1",
-              "UI2",
-              "UI3",
-              "UI4",
-              "UI5",
-              "UI6",
-              "UI7",
-              "UI8"
-            ]
-          },
-          "points": [
-            {
-              "terminal": "BO1",
-              "ioType": "Digital Output",
-              "point": "BO1",
-              "description": "EXHAUST FAN 1 CMD",
-              "tag": "EF1_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "BO2",
-              "ioType": "Digital Output",
-              "point": "BO2",
-              "description": "EXHAUST FAN 2 CMD",
-              "tag": "EF2_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "BO3",
-              "ioType": "Digital Output",
-              "point": "BO3",
-              "description": "EXHAUST FAN 3 CMD",
-              "tag": "EF3_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "BO4",
-              "ioType": "Digital Output",
-              "point": "BO4",
-              "description": "EXHAUST FAN 4 CMD",
-              "tag": "EF4_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "BO5",
-              "ioType": "Digital Output",
-              "point": "BO5",
-              "description": "EXHAUST FAN 5 CMD",
-              "tag": "EF5_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "BO6",
-              "ioType": "Digital Output",
-              "point": "BO6",
-              "description": "EXHAUST FAN 6 CMD",
-              "tag": "EF6_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "BO7",
-              "ioType": "Digital Output",
-              "point": "BO7",
-              "description": "EXHAUST FAN 7 CMD",
-              "tag": "EF7_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "BO8",
-              "ioType": "Digital Output",
-              "point": "BO8",
-              "description": "EXHAUST FAN 8 CMD",
-              "tag": "EF8_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            }
-          ],
-          "raw": {
-            "Scenario #": "29",
-            "Exhaust Fan Count": "8",
-            "Fan Status Required?": "No",
-            "Interlock Required?": "No",
-            "BO Map (CMD)": "BO1 to BO8",
-            "BO Details (Point ➔ Name & Tag)": "BO1 ➔ EXHAUST FAN 1 CMD (EF1_CMD)\r\nBO2 ➔ EXHAUST FAN 2 CMD (EF2_CMD)\r\nBO3 ➔ EXHAUST FAN 3 CMD (EF3_CMD)\r\nBO4 ➔ EXHAUST FAN 4 CMD (EF4_CMD)\r\nBO5 ➔ EXHAUST FAN 5 CMD (EF5_CMD)\r\nBO6 ➔ EXHAUST FAN 6 CMD (EF6_CMD)\r\nBO7 ➔ EXHAUST FAN 7 CMD (EF7_CMD)\r\nBO8 ➔ EXHAUST FAN 8 CMD (EF8_CMD)",
-            "UI Map (Status)": "None",
-            "Status Details (Point ➔ Name & Tag)": "None",
-            "UI Map (Interlock)": "None",
-            "Interlock Details (Point ➔ Name & Tag)": "None",
-            "Spare UIs": "UI1 to UI8",
-            "Hardware Status": "OK"
-          }
-        },
-        {
-          "scenario": 30,
-          "sourceRow": 31,
-          "match": {
-            "exhaustFanCount": 8,
-            "fanStatusRequired": false,
-            "interlockRequired": true
-          },
-          "pointGroups": {
-            "bo": [
-              {
-                "terminal": "BO1",
-                "ioType": "Digital Output",
-                "point": "BO1",
-                "description": "EXHAUST FAN 1 CMD",
-                "tag": "EF1_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              },
-              {
-                "terminal": "BO2",
-                "ioType": "Digital Output",
-                "point": "BO2",
-                "description": "EXHAUST FAN 2 CMD",
-                "tag": "EF2_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              },
-              {
-                "terminal": "BO3",
-                "ioType": "Digital Output",
-                "point": "BO3",
-                "description": "EXHAUST FAN 3 CMD",
-                "tag": "EF3_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              },
-              {
-                "terminal": "BO4",
-                "ioType": "Digital Output",
-                "point": "BO4",
-                "description": "EXHAUST FAN 4 CMD",
-                "tag": "EF4_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              },
-              {
-                "terminal": "BO5",
-                "ioType": "Digital Output",
-                "point": "BO5",
-                "description": "EXHAUST FAN 5 CMD",
-                "tag": "EF5_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              },
-              {
-                "terminal": "BO6",
-                "ioType": "Digital Output",
-                "point": "BO6",
-                "description": "EXHAUST FAN 6 CMD",
-                "tag": "EF6_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              },
-              {
-                "terminal": "BO7",
-                "ioType": "Digital Output",
-                "point": "BO7",
-                "description": "EXHAUST FAN 7 CMD",
-                "tag": "EF7_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              },
-              {
-                "terminal": "BO8",
-                "ioType": "Digital Output",
-                "point": "BO8",
-                "description": "EXHAUST FAN 8 CMD",
-                "tag": "EF8_CMD",
-                "deviceRange": "",
-                "sourceGroup": "BO"
-              }
-            ],
-            "status": [],
-            "interlock": [
-              {
-                "terminal": "UI1",
-                "ioType": "Digital Input",
-                "point": "UI1",
-                "description": "INTERLOCK STATUS EF1",
-                "tag": "ITRLK_STS_EF1",
-                "deviceRange": "",
-                "sourceGroup": "Interlock"
-              },
-              {
-                "terminal": "UI2",
-                "ioType": "Digital Input",
-                "point": "UI2",
-                "description": "INTERLOCK STATUS EF2",
-                "tag": "ITRLK_STS_EF2",
-                "deviceRange": "",
-                "sourceGroup": "Interlock"
-              },
-              {
-                "terminal": "UI3",
-                "ioType": "Digital Input",
-                "point": "UI3",
-                "description": "INTERLOCK STATUS EF3",
-                "tag": "ITRLK_STS_EF3",
-                "deviceRange": "",
-                "sourceGroup": "Interlock"
-              },
-              {
-                "terminal": "UI4",
-                "ioType": "Digital Input",
-                "point": "UI4",
-                "description": "INTERLOCK STATUS EF4",
-                "tag": "ITRLK_STS_EF4",
-                "deviceRange": "",
-                "sourceGroup": "Interlock"
-              },
-              {
-                "terminal": "UI5",
-                "ioType": "Digital Input",
-                "point": "UI5",
-                "description": "INTERLOCK STATUS EF5",
-                "tag": "ITRLK_STS_EF5",
-                "deviceRange": "",
-                "sourceGroup": "Interlock"
-              },
-              {
-                "terminal": "UI6",
-                "ioType": "Digital Input",
-                "point": "UI6",
-                "description": "INTERLOCK STATUS EF6",
-                "tag": "ITRLK_STS_EF6",
-                "deviceRange": "",
-                "sourceGroup": "Interlock"
-              },
-              {
-                "terminal": "UI7",
-                "ioType": "Digital Input",
-                "point": "UI7",
-                "description": "INTERLOCK STATUS EF7",
-                "tag": "ITRLK_STS_EF7",
-                "deviceRange": "",
-                "sourceGroup": "Interlock"
-              },
-              {
-                "terminal": "UI8",
-                "ioType": "Digital Input",
-                "point": "UI8",
-                "description": "INTERLOCK STATUS EF8",
-                "tag": "ITRLK_STS_EF8",
-                "deviceRange": "",
-                "sourceGroup": "Interlock"
-              }
-            ]
-          },
-          "spares": {
-            "spareUis": []
-          },
-          "points": [
-            {
-              "terminal": "BO1",
-              "ioType": "Digital Output",
-              "point": "BO1",
-              "description": "EXHAUST FAN 1 CMD",
-              "tag": "EF1_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "BO2",
-              "ioType": "Digital Output",
-              "point": "BO2",
-              "description": "EXHAUST FAN 2 CMD",
-              "tag": "EF2_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "BO3",
-              "ioType": "Digital Output",
-              "point": "BO3",
-              "description": "EXHAUST FAN 3 CMD",
-              "tag": "EF3_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "BO4",
-              "ioType": "Digital Output",
-              "point": "BO4",
-              "description": "EXHAUST FAN 4 CMD",
-              "tag": "EF4_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "BO5",
-              "ioType": "Digital Output",
-              "point": "BO5",
-              "description": "EXHAUST FAN 5 CMD",
-              "tag": "EF5_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "BO6",
-              "ioType": "Digital Output",
-              "point": "BO6",
-              "description": "EXHAUST FAN 6 CMD",
-              "tag": "EF6_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "BO7",
-              "ioType": "Digital Output",
-              "point": "BO7",
-              "description": "EXHAUST FAN 7 CMD",
-              "tag": "EF7_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "BO8",
-              "ioType": "Digital Output",
-              "point": "BO8",
-              "description": "EXHAUST FAN 8 CMD",
-              "tag": "EF8_CMD",
-              "deviceRange": "",
-              "sourceGroup": "BO"
-            },
-            {
-              "terminal": "UI1",
-              "ioType": "Digital Input",
-              "point": "UI1",
-              "description": "INTERLOCK STATUS EF1",
-              "tag": "ITRLK_STS_EF1",
-              "deviceRange": "",
-              "sourceGroup": "Interlock"
-            },
-            {
-              "terminal": "UI2",
-              "ioType": "Digital Input",
-              "point": "UI2",
-              "description": "INTERLOCK STATUS EF2",
-              "tag": "ITRLK_STS_EF2",
-              "deviceRange": "",
-              "sourceGroup": "Interlock"
-            },
-            {
-              "terminal": "UI3",
-              "ioType": "Digital Input",
-              "point": "UI3",
-              "description": "INTERLOCK STATUS EF3",
-              "tag": "ITRLK_STS_EF3",
-              "deviceRange": "",
-              "sourceGroup": "Interlock"
-            },
-            {
-              "terminal": "UI4",
-              "ioType": "Digital Input",
-              "point": "UI4",
-              "description": "INTERLOCK STATUS EF4",
-              "tag": "ITRLK_STS_EF4",
-              "deviceRange": "",
-              "sourceGroup": "Interlock"
-            },
-            {
-              "terminal": "UI5",
-              "ioType": "Digital Input",
-              "point": "UI5",
-              "description": "INTERLOCK STATUS EF5",
-              "tag": "ITRLK_STS_EF5",
-              "deviceRange": "",
-              "sourceGroup": "Interlock"
-            },
-            {
-              "terminal": "UI6",
-              "ioType": "Digital Input",
-              "point": "UI6",
-              "description": "INTERLOCK STATUS EF6",
-              "tag": "ITRLK_STS_EF6",
-              "deviceRange": "",
-              "sourceGroup": "Interlock"
-            },
-            {
-              "terminal": "UI7",
-              "ioType": "Digital Input",
-              "point": "UI7",
-              "description": "INTERLOCK STATUS EF7",
-              "tag": "ITRLK_STS_EF7",
-              "deviceRange": "",
-              "sourceGroup": "Interlock"
-            },
-            {
-              "terminal": "UI8",
-              "ioType": "Digital Input",
-              "point": "UI8",
-              "description": "INTERLOCK STATUS EF8",
-              "tag": "ITRLK_STS_EF8",
-              "deviceRange": "",
-              "sourceGroup": "Interlock"
-            }
-          ],
-          "raw": {
-            "Scenario #": "30",
-            "Exhaust Fan Count": "8",
-            "Fan Status Required?": "No",
-            "Interlock Required?": "Yes",
-            "BO Map (CMD)": "BO1 to BO8",
-            "BO Details (Point ➔ Name & Tag)": "BO1 ➔ EXHAUST FAN 1 CMD (EF1_CMD)\r\nBO2 ➔ EXHAUST FAN 2 CMD (EF2_CMD)\r\nBO3 ➔ EXHAUST FAN 3 CMD (EF3_CMD)\r\nBO4 ➔ EXHAUST FAN 4 CMD (EF4_CMD)\r\nBO5 ➔ EXHAUST FAN 5 CMD (EF5_CMD)\r\nBO6 ➔ EXHAUST FAN 6 CMD (EF6_CMD)\r\nBO7 ➔ EXHAUST FAN 7 CMD (EF7_CMD)\r\nBO8 ➔ EXHAUST FAN 8 CMD (EF8_CMD)",
-            "UI Map (Status)": "None",
-            "Status Details (Point ➔ Name & Tag)": "None",
-            "UI Map (Interlock)": "UI1 to UI8",
-            "Interlock Details (Point ➔ Name & Tag)": "UI1 ➔ INTERLOCK STATUS EF1 (ITRLK_STS_EF1)\r\nUI2 ➔ INTERLOCK STATUS EF2 (ITRLK_STS_EF2)\r\nUI3 ➔ INTERLOCK STATUS EF3 (ITRLK_STS_EF3)\r\nUI4 ➔ INTERLOCK STATUS EF4 (ITRLK_STS_EF4)\r\nUI5 ➔ INTERLOCK STATUS EF5 (ITRLK_STS_EF5)\r\nUI6 ➔ INTERLOCK STATUS EF6 (ITRLK_STS_EF6)\r\nUI7 ➔ INTERLOCK STATUS EF7 (ITRLK_STS_EF7)\r\nUI8 ➔ INTERLOCK STATUS EF8 (ITRLK_STS_EF8)",
-            "Spare UIs": "None",
-            "Hardware Status": "OK"
-          }
-        },
-        {
-          "scenario": 31,
-          "sourceRow": 32,
-          "match": {
-            "exhaustFanCount": 8,
-            "fanStatusRequired": true,
-            "interlockRequired": false
+            "interlockEnable": false
           },
           "pointGroups": {
             "bo": [
@@ -6369,10 +3732,9 @@
             }
           ],
           "raw": {
-            "Scenario #": "31",
+            "Scenario #": "15",
             "Exhaust Fan Count": "8",
-            "Fan Status Required?": "Yes",
-            "Interlock Required?": "No",
+            "Interlock Enable": "No",
             "BO Map (CMD)": "BO1 to BO8",
             "BO Details (Point ➔ Name & Tag)": "BO1 ➔ EXHAUST FAN 1 CMD (EF1_CMD)\r\nBO2 ➔ EXHAUST FAN 2 CMD (EF2_CMD)\r\nBO3 ➔ EXHAUST FAN 3 CMD (EF3_CMD)\r\nBO4 ➔ EXHAUST FAN 4 CMD (EF4_CMD)\r\nBO5 ➔ EXHAUST FAN 5 CMD (EF5_CMD)\r\nBO6 ➔ EXHAUST FAN 6 CMD (EF6_CMD)\r\nBO7 ➔ EXHAUST FAN 7 CMD (EF7_CMD)\r\nBO8 ➔ EXHAUST FAN 8 CMD (EF8_CMD)",
             "UI Map (Status)": "UI1 to UI8",
@@ -6384,12 +3746,11 @@
           }
         },
         {
-          "scenario": 32,
-          "sourceRow": 33,
+          "scenario": 16,
+          "sourceRow": 17,
           "match": {
             "exhaustFanCount": 8,
-            "fanStatusRequired": true,
-            "interlockRequired": true
+            "interlockEnable": true
           },
           "pointGroups": {
             "bo": [
@@ -6837,10 +4198,9 @@
             }
           ],
           "raw": {
-            "Scenario #": "32",
+            "Scenario #": "16",
             "Exhaust Fan Count": "8",
-            "Fan Status Required?": "Yes",
-            "Interlock Required?": "Yes",
+            "Interlock Enable": "Yes",
             "BO Map (CMD)": "BO1 to BO8",
             "BO Details (Point ➔ Name & Tag)": "BO1 ➔ EXHAUST FAN 1 CMD (EF1_CMD)\r\nBO2 ➔ EXHAUST FAN 2 CMD (EF2_CMD)\r\nBO3 ➔ EXHAUST FAN 3 CMD (EF3_CMD)\r\nBO4 ➔ EXHAUST FAN 4 CMD (EF4_CMD)\r\nBO5 ➔ EXHAUST FAN 5 CMD (EF5_CMD)\r\nBO6 ➔ EXHAUST FAN 6 CMD (EF6_CMD)\r\nBO7 ➔ EXHAUST FAN 7 CMD (EF7_CMD)\r\nBO8 ➔ EXHAUST FAN 8 CMD (EF8_CMD)",
             "UI Map (Status)": "UI1 to UI8",
@@ -6856,7 +4216,7 @@
     {
       "sequenceId": "LIGHTING_CONTROL_DO_CN",
       "sequenceName": "Lighting Control DO_CN",
-      "sourceWorkbook": "1790173390416-Equipment_Builder-Latest.xlsx",
+      "sourceWorkbook": "1790253955664-sri_modified.xlsx",
       "sourceSheet": "Lighting Control DO_CN-MATRIX",
       "dimensions": [
         "Lighting Circuits Count",
@@ -20455,14 +17815,41 @@
             }
           ],
           "pointMapping": {
-            "1": "lightingCircuitCount",
-            "2": "For 1 = lightingcirc1Cmd",
-            "3": "For 2 = lightingcirc2Cmd",
-            "4": "For 3 = lightingcirc3Cmd",
-            "5": "For 4 = lightingcirc4Cmd",
-            "6": "For 5 = lightingcirc5Cmd",
-            "7": "For 6 = lightingcirc6Cmd",
-            "8": "For 7 = lightingcirc7Cmd"
+            "domainName": "lightingCircuitCount",
+            "tagMapping": [
+              {
+                "tag": "LGHT1_CMD",
+                "point": "lightingcirc1Cmd"
+              },
+              {
+                "tag": "LGHT2_CMD",
+                "point": "lightingcirc2Cmd"
+              },
+              {
+                "tag": "LGHT3_CMD",
+                "point": "lightingcirc3Cmd"
+              },
+              {
+                "tag": "LGHT4_CMD",
+                "point": "lightingcirc4Cmd"
+              },
+              {
+                "tag": "LGHT5_CMD",
+                "point": "lightingcirc5Cmd"
+              },
+              {
+                "tag": "LGHT6_CMD",
+                "point": "lightingcirc6Cmd"
+              },
+              {
+                "tag": "LGHT7_CMD",
+                "point": "lightingcirc7Cmd"
+              },
+              {
+                "tag": "LGHT8_CMD",
+                "point": "lightingcirc8Cmd"
+              }
+            ]
           },
           "tags": [
             "circuit",
@@ -20511,7 +17898,7 @@
             }
           ],
           "pointMapping": {
-            "1": "controlType"
+            "domainName": "controlType"
           },
           "tags": [
             "config",
@@ -20750,7 +18137,9 @@
           "type": "number",
           "default": 20,
           "unit": "Minutes",
-          "point": "occupancyDuration",
+          "pointMapping": {
+            "domainName": "occupancyDuration"
+          },
           "tags": [
             "config",
             "duration",
@@ -20793,7 +18182,9 @@
           "type": "number",
           "default": 20,
           "unit": "Minutes",
-          "point": "vacancyDuration",
+          "pointMapping": {
+            "domainName": "vacancyDuration"
+          },
           "tags": [
             "config",
             "duration",
@@ -20836,7 +18227,9 @@
           "type": "number",
           "default": 0,
           "unit": "Minutes",
-          "point": "flashWarningTimer",
+          "pointMapping": {
+            "domainName": "flashWarningTimer"
+          },
           "tags": [
             "config",
             "generic",
@@ -20888,7 +18281,9 @@
               "value": "No"
             }
           ],
-          "point": "scheduleMode",
+          "pointMapping": {
+            "domainName": "scheduleMode"
+          },
           "tags": [
             "config",
             "generic",
@@ -20972,10 +18367,25 @@
             }
           ],
           "pointMapping": {
-            "1": "lightingCircuitCount",
-            "2": "For 1 = lightOut01",
-            "3": "For 2 =lightOut02",
-            "4": "For 3 =lightOut03"
+            "domainName": "lightingCircuitCount",
+            "tagMapping": [
+              {
+                "tag": "LGHT1_SIG",
+                "point": "lightOut01"
+              },
+              {
+                "tag": "LGHT2_SIG",
+                "point": "lightOut02"
+              },
+              {
+                "tag": "LGHT3_SIG",
+                "point": "lightOut03"
+              },
+              {
+                "tag": "LGHT4_SIG",
+                "point": "lightOut04"
+              }
+            ]
           },
           "tags": [
             "circuit",
@@ -21024,7 +18434,7 @@
             }
           ],
           "pointMapping": {
-            "1": "controlType"
+            "domainName": "controlType"
           },
           "tags": [
             "config",
@@ -21063,7 +18473,9 @@
               "value": "No"
             }
           ],
-          "point": "scheduleMode",
+          "pointMapping": {
+            "domainName": "scheduleMode"
+          },
           "tags": [
             "config",
             "generic",
@@ -21109,7 +18521,7 @@
             }
           ],
           "pointMapping": {
-            "0": "minLightLevel"
+            "domainName": "minLightLevel"
           },
           "tags": [
             "level",
@@ -21141,7 +18553,7 @@
             }
           ],
           "pointMapping": {
-            "50": "maxLightLevel"
+            "domainName": "maxLightLevel"
           },
           "tags": [
             "level",
@@ -21173,7 +18585,7 @@
             }
           ],
           "pointMapping": {
-            "0": "luxMinSp"
+            "domainName": "luxMinSp"
           },
           "tags": [
             "config",
@@ -21207,7 +18619,7 @@
             }
           ],
           "pointMapping": {
-            "0": "luxMaxSp"
+            "domainName": "luxMaxSp"
           },
           "tags": [
             "config",
@@ -21541,7 +18953,9 @@
           "type": "number",
           "default": 20,
           "unit": "Minutes",
-          "point": "occupancyDuration",
+          "pointMapping": {
+            "domainName": "occupancyDuration"
+          },
           "tags": [
             "config",
             "duration",
@@ -21584,7 +18998,9 @@
           "type": "number",
           "default": 20,
           "unit": "Minutes",
-          "point": "vacancyDuration",
+          "pointMapping": {
+            "domainName": "vacancyDuration"
+          },
           "tags": [
             "config",
             "duration",
@@ -21627,7 +19043,9 @@
           "type": "number",
           "default": 5,
           "unit": "Minutes",
-          "point": "flashWarningTimer",
+          "pointMapping": {
+            "domainName": "flashWarningTimer"
+          },
           "rules": [
             {
               "order": 10,
@@ -21757,14 +19175,41 @@
             }
           ],
           "pointMapping": {
-            "1": "exhaustFanCount",
-            "2": "For 1= exhaustFan1Cmd",
-            "3": "For 2= exhaustFan2Cmd",
-            "4": "For 3= exhaustFan3Cmd",
-            "5": "For 4= exhaustFan4Cmd",
-            "6": "For 5= exhaustFan5Cmd",
-            "7": "For 6= exhaustFan6Cmd",
-            "8": "For 7= exhaustFan7Cmd"
+            "domainName": "exhaustFanCount",
+            "tagMapping": [
+              {
+                "tag": "EF1_CM",
+                "point": "DexhaustFan1Cmd"
+              },
+              {
+                "tag": "EF2_CM",
+                "point": "exhaustFan2Cmd"
+              },
+              {
+                "tag": "EF3_CM",
+                "point": "exhaustFan3Cmd"
+              },
+              {
+                "tag": "EF4_CM",
+                "point": "exhaustFan4Cmd"
+              },
+              {
+                "tag": "EF5_CM",
+                "point": "exhaustFan5Cmd"
+              },
+              {
+                "tag": "EF6_CM",
+                "point": "exhaustFan6Cmd"
+              },
+              {
+                "tag": "EF7_CM",
+                "point": "exhaustFan7Cmd"
+              },
+              {
+                "tag": "EF8_CM",
+                "point": "exhaustFan8Cmd"
+              }
+            ]
           },
           "tags": [
             "For exhaustFanCount (circuit",
@@ -21805,7 +19250,9 @@
               "value": "No"
             }
           ],
-          "point": "ScheduleMode",
+          "pointMapping": {
+            "domainName": "ScheduleMode"
+          },
           "tags": [
             "config",
             "exhaust",
